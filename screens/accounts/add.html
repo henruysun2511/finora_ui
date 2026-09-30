@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Thêm tài khoản ngân hàng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+</head>
+<body style="background:var(--dash-bg);font-family:'Inter',sans-serif;margin:0;padding-bottom:40px;">
+  <div style="max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;">
+    <div class="sbar"><span>9:41</span><span>● ● ●</span></div>
+    <div class="tx-hdr">
+      <a href="../wallets/list.html" class="tx-back"><svg class="ic"><use href="#icon-chevron-left"/></svg></a>
+      <div class="tx-hdr-title">Liên kết Ngân hàng</div>
+    </div>
+    <div style="padding:16px;">
+      <div style="font-size:12px;color:var(--ink-soft);font-weight:700;margin-bottom:12px;">Chọn ngân hàng của bạn để kết nối tự động:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div onclick="selectBank('Vietcombank')" style="background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:16px;text-align:center;cursor:pointer;">
+          <div style="font-weight:900;font-size:14px;color:var(--primary);margin-bottom:4px;">Vietcombank</div>
+          <div style="font-size:11px;color:var(--ink-soft);">VCB Digibank</div>
+        </div>
+        <div onclick="selectBank('Techcombank')" style="background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:16px;text-align:center;cursor:pointer;">
+          <div style="font-weight:900;font-size:14px;color:var(--danger);margin-bottom:4px;">Techcombank</div>
+          <div style="font-size:11px;color:var(--ink-soft);">TCB Mobile</div>
+        </div>
+        <div onclick="selectBank('MB Bank')" style="background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:16px;text-align:center;cursor:pointer;">
+          <div style="font-weight:900;font-size:14px;color:#2563eb;margin-bottom:4px;">MB Bank</div>
+          <div style="font-size:11px;color:var(--ink-soft);">Quân Đội</div>
+        </div>
+        <div onclick="selectBank('VPBank')" style="background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:16px;text-align:center;cursor:pointer;">
+          <div style="font-weight:900;font-size:14px;color:#16a34a;margin-bottom:4px;">VPBank</div>
+          <div style="font-size:11px;color:var(--ink-soft);">VPBank NEO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function selectBank(name) {
+      alert('Đang chuyển sang cổng xác thực an toàn của ' + name + '...');
+      window.location.href = 'detail.html';
+    }
+  </script>
+</body>
+</html>

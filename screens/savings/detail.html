@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Chi tiết mục tiêu tiết kiệm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+</head>
+<body style="background:var(--dash-bg);font-family:'Inter',sans-serif;margin:0;padding-bottom:40px;">
+  <div style="max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;">
+    <div class="sbar"><span>9:41</span><span>● ● ●</span></div>
+    <div class="tx-hdr">
+      <a href="list.html" class="tx-back"><svg class="ic"><use href="#icon-chevron-left"/></svg></a>
+      <div class="tx-hdr-title">Chuyến du lịch Tokyo</div>
+    </div>
+    <div style="padding:16px;">
+      <div style="background:#fff;border-radius:24px;border:1px solid var(--border);padding:22px;text-align:center;box-shadow:0 4px 14px rgba(15,23,42,.04);margin-bottom:16px;">
+        <div style="width:64px;height:64px;border-radius:20px;background:oklch(0.64 0.20 350 / 0.12);color:var(--pink);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+          <svg class="ic" style="width:32px;height:32px;"><use href="#icon-plane"/></svg>
+        </div>
+        <div style="font-size:12px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;">Tiến độ hoàn thành (48%)</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:var(--primary);margin:4px 0 10px;">
+          ₫ 12,000,000
+        </div>
+        <div style="font-size:12px;font-weight:700;color:var(--ink-soft);">Mục tiêu: ₫ 25,000,000 (Còn thiếu ₫13,000,000)</div>
+        <div class="bud-prog-track" style="margin:16px 0 12px;"><div class="bud-prog-fill" style="width:48%;background:var(--pink);"></div></div>
+      </div>
+
+      <div style="background:#fff;border-radius:20px;border:1px solid var(--border);padding:16px;margin-bottom:16px;">
+        <div style="font-size:13px;font-weight:900;display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <svg class="ic" style="color:var(--secondary);"><use href="#icon-sparkles"/></svg> Lời khuyên từ Mascot Ruby
+        </div>
+        <div style="font-size:12px;color:var(--foreground);line-height:1.6;">
+          Nếu bạn trích thêm <strong>₫1,500,000 mỗi tháng</strong> từ khoản tiền cà phê và ăn vặt, bạn sẽ về đích sớm trước 3 tháng đó nha! Cố lên nhé!
+        </div>
+      </div>
+
+      <button class="btn btn-p" onclick="alert('Đã trích nạp thành công ₫500,000 từ Vietcombank vào hũ Du lịch!')" style="padding:15px;border-radius:16px;">
+        <svg class="ic"><use href="#icon-plus"/></svg> Nạp tiền vào hũ ngay
+      </button>
+    </div>
+  </div>
+</body>
+</html>

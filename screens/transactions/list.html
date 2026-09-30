@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Danh sách giao dịch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 84px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .tx-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+    .tx-hdr-link {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      background: var(--dash-bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--foreground);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Cal header */
+    .cal-wrap {
+      padding: 0;
+    }
+    .cal-hdr {
+      padding: 14px 18px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .cal-nav-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+    .cal-nav-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--dash-bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .cal-sub {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    /* Period Summary Banner */
+    .month-stat-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 12px 16px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+    .ms-card {
+      background: var(--dash-bg);
+      border-radius: 14px;
+      padding: 10px 14px;
+    }
+    .ms-lbl {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--ink-soft);
+      margin-bottom: 4px;
+    }
+    .ms-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+    }
+    .ms-val.exp { color: var(--danger); }
+    .ms-val.inc { color: var(--success); }
+
+    /* Transaction Rows Link */
+    .cd-row-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      transition: background 0.15s;
+    }
+    .cd-row-link:hover {
+      background: oklch(0.98 0.01 240);
+    }
+    .cd-row-link:last-child {
+      border-bottom: none;
+    }
+
+    /* Bottom Navigation */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 14px;
+      z-index: 40;
+    }
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: color 0.15s;
+    }
+    .bni .ic { width: 20px; height: 20px; }
+    .bni.on { color: var(--primary); font-weight: 900; }
+    .bnav-fab {
+      position: relative;
+      top: -14px;
+    }
+    .bnav-fab .fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), oklch(0.48 0.16 250));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px oklch(0.55 0.18 250 / 0.45);
+      border: 3.5px solid #fff;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .bnav-fab .fab:hover { transform: scale(1.06); }
+    .bnav-fab .fab .ic { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="../home/dashboard.html" class="tx-back" title="Quay lại">
+        <svg class="ic"><use href="#icon-chevron-left"/></svg>
+      </a>
+      <div class="tx-hdr-title">Lịch sử giao dịch</div>
+      <div class="tx-hdr-link">
+        <a href="scan-receipt.html" class="icon-btn" title="Quét hóa đơn">
+          <svg class="ic" style="width:17px;height:17px;"><use href="#icon-camera"/></svg>
+        </a>
+        <a href="add-manual.html" class="icon-btn" title="Thêm giao dịch mới">
+          <svg class="ic" style="width:17px;height:17px;"><use href="#icon-plus"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Month Bar -->
+    <div class="cal-hdr">
+      <div class="cal-nav">
+        <button class="cal-nav-btn"><svg class="ic" style="width:14px;height:14px;"><use href="#icon-chevron-left"/></svg></button>
+        <div class="cal-nav-title">Tháng 8 · 2026</div>
+        <button class="cal-nav-btn"><svg class="ic" style="width:14px;height:14px;"><use href="#icon-chevron-right"/></svg></button>
+      </div>
+      <div class="cal-sub">
+        <span>33 giao dịch trong tháng</span>
+        <a href="add-manual.html" class="btn-sm" style="padding:6px 12px;background:var(--primary);color:#fff;border-radius:99px;text-decoration:none;font-size:11px;font-weight:800;display:inline-flex;align-items:center;gap:4px;">
+          <svg class="ic" style="width:13px;height:13px;"><use href="#icon-plus"/></svg> Ghi sổ
+        </a>
+      </div>
+    </div>
+
+    <!-- Period Stat Summary -->
+    <div class="month-stat-bar">
+      <div class="ms-card">
+        <div class="ms-lbl">Tổng chi tiêu</div>
+        <div class="ms-val exp">-₫8,320,000</div>
+      </div>
+      <div class="ms-card">
+        <div class="ms-lbl">Tổng thu nhập</div>
+        <div class="ms-val inc">+₫15,000,000</div>
+      </div>
+    </div>
+
+    <!-- Category Filter Chips -->
+    <div class="channel-row">
+      <div class="channel-chip on"><svg class="ic"><use href="#icon-layers"/></svg> Tất cả</div>
+      <div class="channel-chip"><svg class="ic"><use href="#icon-utensils"/></svg> Ăn uống</div>
+      <div class="channel-chip"><svg class="ic"><use href="#icon-shopping-bag"/></svg> Mua sắm</div>
+      <div class="channel-chip"><svg class="ic"><use href="#icon-car"/></svg> Di chuyển</div>
+      <div class="channel-chip"><svg class="ic"><use href="#icon-banknote"/></svg> Thu nhập</div>
+    </div>
+
+    <!-- Transaction List Grouped by Date -->
+    <div class="cal-detail" style="margin-top:0;">
+      <!-- Date Group 1: Hôm nay -->
+      <div class="cal-detail-title" style="display:flex;justify-content:space-between;">
+        <span>Hôm nay · 18/08/2026</span>
+        <span style="font-weight:900;color:var(--danger);">-₫205,000</span>
+      </div>
+      <div style="background:#fff;border-radius:18px;border:1px solid var(--border);margin:0 16px 14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.03);">
+        <a href="detail.html" class="cd-row-link">
+          <div class="cd-ic" style="background:oklch(0.70 0.19 45 / 0.12);color:var(--orange);">
+            <svg class="ic"><use href="#icon-utensils"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="cd-name" style="font-weight:800;font-size:13.5px;">Cơm trưa Team</div>
+            <div class="cd-meta" style="font-size:11px;color:var(--ink-soft);margin-top:2px;">Ăn uống · 12:30 · Tiền mặt</div>
+          </div>
+          <div class="cd-amt" style="font-weight:900;font-size:14px;color:var(--danger);">-₫150,000</div>
+        </a>
+
+        <a href="detail.html" class="cd-row-link">
+          <div class="cd-ic" style="background:oklch(0.63 0.13 190 / 0.12);color:var(--teal);">
+            <svg class="ic"><use href="#icon-coffee"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="cd-name" style="font-weight:800;font-size:13.5px;">Phúc Long Tea</div>
+            <div class="cd-meta" style="font-size:11px;color:var(--ink-soft);margin-top:2px;">Cà phê · 09:15 · MoMo</div>
+          </div>
+          <div class="cd-amt" style="font-weight:900;font-size:14px;color:var(--danger);">-₫55,000</div>
+        </a>
+      </div>
+
+      <!-- Date Group 2: Hôm qua -->
+      <div class="cal-detail-title" style="display:flex;justify-content:space-between;">
+        <span>Hôm qua · 17/08/2026</span>
+        <span style="font-weight:900;color:var(--success);">+₫14,965,000</span>
+      </div>
+      <div style="background:#fff;border-radius:18px;border:1px solid var(--border);margin:0 16px 14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.03);">
+        <a href="detail.html" class="cd-row-link">
+          <div class="cd-ic" style="background:oklch(0.68 0.18 155 / 0.12);color:var(--success);">
+            <svg class="ic"><use href="#icon-banknote"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="cd-name" style="font-weight:800;font-size:13.5px;">Lương tháng Finora</div>
+            <div class="cd-meta" style="font-size:11px;color:var(--ink-soft);margin-top:2px;">Thu nhập · 16:45 · Vietcombank</div>
+          </div>
+          <div class="cd-amt" style="font-weight:900;font-size:14px;color:var(--success);">+₫15,000,000</div>
+        </a>
+
+        <a href="detail.html" class="cd-row-link">
+          <div class="cd-ic" style="background:oklch(0.55 0.20 285 / 0.12);color:var(--violet);">
+            <svg class="ic"><use href="#icon-car"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="cd-name" style="font-weight:800;font-size:13.5px;">Grab Bike đi làm</div>
+            <div class="cd-meta" style="font-size:11px;color:var(--ink-soft);margin-top:2px;">Di chuyển · 08:30 · Tiền mặt</div>
+          </div>
+          <div class="cd-amt" style="font-weight:900;font-size:14px;color:var(--danger);">-₫35,000</div>
+        </a>
+      </div>
+
+      <!-- Date Group 3: 15/08 -->
+      <div class="cal-detail-title" style="display:flex;justify-content:space-between;">
+        <span>15/08/2026</span>
+        <span style="font-weight:900;color:var(--danger);">-₫420,000</span>
+      </div>
+      <div style="background:#fff;border-radius:18px;border:1px solid var(--border);margin:0 16px 20px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.03);">
+        <a href="detail.html" class="cd-row-link">
+          <div class="cd-ic" style="background:oklch(0.64 0.20 350 / 0.12);color:var(--pink);">
+            <svg class="ic"><use href="#icon-shopping-bag"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="cd-name" style="font-weight:800;font-size:13.5px;">Siêu thị WinMart</div>
+            <div class="cd-meta" style="font-size:11px;color:var(--ink-soft);margin-top:2px;">Tiêu dùng · 19:20 · Vietcombank</div>
+          </div>
+          <div class="cd-amt" style="font-weight:900;font-size:14px;color:var(--danger);">-₫420,000</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard"/></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart"/></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="add-manual.html" class="fab" title="Thêm giao dịch">
+        <svg class="ic"><use href="#icon-plus"/></svg>
+      </a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic"><use href="#icon-bot"/></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user"/></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+</body>
+</html>

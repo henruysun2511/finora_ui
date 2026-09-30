@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finora · Reusable Mascot Components Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --surface: #151c2c;
+      --card-bg: #1c253b;
+      --card-border: #29354d;
+      --text: #f1f5f9;
+      --sub: #94a3b8;
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.3);
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 40px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60a5fa;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 40%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: var(--sub);
+      font-size: 16px;
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Controls Bar */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 14px 20px;
+      margin-bottom: 32px;
+    }
+
+    .filter-tabs, .mode-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--sub);
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    /* Mode Switchers */
+    .mode-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--sub);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-right: 4px;
+    }
+
+    /* Mascot Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .mascot-box {
+      background: var(--surface);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 24px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      position: relative;
+    }
+
+    .mascot-box:hover {
+      transform: translateY(-4px);
+      border-color: #3b82f6;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+    }
+
+    .mascot-tag {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--sub);
+    }
+
+    .component-slot {
+      width: 100%;
+      min-height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0 16px;
+    }
+
+    .mascot-meta {
+      width: 100%;
+      border-top: 1px solid var(--card-border);
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .meta-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .meta-role {
+      font-size: 12px;
+      color: var(--sub);
+    }
+
+    .code-btn {
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #93c5fd;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .code-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Modal / Toast for code */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #10b981;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 100;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Documentation Section */
+    .doc-section {
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 32px;
+      margin-top: 24px;
+    }
+
+    .doc-section h2 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .code-block {
+      background: #0d121f;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      color: #93c5fd;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 14px 0 20px;
+    }
+
+    .tag-name { color: #f472b6; }
+    .attr-name { color: #fbbf24; }
+    .attr-val { color: #34d399; }
+    .comment { color: #64748b; }
+  </style>
+
+  <!-- Load Shared Mascot Base Engine -->
+  <script src="./base.js"></script>
+
+  <!-- Load Individual Mascot Components -->
+  <script src="./ash.js"></script>
+  <script src="./penny.js"></script>
+  <script src="./sage.js"></script>
+  <script src="./nora.js"></script>
+  <script src="./jade.js"></script>
+  <script src="./ruby.js"></script>
+  <script src="./bellingham.js"></script>
+  <script src="./sterling.js"></script>
+  <script src="./ronaldo.js"></script>
+  <script src="./messi.js"></script>
+  <script src="./huysun.js"></script>
+  <script src="./index.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge-pill">✦ Device Preview Component Suite</div>
+      <h1>Finora AI Mascot Components</h1>
+      <p>Hệ thống Web Components &amp; JS Objects độc lập, tái sử dụng tại bất kỳ màn hình nào trong Finora.</p>
+    </header>
+
+    <div class="controls">
+      <div class="filter-tabs">
+        <button class="tab-btn active" onclick="filterMascots('all', this)">Tất cả (10)</button>
+        <button class="tab-btn" onclick="filterMascots('tier', this)">7 Tầng Tài Chính</button>
+        <button class="tab-btn" onclick="filterMascots('legend', this)">Huyền Thoại &amp; Đặc Biệt</button>
+      </div>
+
+      <div class="mode-tabs">
+        <span class="mode-label">Chế độ hiển thị:</span>
+        <button class="tab-btn active" onclick="switchMode('avatar', this)">Avatar</button>
+        <button class="tab-btn" onclick="switchMode('card', this)">Card</button>
+        <button class="tab-btn" onclick="switchMode('dialogue', this)">Dialogue</button>
+        <button class="tab-btn" onclick="switchMode('profile', this)">Profile</button>
+      </div>
+    </div>
+
+    <!-- Mascots Grid -->
+    <div class="grid" id="mascotsGrid">
+
+      <!-- 1. Ash -->
+      <div class="mascot-box" data-cat="tier" data-id="ash">
+        <span class="mascot-tag">Tier 1 · Nợ &lt; 0</span>
+        <div class="component-slot">
+          <mascot-ash float interactive bubble="Khoan đã!! Ly trà sữa này bằng cả 3 bữa mì tôm đấy!" size="140px"></mascot-ash>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Ash</div>
+            <div class="meta-role">Kẻ Sinh Tồn</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('ash')">Copy Tag</button>
+        </div>
+      </div>
+
+      <!-- 2. Penny -->
+      <div class="mascot-box" data-cat="tier" data-id="penny">
+        <span class="mascot-tag">Tier 2 · 0 – 1M ₫</span>
+        <div class="component-slot">
+          <mascot-penny float interactive bubble="Một đồng cũng là tiền, nhớ săn voucher nhé!" size="140px"></mascot-penny>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Penny</div>
+            <div class="meta-role">Kế Toán Săn Sale</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('penny')">Copy Tag</button>
+        </div>
+      </div>
+
+      <!-- 3. Sage -->
+      <div class="mascot-box" data-cat="tier" data-id="sage">
+        <span class="mascot-tag">Tier 3 · 1M – 5M ₫</span>
+        <div class="component-slot">
+          <mascot-sage float interactive bubble="Cây tài chính đang lớn lên từng ngày rồi!" size="140px"></mascot-sage>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Sage</div>
+            <div class="meta-role">Người Làm Vườn Nhẫn Nại</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('sage')">Copy Tag</button>
+        </div>
+      </div>
+
+      <!-- 4. Nora -->
+      <div class="mascot-box" data-cat="tier" data-id="nora">
+        <span class="mascot-tag">Tier 4 · 5M – 20M ₫ (Main AI)</span>
+        <div class="component-slot">
+          <mascot-nora float interactive bubble="Có tôi hỗ trợ bạn, yên tâm nhé ✦" size="140px"></mascot-nora>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Nora</div>
+            <div class="meta-role">Huấn Luyện Viên Đời Sống</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('nora')">Copy Tag</button>
+        </div>
+      </div>
+
+      <!-- 5. Jade -->
+      <div class="mascot-box" data-cat="tier" data-id="jade">
+        <span class="mascot-tag">Tier 5 · 20M – 100M ₫</span>
+        <div class="component-slot">
+          <mascot-jade float interactive bubble="Tiền nên tự sinh lời, đúng chứ?" size="140px"></mascot-jade>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Jade</div>
+            <div class="meta-role">Chiến Lược Gia Đầu Tư</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('jade')">Copy Tag</button>
+        </div>
+      </div>
+
+      <!-- 6. Ruby -->
+      <div class="mascot-box" data-cat="tier" data-id="ruby">
+        <span class="mascot-tag">Tier 6 · 100M – 500M ₫</span>
+        <div class="component-slot">
+          <mascot-ruby float interactive bubble="Tiền không còn là nỗi lo nữa, hãy tận hưởng!" size="140px"></mascot-ruby>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Ruby</div>
+            <div class="meta-role">Quý Cô Hưởng Thụ</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('ruby')">Copy Tag</button>
+        </div>
+      </div>
+
+      <!-- 7. Bellingham -->
+      <div class="mascot-box" data-cat="tier" data-id="bellingham">
+        <span class="mascot-tag">Tier 7 · ≥ 500M ₫</span>
+        <div class="component-slot">
+          <mascot-bellingham float interactive bubble="Tầm nhìn luôn dài hơi, tiền là điểm số trò chơi." size="140px"></mascot-bellingham>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Bellingham</div>
+            <div class="meta-role">Chủ Tịch Tài Phiệt</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('bellingham')">Copy Tag</button>
+        </div>
+      </div>
+
+      <!-- 8. Ronaldo -->
+      <div class="mascot-box" data-cat="legend" data-id="ronaldo">
+        <span class="mascot-tag">Legend · ≥ 1 Tỷ ₫</span>
+        <div class="component-slot">
+          <mascot-ronaldo float interactive bubble="Siuuuuu! 1 tỷ đó Messi ơi, đếm mỏi tay!" size="140px"></mascot-ronaldo>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Ronaldo</div>
+            <div class="meta-role">CR7 Siuuu · Kỷ Lục Gia</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('ronaldo')">Copy Tag</button>
+        </div>
+      </div>
+
+      <!-- 9. Messi -->
+      <div class="mascot-box" data-cat="legend" data-id="messi">
+        <span class="mascot-tag">Legend · ≥ 1 Tỷ ₫</span>
+        <div class="component-slot">
+          <mascot-messi float interactive bubble="Đủ rồi, tôi nghe tiếng 'siuuu' còn ám ảnh hơn báo nợ!" size="140px"></mascot-messi>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Messi</div>
+            <div class="meta-role">M10 Goat · Thiên Tài Điềm Đạm</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('messi')">Copy Tag</button>
+        </div>
+      </div>
+
+      <!-- 10. Huy Sun -->
+      <div class="mascot-box" data-cat="legend" data-id="huysun">
+        <span class="mascot-tag">Special · Full-stack Dev</span>
+        <div class="component-slot">
+          <mascot-huysun float interactive bubble="Code không bug, đời không lo!" size="140px"></mascot-huysun>
+        </div>
+        <div class="mascot-meta">
+          <div>
+            <div class="meta-title">Huy Sun</div>
+            <div class="meta-role">Thần Đèn Công Nghệ</div>
+          </div>
+          <button class="code-btn" onclick="copySnippet('huysun')">Copy Tag</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Documentation & Reusability Guide -->
+    <div class="doc-section">
+      <h2>Cách Sử Dụng Components Trong Toàn Bộ Ứng Dụng</h2>
+      <p style="color: var(--sub); line-height: 1.6;">
+        Mỗi mascot là một file component riêng biệt trong thư mục <code>device-preview/components/mascot/</code>. Bạn có thể chèn trực tiếp dưới dạng thẻ HTML Web Component hoặc gọi qua JavaScript API.
+      </p>
+
+      <div class="code-block">
+<span class="comment">&lt;!-- 1. Nhúng base engine và component mascot bạn cần --&gt;</span>
+&lt;<span class="tag-name">script</span> <span class="attr-name">src</span>=<span class="attr-val">"../../components/mascot/base.js"</span>&gt;&lt;/<span class="tag-name">script</span>&gt;
+&lt;<span class="tag-name">script</span> <span class="attr-name">src</span>=<span class="attr-val">"../../components/mascot/nora.js"</span>&gt;&lt;/<span class="tag-name">script</span>&gt;
+
+<span class="comment">&lt;!-- 2. Hiển thị dạng Avatar nổi với Speech Bubble --&gt;</span>
+&lt;<span class="tag-name">mascot-nora</span> <span class="attr-name">size</span>=<span class="attr-val">"140px"</span> <span class="attr-name">float</span> <span class="attr-name">interactive</span> <span class="attr-name">bubble</span>=<span class="attr-val">"Hôm nay bạn chi tiêu rất tốt!"</span>&gt;&lt;/<span class="tag-name">mascot-nora</span>&gt;
+
+<span class="comment">&lt;!-- 3. Hiển thị dạng Card chọn nhân vật --&gt;</span>
+&lt;<span class="tag-name">mascot-nora</span> <span class="attr-name">mode</span>=<span class="attr-val">"card"</span> <span class="attr-name">active</span>&gt;&lt;/<span class="tag-name">mascot-nora</span>&gt;
+
+<span class="comment">&lt;!-- 4. Hiển thị dạng Dialogue Chat Row --&gt;</span>
+&lt;<span class="tag-name">mascot-nora</span> <span class="attr-name">mode</span>=<span class="attr-val">"dialogue"</span> <span class="attr-name">bubble</span>=<span class="attr-val">"Bạn vừa tiết kiệm được 50k!"</span>&gt;&lt;/<span class="tag-name">mascot-nora</span>&gt;
+
+<span class="comment">&lt;!-- 5. Hoặc gọi bằng JavaScript thuần --&gt;</span>
+&lt;<span class="tag-name">script</span>&gt;
+  <span class="comment">// Lấy mascot theo số dư tài khoản:</span>
+  <span class="attr-name">const</span> mascot = window.FinoraMascots.getMascotByBalance(12500000);
+  document.getElementById("myContainer").innerHTML = mascot.renderCard({ active: true });
+&lt;/<span class="tag-name">script</span>&gt;
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Đã copy mã snippet vào clipboard!</div>
+
+  <script>
+    var currentMode = "avatar";
+
+    function switchMode(mode, btn) {
+      currentMode = mode;
+      document.querySelectorAll(".mode-tabs .tab-btn").forEach(function(b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+
+      document.querySelectorAll(".component-slot > *").forEach(function(elem) {
+        elem.setAttribute("mode", mode);
+        if (mode === "card" || mode === "dialogue" || mode === "profile") {
+          elem.removeAttribute("float");
+          elem.style.width = "100%";
+        } else {
+          elem.setAttribute("float", "");
+          elem.style.width = "140px";
+        }
+      });
+    }
+
+    function filterMascots(cat, btn) {
+      document.querySelectorAll(".filter-tabs .tab-btn").forEach(function(b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+
+      document.querySelectorAll(".mascot-box").forEach(function(box) {
+        if (cat === "all" || box.dataset.cat === cat) {
+          box.style.display = "flex";
+        } else {
+          box.style.display = "none";
+        }
+      });
+    }
+
+    function copySnippet(id) {
+      var tag = "<mascot-" + id + ' float interactive bubble="Lời thoại..." size="140px"></mascot-' + id + ">";
+      navigator.clipboard.writeText(tag).then(function() {
+        showToast();
+      }).catch(function() {
+        showToast();
+      });
+    }
+
+    function showToast() {
+      var t = document.getElementById("toast");
+      t.classList.add("show");
+      setTimeout(function() { t.classList.remove("show"); }, 2000);
+    }
+
+    // Listen to mascot-click custom events
+    document.addEventListener("mascot-click", function(e) {
+      console.log("Mascot clicked:", e.detail.mascot);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Quản lý danh mục</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+</head>
+<body style="background:var(--dash-bg);font-family:'Inter',sans-serif;margin:0;padding-bottom:40px;">
+  <div style="max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;">
+    <div class="sbar"><span>9:41</span><span>● ● ●</span></div>
+    <div class="tx-hdr">
+      <a href="../profile/profile.html" class="tx-back"><svg class="ic"><use href="#icon-chevron-left"/></svg></a>
+      <div class="tx-hdr-title">Danh mục thu chi</div>
+      <button class="tx-back" style="margin-left:auto;" onclick="alert('Thêm danh mục mới')"><svg class="ic"><use href="#icon-plus"/></svg></button>
+    </div>
+    <div style="padding:16px;">
+      <div style="background:#fff;border-radius:18px;border:1px solid var(--border);padding:4px 16px;">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);">
+          <div style="width:34px;height:34px;border-radius:10px;background:oklch(0.70 0.19 45 / 0.12);color:var(--orange);display:flex;align-items:center;justify-content:center;">
+            <svg class="ic"><use href="#icon-utensils"/></svg>
+          </div>
+          <span style="font-weight:800;font-size:13.5px;flex:1;">Ăn uống</span>
+          <span style="font-size:11px;color:var(--ink-soft);font-weight:700;">8 giao dịch</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);">
+          <div style="width:34px;height:34px;border-radius:10px;background:oklch(0.64 0.20 350 / 0.12);color:var(--pink);display:flex;align-items:center;justify-content:center;">
+            <svg class="ic"><use href="#icon-shopping-bag"/></svg>
+          </div>
+          <span style="font-weight:800;font-size:13.5px;flex:1;">Mua sắm</span>
+          <span style="font-size:11px;color:var(--ink-soft);font-weight:700;">5 giao dịch</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);">
+          <div style="width:34px;height:34px;border-radius:10px;background:oklch(0.55 0.20 285 / 0.12);color:var(--violet);display:flex;align-items:center;justify-content:center;">
+            <svg class="ic"><use href="#icon-car"/></svg>
+          </div>
+          <span style="font-weight:800;font-size:13.5px;flex:1;">Di chuyển</span>
+          <span style="font-size:11px;color:var(--ink-soft);font-weight:700;">12 giao dịch</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 0;">
+          <div style="width:34px;height:34px;border-radius:10px;background:oklch(0.68 0.18 155 / 0.12);color:var(--success);display:flex;align-items:center;justify-content:center;">
+            <svg class="ic"><use href="#icon-banknote"/></svg>
+          </div>
+          <span style="font-weight:800;font-size:13.5px;flex:1;">Thu nhập & Lương</span>
+          <span style="font-size:11px;color:var(--ink-soft);font-weight:700;">2 giao dịch</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

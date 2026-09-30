@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Chi tiết khoản vay nợ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 84px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--dash-bg);
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .sbar-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tx-hdr {
+      background: #fff;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+
+    /* Detail Hero Card */
+    .detail-hero-card {
+      background: #fff;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+      margin-bottom: 14px;
+    }
+    .hero-av {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 900;
+      margin: 0 auto 12px;
+      box-shadow: 0 6px 18px var(--primary-glow);
+    }
+    .hero-name {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--foreground);
+    }
+    .hero-amt {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--primary);
+      margin: 6px 0;
+      letter-spacing: -0.5px;
+    }
+    .hero-due {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 14px;
+      border-radius: 99px;
+      background: #eff6ff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Financial Status Info Card */
+    .info-card {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 4px 18px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+      margin-bottom: 14px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-lbl {
+      color: var(--ink-soft);
+      font-weight: 700;
+    }
+    .info-val {
+      font-weight: 900;
+      color: var(--foreground);
+      text-align: right;
+    }
+
+    /* Action button grid */
+    .action-grid {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .btn-act {
+      flex: 1;
+      padding: 13px 8px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--foreground);
+      font-family: inherit;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .btn-act:hover {
+      background: var(--dash-bg);
+    }
+    .btn-act.pri {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px oklch(0.55 0.18 250 / 0.35);
+    }
+    .btn-act.pri:hover {
+      opacity: 0.95;
+    }
+
+    /* History Timeline */
+    .timeline-card {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 16px 18px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+      margin-bottom: 20px;
+    }
+    .tl-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--foreground);
+      margin-bottom: 14px;
+    }
+    .tl-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      position: relative;
+      padding-bottom: 14px;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      margin-top: 5px;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 3px #e0e7ff;
+    }
+    .tl-dot.done {
+      background: var(--success, #10b981);
+      box-shadow: 0 0 0 3px #d1fae5;
+    }
+    .tl-body { flex: 1; }
+    .tl-action { font-size: 13px; font-weight: 800; color: var(--foreground); }
+    .tl-date { font-size: 11px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
+    .tl-amt { font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 900; }
+
+    /* Bottom Navigation Standard Finora White */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 14px;
+      z-index: 40;
+    }
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: color 0.15s;
+    }
+    .bni .ic { width: 20px; height: 20px; }
+    .bni.on { color: var(--primary); font-weight: 900; }
+    .bnav-fab {
+      position: relative;
+      top: -14px;
+    }
+    .bnav-fab .fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), oklch(0.48 0.16 250));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px oklch(0.55 0.18 250 / 0.45);
+      border: 3.5px solid #fff;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .bnav-fab .fab:hover { transform: scale(1.06); }
+    .bnav-fab .fab .ic { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <div class="sbar-icons">
+        <svg class="ic" style="width:13px;height:13px;"><use href="#icon-wifi"/></svg>
+        <svg class="ic" style="width:13px;height:13px;"><use href="#icon-battery"/></svg>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="list.html" class="tx-back"><svg class="ic"><use href="#icon-chevron-left"/></svg></a>
+      <div class="tx-hdr-title" id="hdrTitle">Chi tiết khoản Vay / Nợ</div>
+    </div>
+
+    <div style="padding:16px;">
+      <!-- Hero Card -->
+      <div class="detail-hero-card">
+        <div class="hero-av" id="detailAv">TN</div>
+        <div class="hero-name" id="detailName">Trần Ngọc đang mượn bạn</div>
+        <div class="hero-amt" id="detailAmt">₫ 1,800,000</div>
+        <div class="hero-due" id="detailDue"><svg class="ic" style="width:13px;height:13px;"><use href="#icon-clock"/></svg> Hạn thanh toán: 15/08/2026</div>
+      </div>
+
+      <!-- Financial Status Info Card -->
+      <div class="info-card">
+        <div class="info-row">
+          <span class="info-lbl" id="row1Lbl">Tổng số tiền gốc</span>
+          <span class="info-val" id="row1Val">₫ 3,000,000</span>
+        </div>
+        <div class="info-row">
+          <span class="info-lbl" id="row2Lbl">Đã thanh toán</span>
+          <span class="info-val" id="row2Val" style="color:var(--success);">+₫ 1,200,000</span>
+        </div>
+        <div class="info-row">
+          <span class="info-lbl" id="row3Lbl">Dư nợ còn lại</span>
+          <span class="info-val" id="row3Val" style="color:var(--primary);">₫ 1,800,000</span>
+        </div>
+        <div class="info-row">
+          <span class="info-lbl">Mục đích / Ghi chú</span>
+          <span class="info-val" id="row4Val">Cho vay mượn cá nhân</span>
+        </div>
+        <div class="info-row">
+          <span class="info-lbl">Nguồn ví liên kết</span>
+          <span class="info-val" id="row5Val">Ví Tiền mặt</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-grid" id="actionContainer">
+        <!-- populated dynamically -->
+      </div>
+
+      <!-- History Timeline Card -->
+      <div class="timeline-card">
+        <div class="tl-title">Lịch sử thu nợ &amp; Trả góp</div>
+        <div id="timelineContainer">
+          <!-- populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard"/></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart"/></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch">
+        <svg class="ic"><use href="#icon-plus"/></svg>
+      </a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic"><use href="#icon-bot"/></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user"/></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+
+  <script>
+    var loanDatabase = {
+      '1': {
+        type: 'cho_vay',
+        title: 'Chi tiết khoản Cho vay',
+        av: 'TN',
+        avBg: 'linear-gradient(135deg, #0072d5, #8b5cf6)',
+        name: 'Trần Ngọc đang mượn bạn',
+        remaining: '₫ 1,800,000',
+        due: 'Hạn thanh toán: 15/08/2026 (Còn 15 ngày)',
+        total: '₫ 3,000,000',
+        paid: '+₫ 1,200,000 (40%)',
+        balance: '₫ 1,800,000',
+        balanceColor: 'var(--primary)',
+        purpose: 'Cho vay mượn cá nhân',
+        wallet: 'Ví Tiền mặt',
+        actions: [
+          { text: 'Nhắc nợ lịch sự', icon: 'bell', pri: false, fn: 'sendPoliteReminder()' },
+          { text: 'Ghi nhận thu nợ', icon: 'check', pri: true, fn: 'recordPayment()' }
+        ],
+        timeline: [
+          { done: true, title: 'Đã nhận đợt 2 (VietQR)', date: '05/08/2026 14:20 · Techcombank', amt: '+₫600,000', color: 'var(--success)' },
+          { done: true, title: 'Đã nhận đợt 1 (Tiền mặt)', date: '25/07/2026 09:15 · Tiền mặt', amt: '+₫600,000', color: 'var(--success)' },
+          { done: false, title: 'Tạo khoản cho vay', date: '15/07/2026 10:00 · Ví Tiền mặt', amt: '₫3,000,000', color: 'var(--primary)' }
+        ]
+      },
+      '2': {
+        type: 'cho_vay',
+        title: 'Chi tiết khoản Cho vay (Tất toán)',
+        av: 'HM',
+        avBg: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+        name: 'Hùng Minh (Đã tất toán 100%)',
+        remaining: '₫ 0',
+        due: 'Đã hoàn tất ngày 05/08/2026',
+        total: '₫ 2,000,000',
+        paid: '+₫ 2,000,000 (100%)',
+        balance: '₫ 0 (Đã kết thúc)',
+        balanceColor: 'var(--success)',
+        purpose: 'Cho vay cọc phòng trọ',
+        wallet: 'Tài khoản Vietcombank',
+        actions: [
+          { text: 'Xuất giấy xác nhận', icon: 'receipt', pri: false, fn: 'alert("Đã xuất hóa đơn xác nhận hoàn tất khoản vay thành công!")' },
+          { text: 'Khoản đã tất toán ✓', icon: 'check', pri: true, fn: 'alert("Khoản này đã được thu hồi trọn vẹn 100%!")' }
+        ],
+        timeline: [
+          { done: true, title: 'Tất toán toàn bộ (VietQR)', date: '05/08/2026 16:30 · VCB', amt: '+₫2,000,000', color: 'var(--success)' },
+          { done: false, title: 'Khởi tạo cho vay', date: '20/07/2026 11:00 · VCB', amt: '₫2,000,000', color: 'var(--primary)' }
+        ]
+      },
+      '3': {
+        type: 'di_vay',
+        title: 'Chi tiết khoản Đi vay',
+        av: 'AT',
+        avBg: 'linear-gradient(135deg, #ec4899, #f43f5e)',
+        name: 'Bạn đang nợ Anh Thư',
+        remaining: '₫ 1,500,000',
+        due: 'Hạn trả: 30/08/2026 (Còn 30 ngày)',
+        total: '₫ 2,500,000',
+        paid: '₫ 1,000,000 (40%)',
+        balance: '₫ 1,500,000',
+        balanceColor: 'var(--danger)',
+        purpose: 'Mượn tiền mặt mua đồ gia dụng',
+        wallet: 'Ví Tiền mặt',
+        actions: [
+          { text: 'Quét VietQR trả nợ', icon: 'qr-code', pri: false, fn: 'payViaQR()' },
+          { text: 'Ghi nhận đã trả', icon: 'check', pri: true, fn: 'recordDebtPay()' }
+        ],
+        timeline: [
+          { done: true, title: 'Đã thanh toán đợt 1', date: '01/08/2026 11:20 · Tiền mặt', amt: '-₫1,000,000', color: 'var(--danger)' },
+          { done: false, title: 'Vay tiền mặt', date: '20/07/2026 09:00 · Ví Tiền mặt', amt: '₫2,500,000', color: 'var(--primary)' }
+        ]
+      },
+      '4': {
+        type: 'di_vay',
+        title: 'Dư nợ tín dụng Techcombank',
+        av: 'TC',
+        avBg: 'linear-gradient(135deg, #0284c7, #0f172a)',
+        name: 'Thấu chi thẻ tín dụng Techcombank',
+        remaining: '₫ 3,000,000',
+        due: 'Hạn thanh toán sao kê: 05/09/2026',
+        total: '₫ 10,000,000',
+        paid: '₫ 7,000,000 (70%)',
+        balance: '₫ 3,000,000',
+        balanceColor: 'var(--danger)',
+        purpose: 'Chi tiêu thẻ tín dụng Visa Signature',
+        wallet: 'Techcombank Credit Card',
+        actions: [
+          { text: 'Xem sao kê kỳ', icon: 'receipt', pri: false, fn: 'alert("Mở bảng sao kê thẻ Techcombank kỳ tháng 8...")' },
+          { text: 'Thanh toán thẻ', icon: 'credit-card', pri: true, fn: 'recordDebtPay()' }
+        ],
+        timeline: [
+          { done: true, title: 'Thanh toán dư nợ đợt 1', date: '15/08/2026 · VCB Chuyển khoản', amt: '-₫7,000,000', color: 'var(--success)' },
+          { done: false, title: 'Chốt sao kê kỳ chi tiêu', date: '05/08/2026 · TCB Card', amt: '₫10,000,000', color: 'var(--danger)' }
+        ]
+      },
+      '5': {
+        type: 'tra_gop',
+        title: 'Chi tiết gói Trả góp 0%',
+        av: '🛵',
+        avBg: 'linear-gradient(135deg, #ea580c, #f59e0b)',
+        name: 'Xe máy Honda Vision 2024',
+        remaining: '₫ 16,000,000',
+        due: 'Kỳ tiếp theo: 10/09/2026 · ₫2,666,000',
+        total: '₫ 32,000,000 (12 kỳ)',
+        paid: '16,000,000 ₫ (6 / 12 kỳ - 50%)',
+        balance: '₫ 16,000,000 (Còn 6 kỳ)',
+        balanceColor: 'var(--primary)',
+        purpose: 'Trả góp xe máy Home Credit 0% lãi suất',
+        wallet: 'Tài khoản Vietcombank tự động trích nợ',
+        actions: [
+          { text: 'Lịch thanh toán', icon: 'calendar', pri: false, fn: 'alert("Lịch trả góp: 10 hàng tháng, mỗi kỳ ₫2,666,666.")' },
+          { text: 'Đóng kỳ tiếp theo', icon: 'check', pri: true, fn: 'recordInstallmentPay()' }
+        ],
+        timeline: [
+          { done: true, title: 'Đã đóng kỳ 6 / 12', date: '10/08/2026 · Trích nợ VCB', amt: '₫2,666,000', color: 'var(--success)' },
+          { done: true, title: 'Đã đóng kỳ 5 / 12', date: '10/07/2026 · Trích nợ VCB', amt: '₫2,666,000', color: 'var(--success)' },
+          { done: false, title: 'Ký hợp đồng trả góp', date: '10/03/2026 · Home Credit', amt: '₫32,000,000', color: 'var(--primary)' }
+        ]
+      },
+      '6': {
+        type: 'tra_gop',
+        title: 'Chi tiết gói Trả góp 0%',
+        av: '📱',
+        avBg: 'linear-gradient(135deg, #475569, #0f172a)',
+        name: 'iPhone 15 Pro Max 256GB',
+        remaining: '₫ 4,000,000',
+        due: 'Kỳ tiếp theo: 20/09/2026 · ₫2,000,000',
+        total: '₫ 24,000,000 (12 kỳ)',
+        paid: '₫ 20,000,000 (10 / 12 kỳ - 83.3%)',
+        balance: '₫ 4,000,000 (Sắp hoàn tất)',
+        balanceColor: 'var(--success)',
+        purpose: 'Chuyển đổi trả góp 0% thẻ tín dụng VCB',
+        wallet: 'Thẻ tín dụng VCB Cashback',
+        actions: [
+          { text: 'Tất toán sớm', icon: 'zap', pri: false, fn: 'alert("Đã gửi yêu cầu tất toán trước hạn 2 kỳ còn lại (₫4,000,000).")' },
+          { text: 'Đóng kỳ tiếp theo', icon: 'check', pri: true, fn: 'recordInstallmentPay()' }
+        ],
+        timeline: [
+          { done: true, title: 'Đã đóng kỳ 10 / 12', date: '20/08/2026 · Thẻ tín dụng VCB', amt: '₫2,000,000', color: 'var(--success)' },
+          { done: true, title: 'Đã đóng kỳ 9 / 12', date: '20/07/2026 · Thẻ tín dụng VCB', amt: '₫2,000,000', color: 'var(--success)' },
+          { done: false, title: 'Chuyển đổi trả góp 0%', date: '20/11/2025 · FPT Shop', amt: '₫24,000,000', color: 'var(--primary)' }
+        ]
+      }
+    };
+
+    function initPage() {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('id') || '1';
+      var item = loanDatabase[id] || loanDatabase['1'];
+
+      document.getElementById('hdrTitle').innerText = item.title;
+      var avEl = document.getElementById('detailAv');
+      avEl.innerText = item.av;
+      avEl.style.background = item.avBg;
+
+      document.getElementById('detailName').innerText = item.name;
+      document.getElementById('detailAmt').innerText = item.remaining;
+      document.getElementById('detailDue').innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-clock"/></svg> ' + item.due;
+
+      document.getElementById('row1Val').innerText = item.total;
+      document.getElementById('row2Val').innerText = item.paid;
+      var r3 = document.getElementById('row3Val');
+      r3.innerText = item.balance;
+      r3.style.color = item.balanceColor;
+      document.getElementById('row4Val').innerText = item.purpose;
+      document.getElementById('row5Val').innerText = item.wallet;
+
+      // Render Actions
+      var actHtml = '';
+      item.actions.forEach(function(act) {
+        var cls = act.pri ? 'btn-act pri' : 'btn-act';
+        actHtml += '<button class="' + cls + '" onclick="' + act.fn + '">';
+        actHtml += '<svg class="ic" style="width:14px;height:14px;"><use href="#icon-' + act.icon + '"/></svg> ' + act.text;
+        actHtml += '</button>';
+      });
+      document.getElementById('actionContainer').innerHTML = actHtml;
+
+      // Render Timeline
+      var tlHtml = '';
+      item.timeline.forEach(function(t) {
+        tlHtml += '<div class="tl-item">';
+        tlHtml += '<div class="tl-dot ' + (t.done ? 'done' : '') + '"></div>';
+        tlHtml += '<div class="tl-body">';
+        tlHtml += '<div style="display:flex;justify-content:space-between;">';
+        tlHtml += '<span class="tl-action">' + t.title + '</span>';
+        tlHtml += '<span class="tl-amt" style="color:' + t.color + ';">' + t.amt + '</span>';
+        tlHtml += '</div>';
+        tlHtml += '<div class="tl-date">' + t.date + '</div>';
+        tlHtml += '</div>';
+        tlHtml += '</div>';
+      });
+      document.getElementById('timelineContainer').innerHTML = tlHtml;
+    }
+
+    function sendPoliteReminder() {
+      alert('Đã gửi tin nhắn nhắc nhở lịch sự qua Zalo/SMS: "Chào bạn, khoản vay sắp đến hạn ngày 15/08, khi nào tiện bạn thanh toán giúp mình nhé! Cảm ơn bạn nhiều!"');
+    }
+
+    function recordPayment() {
+      var amt = prompt('Nhập số tiền vừa thu hồi được (₫):', '600000');
+      if (amt && parseInt(amt, 10)) {
+        alert('Đã ghi nhận thu nợ +' + parseInt(amt, 10).toLocaleString('vi-VN') + ' ₫ thành công vào sổ nợ!');
+        location.reload();
+      }
+    }
+
+    function payViaQR() {
+      alert('Đang tạo mã VietQR chuyển khoản thanh toán khoản nợ...');
+    }
+
+    function recordDebtPay() {
+      var amt = prompt('Nhập số tiền vừa thanh toán (₫):', '500000');
+      if (amt && parseInt(amt, 10)) {
+        alert('Đã ghi nhận thanh toán trả nợ -' + parseInt(amt, 10).toLocaleString('vi-VN') + ' ₫ thành công!');
+        location.reload();
+      }
+    }
+
+    function recordInstallmentPay() {
+      alert('Đã ghi nhận thanh toán kỳ trả góp thành công!');
+      location.reload();
+    }
+
+    window.addEventListener('DOMContentLoaded', initPage);
+  </script>
+</body>
+</html>

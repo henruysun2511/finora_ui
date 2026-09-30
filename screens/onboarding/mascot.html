@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nora · Chọn Trợ lý AI Mascot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../../_shared/base.css"/>
+<link rel="stylesheet" href="../../_shared/components.css"/>
+<script src="../../_shared/icons.js"></script>
+<style>
+  body { font-family: 'Outfit', 'Inter', sans-serif; }
+</style>
+</head>
+<body>
+
+  <!-- Status bar -->
+  <div class="sbar">
+    <span>9:41</span>
+    <div class="icons">
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-wifi"/></svg>
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-battery"/></svg>
+    </div>
+  </div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a href="setup-wallet.html" class="back-btn" title="Quay lại">
+      <svg class="ic"><use href="#icon-arrow-left"/></svg>
+    </a>
+    <span class="topbar-title">Chọn Trợ lý AI</span>
+    <span class="step-badge">Bước 4/5</span>
+  </div>
+
+  <div class="screen-content">
+    <div style="text-align: center; margin-bottom: 12px;">
+      <h2 style="font-size: 21px; font-weight: 800; color: #1a202c; letter-spacing: -.5px;">Người đồng hành của bạn</h2>
+      <p id="sub-balance-label" style="font-size: 12px; color: var(--ink-soft); font-weight: 600; margin-top: 3px;">
+        Đề xuất từ nguồn tiền & số dư khởi điểm của bạn:
+      </p>
+    </div>
+
+    <!-- Active Mascot Profile Panel (Exact static-ui/ai-mascot profile spotlight!) -->
+    <div id="ai-profile" class="ai-profile" style="--pg: #0072d5;">
+      <div class="ai-profile-avatar" id="profile-avatar-wrap">
+        <!-- SVG rendered dynamically -->
+      </div>
+      <div class="ai-profile-body">
+        <div id="rec-banner" class="ai-profile-badge">
+          ✨ Đề xuất từ nguồn tiền của bạn
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <h3 id="pName" class="ai-profile-name">Nora</h3>
+            <span id="pRange" class="ai-profile-range">5M – 20M</span>
+          </div>
+          <span id="pTier" class="tier-chip">Comfortable</span>
+        </div>
+
+        <div class="ai-row">
+          <h4>VAI TRÒ &amp; TÍNH CÁCH</h4>
+          <p id="pPersonality">Điềm tĩnh, logic, chuyên nghiệp nhưng vẫn rất thân thiện (chuẩn AI hiện đại).</p>
+        </div>
+
+        <div class="ai-row">
+          <h4>QUAN ĐIỂM TÀI CHÍNH</h4>
+          <p id="pFinance">Quản lý tài chính theo các quy tắc rõ ràng (ví dụ: 50/30/20). Chất lượng cuộc sống và tài chính phải đi đôi với nhau.</p>
+        </div>
+
+        <div class="ai-row">
+          <h4>LỜI KHUYÊN ĐẶC TRƯNG</h4>
+          <p id="pAdvice">Phân tích data, đưa ra lời khuyên dựa trên biểu đồ. Cho phép bạn tiêu tiền nhưng phải nằm trong kế hoạch.</p>
+        </div>
+
+        <div class="ai-quotes">
+          <blockquote id="pQ1">"Khoản chi 500k này vẫn nằm trong quỹ 'Giải trí' của tháng."</blockquote>
+          <blockquote id="pQ2">"Có vẻ dạo này bạn hơi tốn tiền ăn ngoài. Có muốn tôi lên kế hoạch chi tiêu tuần tới không?"</blockquote>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 Mascot Carousel (Exact cards from static-ui/ai-mascot gallery!) -->
+    <div style="margin-top: 6px;">
+      <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #94a3b8; letter-spacing: .5px; margin-bottom: 6px;">
+        Lướt chọn 7 AI Mascot:
+      </div>
+      <div class="mascot-carousel" id="carousel-track">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <div class="footer-flow">
+      <div class="ob-progress" style="width:100%; margin-bottom:6px;">
+        <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i>
+      </div>
+      <button type="button" id="btn-next" class="btn btn-p">
+        Chọn Nora &amp; Tiếp tục <svg class="ic"><use href="#icon-arrow-up-right"/></svg>
+      </button>
+      <button type="button" id="btn-re-suggest" class="btn-ghost">
+        ✨ Chọn lại theo gợi ý số dư
+      </button>
+    </div>
+  </div>
+
+  <script src="../../_shared/mascots-data.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var store = window.FinoraMascots.store;
+      var mascots = window.FinoraMascots.MASCOTS;
+      var order = window.FinoraMascots.ORDER;
+      var data = store.get();
+
+      var userBalance = data.balance !== undefined ? Number(data.balance) : 5000000;
+      var autoRecId = window.FinoraMascots.getMascotByBalance(userBalance);
+      var currentId = data.selectedMascot || autoRecId;
+
+      document.getElementById("sub-balance-label").textContent = 
+        "Dựa trên số dư " + window.FinoraMascots.formatVND(userBalance) + ", Finora đề xuất mascot phù hợp nhất:";
+
+      var profileEl = document.getElementById("ai-profile");
+      var avatarWrap = document.getElementById("profile-avatar-wrap");
+      var carouselTrack = document.getElementById("carousel-track");
+      var recBanner = document.getElementById("rec-banner");
+      var nextBtn = document.getElementById("btn-next");
+
+      function showMascot(id) {
+        currentId = id;
+        var p = mascots[id];
+
+        profileEl.style.setProperty("--pg", p.color);
+        avatarWrap.innerHTML = p.svg;
+
+        recBanner.style.display = (id === autoRecId) ? "inline-flex" : "none";
+
+        document.getElementById("pName").textContent = p.name + " (" + p.role + ")";
+        document.getElementById("pRange").textContent = p.range;
+        document.getElementById("pTier").textContent = p.tier;
+        document.getElementById("pPersonality").textContent = p.personality;
+        document.getElementById("pFinance").textContent = p.finance;
+        document.getElementById("pAdvice").textContent = p.advice;
+        document.getElementById("pQ1").textContent = '"' + p.q1 + '"';
+        document.getElementById("pQ2").textContent = '"' + p.q2 + '"';
+
+        nextBtn.innerHTML = 'Chọn ' + p.name + ' &amp; Tiếp tục <svg class="ic"><use href="#icon-arrow-up-right"/></svg>';
+
+        // Update carousel cards active state
+        document.querySelectorAll(".mascot-card").forEach(function (c) {
+          if (c.getAttribute("data-id") === id) c.classList.add("active");
+          else c.classList.remove("active");
+        });
+      }
+
+      // Build cards
+      order.forEach(function (id) {
+        var m = mascots[id];
+        var card = document.createElement("div");
+        card.className = "mascot-card" + (id === currentId ? " active" : "");
+        card.setAttribute("data-id", id);
+        card.style.setProperty("--blob-color", m.blobColor);
+        card.style.setProperty("--accent-c", m.color);
+
+        if (id === autoRecId) {
+          var rBadge = document.createElement("span");
+          rBadge.className = "rec-badge";
+          rBadge.textContent = "Gợi ý";
+          card.appendChild(rBadge);
+        }
+
+        var svgWrap = document.createElement("div");
+        svgWrap.className = "m-svg-wrap";
+        svgWrap.innerHTML = m.svg;
+        card.appendChild(svgWrap);
+
+        var h4 = document.createElement("h4");
+        h4.textContent = m.name;
+        card.appendChild(h4);
+
+        var tierP = document.createElement("p");
+        tierP.className = "tier-lbl";
+        tierP.textContent = m.tier.split(" ")[0];
+        card.appendChild(tierP);
+
+        card.addEventListener("click", function () {
+          showMascot(id);
+        });
+
+        carouselTrack.appendChild(card);
+      });
+
+      showMascot(currentId);
+
+      document.getElementById("btn-re-suggest").addEventListener("click", function () {
+        showMascot(autoRecId);
+      });
+
+      nextBtn.addEventListener("click", function () {
+        store.set({ selectedMascot: currentId });
+        window.location.href = "all-set.html";
+      });
+    });
+  </script>
+</body>
+</html>

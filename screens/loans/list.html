@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Sổ Vay & Nợ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 84px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .sbar-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tx-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+    .btn-add-loan {
+      margin-left: auto;
+      padding: 8px 14px;
+      border-radius: 99px;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 14px oklch(0.55 0.18 250 / 0.35);
+      transition: transform 0.15s;
+    }
+    .btn-add-loan:hover { transform: scale(1.03); }
+
+    /* Net Summary Hero Card - reset any external margins */
+    .net-card {
+      background: linear-gradient(135deg, oklch(0.5 0.17 250), oklch(0.42 0.15 250) 60%, var(--orange)) !important;
+      color: #fff !important;
+      border-radius: 20px !important;
+      padding: 16px 18px !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      box-shadow: 0 10px 24px oklch(0.55 0.18 250 / 0.28) !important;
+      margin: 0 0 14px 0 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .net-lbl {
+      font-size: 10.5px !important;
+      opacity: 0.8 !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.6px !important;
+      text-transform: uppercase !important;
+    }
+    .net-amt {
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 24px !important;
+      font-weight: 900 !important;
+      margin-top: 4px !important;
+      letter-spacing: -0.5px !important;
+    }
+    .net-side { text-align: right; }
+    .net-side-lbl { font-size: 10.5px; opacity: 0.8; font-weight: 700; }
+    .net-side-val { font-family: 'Outfit', sans-serif; font-size: 14.5px; font-weight: 900; margin-top: 2px; }
+    .net-side-val.pos { color: #86efac; }
+    .net-side-val.neg { color: #fca5a5; }
+
+    /* Nora Mascot AI Companion Hint */
+    .mascot-hint {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin: 0 0 14px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+    .mascot-hint-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #0072D5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0, 114, 213, 0.22);
+    }
+    .mascot-hint-text {
+      font-size: 12px;
+      line-height: 1.45;
+      color: #1e3a8a;
+      font-weight: 600;
+    }
+    .mascot-hint-text strong {
+      font-weight: 800;
+      color: #1e40af;
+    }
+
+    /* Segmented Tab Control - reset external margins */
+    .loan-tabs {
+      display: flex !important;
+      background: #e2e8f0 !important;
+      border-radius: 14px !important;
+      padding: 4px !important;
+      gap: 4px !important;
+      margin: 0 0 14px 0 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .loan-tab {
+      flex: 1 !important;
+      padding: 9px 4px !important;
+      text-align: center !important;
+      border-radius: 11px !important;
+      font-size: 12px !important;
+      font-weight: 800 !important;
+      color: var(--ink-soft) !important;
+      cursor: pointer !important;
+      transition: all 0.15s !important;
+      user-select: none !important;
+    }
+    .loan-tab.on {
+      background: #fff !important;
+      color: var(--primary) !important;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    /* Loan Cards - reset external margins */
+    .loan-card {
+      background: #fff !important;
+      border-radius: 18px !important;
+      border: 1px solid var(--border) !important;
+      padding: 16px !important;
+      margin: 0 0 12px 0 !important;
+      box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04) !important;
+      display: block !important;
+      text-decoration: none !important;
+      color: inherit !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      transition: transform 0.15s, box-shadow 0.15s !important;
+    }
+    .loan-card:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08) !important;
+    }
+    .loan-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+    }
+    .loan-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .loan-av {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .loan-name {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .loan-meta {
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .loan-amt {
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--foreground);
+      text-align: right;
+    }
+    .loan-amt.pos { color: var(--success); }
+    .loan-amt.neg { color: var(--danger); }
+    .loan-prog {
+      height: 8px;
+      background: var(--dash-bg);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .loan-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--primary), #06b6d4);
+    }
+    .loan-fill.done {
+      background: var(--success);
+    }
+    .loan-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+    .btn-loan-action {
+      padding: 5px 12px;
+      border-radius: 99px;
+      background: var(--dash-bg);
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-loan-action:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Bottom Navigation Standard Finora White */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 14px;
+      z-index: 40;
+    }
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: color 0.15s;
+    }
+    .bni .ic { width: 20px; height: 20px; }
+    .bni.on { color: var(--primary); font-weight: 900; }
+    .bnav-fab {
+      position: relative;
+      top: -14px;
+    }
+    .bnav-fab .fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), oklch(0.48 0.16 250));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px oklch(0.55 0.18 250 / 0.45);
+      border: 3.5px solid #fff;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .bnav-fab .fab:hover { transform: scale(1.06); }
+    .bnav-fab .fab .ic { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <div class="sbar-icons">
+        <svg class="ic" style="width:13px;height:13px;"><use href="#icon-wifi"/></svg>
+        <svg class="ic" style="width:13px;height:13px;"><use href="#icon-battery"/></svg>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="../home/dashboard.html" class="tx-back" title="Quay lại">
+        <svg class="ic"><use href="#icon-chevron-left"/></svg>
+      </a>
+      <div class="tx-hdr-title">Sổ theo dõi Vay & Nợ</div>
+      <a href="add.html" class="btn-add-loan">
+        <svg class="ic" style="width:14px;height:14px;"><use href="#icon-plus"/></svg> Thêm khoản
+      </a>
+    </div>
+
+    <div style="padding:16px 16px 0;">
+      <!-- Net Card (Cho vay - Đi vay) -->
+      <div class="net-card">
+        <div>
+          <div class="net-lbl">Net (Cho vay − Đi vay)</div>
+          <div class="net-amt">+₫2,500,000</div>
+        </div>
+        <div class="net-side">
+          <div class="net-side-lbl">Người nợ bạn</div>
+          <div class="net-side-val pos">+₫5,000,000</div>
+          <div class="net-side-lbl" style="margin-top:6px;">Bạn đang nợ</div>
+          <div class="net-side-val neg">-₫2,500,000</div>
+        </div>
+      </div>
+
+      <!-- Mascot Tip Card -->
+      <div class="mascot-hint">
+        <div class="mascot-hint-icon">
+          <svg viewBox="28 20 144 144" style="width:26px;height:26px;" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(0, 20)">
+              <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#FFFFFF"/>
+              <rect x="50" y="50" width="100" height="70" rx="35" fill="#0055A9"/>
+              <circle cx="75" cy="80" r="7" fill="#fff"/>
+              <circle cx="125" cy="80" r="7" fill="#fff"/>
+              <path d="M 94 98 Q 100 104 106 98" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+              <path d="M 145 26 Q 135 26 135 36 Q 135 26 125 26 Q 135 26 135 16 Q 135 26 145 26 Z" fill="#F6E05E"/>
+            </g>
+          </svg>
+        </div>
+        <div class="mascot-hint-text" id="mascotLoanHint">
+          <strong>Nora AI:</strong> Khoản vay của Trần Ngọc (còn ₫1.8M) sẽ đến hạn vào <strong>15/08</strong>. Chạm vào thẻ nợ để xem chi tiết và gửi tin nhắn nhắc nợ lịch sự nhé! ✦
+        </div>
+      </div>
+
+      <!-- Loan Tabs: Cho vay / Đi vay / Trả góp -->
+      <div class="loan-tabs">
+        <div class="loan-tab on" onclick="switchTab(0, this)">Tôi cho vay (2)</div>
+        <div class="loan-tab" onclick="switchTab(1, this)">Tôi đi vay (2)</div>
+        <div class="loan-tab" onclick="switchTab(2, this)">Trả góp 0% (2)</div>
+      </div>
+    </div>
+
+    <!-- Loan List Content Panes -->
+    <div style="padding:0 16px 20px;">
+
+      <!-- Pane 0: Tôi Cho vay (People owe me) -->
+      <div class="loan-pane" id="pane-0">
+        <!-- Loan 1 -->
+        <a href="detail.html?id=1" class="loan-card">
+          <div class="loan-hdr">
+            <div class="loan-av" style="background:linear-gradient(135deg, #0072d5, #8b5cf6);">TN</div>
+            <div style="flex:1;">
+              <div class="loan-name">Trần Ngọc</div>
+              <div class="loan-meta">Cho vay mượn cá nhân · Hạn: 15/08/2026</div>
+            </div>
+            <div>
+              <div class="loan-amt pos">+₫3,000,000</div>
+              <div style="font-size:11px;color:var(--ink-soft);text-align:right;margin-top:2px;">Gốc ₫3M</div>
+            </div>
+          </div>
+          <div class="loan-prog"><div class="loan-fill" style="width:40%;"></div></div>
+          <div class="loan-foot">
+            <span>Đã thu hồi: ₫1,200,000 (40%)</span>
+            <span style="color:var(--primary);font-weight:900;">Còn lại: ₫1,800,000</span>
+          </div>
+        </a>
+
+        <!-- Loan 2 (Tất toán) -->
+        <a href="detail.html?id=2" class="loan-card">
+          <div class="loan-hdr">
+            <div class="loan-av" style="background:linear-gradient(135deg, #f59e0b, #ef4444);">HM</div>
+            <div style="flex:1;">
+              <div class="loan-name">Hùng Minh <span style="font-size:10px;padding:2px 6px;border-radius:99px;background:#ecfdf5;color:#059669;font-weight:800;">Tất toán</span></div>
+              <div class="loan-meta">Cho vay tiền cọc nhà · Hoàn tất 05/08</div>
+            </div>
+            <div>
+              <div class="loan-amt pos">+₫2,000,000</div>
+              <div style="font-size:11px;color:var(--success);text-align:right;margin-top:2px;">100% xong</div>
+            </div>
+          </div>
+          <div class="loan-prog"><div class="loan-fill done" style="width:100%;"></div></div>
+          <div class="loan-foot">
+            <span style="color:var(--success);font-weight:900;"><svg class="ic" style="width:13px;height:13px;vertical-align:-2px;"><use href="#icon-check-circle-2"/></svg> Đã thanh toán đầy đủ</span>
+            <span>Đã kết thúc</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Pane 1: Tôi Đi vay (I owe others) -->
+      <div class="loan-pane" id="pane-1" style="display:none;">
+        <!-- Debt 1 -->
+        <a href="detail.html?id=3" class="loan-card">
+          <div class="loan-hdr">
+            <div class="loan-av" style="background:linear-gradient(135deg, #ec4899, #f43f5e);">AT</div>
+            <div style="flex:1;">
+              <div class="loan-name">Anh Thư</div>
+              <div class="loan-meta">Mượn tiền mặt mua đồ · Hạn: 30/08/2026</div>
+            </div>
+            <div>
+              <div class="loan-amt neg">-₫2,500,000</div>
+              <div style="font-size:11px;color:var(--danger);text-align:right;margin-top:2px;">Còn nợ</div>
+            </div>
+          </div>
+          <div class="loan-prog"><div class="loan-fill" style="width:40%;background:linear-gradient(90deg, #f43f5e, #f97316);"></div></div>
+          <div class="loan-foot">
+            <span>Đã trả: ₫1,000,000 (40%)</span>
+            <span style="color:var(--danger);font-weight:900;">Cần trả: ₫1,500,000</span>
+          </div>
+        </a>
+
+        <!-- Debt 2 -->
+        <a href="detail.html?id=4" class="loan-card">
+          <div class="loan-hdr">
+            <div class="loan-av" style="background:linear-gradient(135deg, #0284c7, #0f172a);">TC</div>
+            <div style="flex:1;">
+              <div class="loan-name">Thấu chi Techcombank</div>
+              <div class="loan-meta">Hạn mức thẻ tín dụng · Hạn: 05/09/2026</div>
+            </div>
+            <div>
+              <div class="loan-amt neg">-₫10,000,000</div>
+              <div style="font-size:11px;color:var(--danger);text-align:right;margin-top:2px;">Dư nợ</div>
+            </div>
+          </div>
+          <div class="loan-prog"><div class="loan-fill" style="width:70%;background:linear-gradient(90deg, #0284c7, #22c55e);"></div></div>
+          <div class="loan-foot">
+            <span>Đã thanh toán: ₫7,000,000 (70%)</span>
+            <span style="color:var(--primary);font-weight:900;">Dư nợ còn: ₫3,000,000</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Pane 2: Trả góp 0% (Installments) -->
+      <div class="loan-pane" id="pane-2" style="display:none;">
+        <!-- Installment 1 -->
+        <a href="detail.html?id=5" class="loan-card">
+          <div class="loan-hdr">
+            <div class="loan-av" style="background:linear-gradient(135deg, #ea580c, #f59e0b);">🛵</div>
+            <div style="flex:1;">
+              <div class="loan-name">Xe máy Honda Vision 2024</div>
+              <div class="loan-meta">Trả góp Home Credit 0% · Kỳ 6 / 12</div>
+            </div>
+            <div>
+              <div class="loan-amt" style="color:var(--primary);">₫32,000,000</div>
+              <div style="font-size:11px;color:var(--ink-soft);text-align:right;margin-top:2px;">₫2,666k/tháng</div>
+            </div>
+          </div>
+          <div class="loan-prog"><div class="loan-fill" style="width:50%;background:linear-gradient(90deg, #ea580c, #0072D5);"></div></div>
+          <div class="loan-foot">
+            <span>Đã thanh toán: 6 kỳ (50%)</span>
+            <span style="color:var(--primary);font-weight:900;">Còn 6 kỳ · ₫16,000,000</span>
+          </div>
+        </a>
+
+        <!-- Installment 2 -->
+        <a href="detail.html?id=6" class="loan-card">
+          <div class="loan-hdr">
+            <div class="loan-av" style="background:linear-gradient(135deg, #475569, #0f172a);">📱</div>
+            <div style="flex:1;">
+              <div class="loan-name">iPhone 15 Pro Max</div>
+              <div class="loan-meta">Thẻ tín dụng VCB · Kỳ 10 / 12</div>
+            </div>
+            <div>
+              <div class="loan-amt" style="color:var(--primary);">₫24,000,000</div>
+              <div style="font-size:11px;color:var(--ink-soft);text-align:right;margin-top:2px;">₫2,000k/tháng</div>
+            </div>
+          </div>
+          <div class="loan-prog"><div class="loan-fill" style="width:83.3%;background:linear-gradient(90deg, #10b981, #0072D5);"></div></div>
+          <div class="loan-foot">
+            <span>Đã thanh toán: 10 kỳ (83.3%)</span>
+            <span style="color:var(--success);font-weight:900;">Sắp hoàn tất (còn 2 kỳ)</span>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard"/></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart"/></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch">
+        <svg class="ic"><use href="#icon-plus"/></svg>
+      </a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic"><use href="#icon-bot"/></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user"/></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+
+  <script>
+    var aiTips = [
+      '<strong>Nora AI:</strong> Khoản vay của Trần Ngọc (còn ₫1.8M) sẽ đến hạn vào <strong>15/08</strong>. Chạm vào thẻ nợ để xem chi tiết và gửi tin nhắn nhắc nợ lịch sự nhé! ✦',
+      '<strong>Nora AI:</strong> Khoản nợ Anh Thư (₫1.5M) đến hạn <strong>30/08</strong>. Bạn có thể trích từ Tài khoản Vietcombank để thanh toán sớm tránh trễ hạn nhé! ✦',
+      '<strong>Nora AI:</strong> Gói trả góp xe máy Honda Vision (₫2,666k/tháng) sắp đến hạn kỳ 7/12 vào <strong>10/09</strong>. Bạn đã hoàn thành 50% chặng đường! ✦'
+    ];
+
+    function switchTab(index, tabEl) {
+      document.querySelectorAll('.loan-tab').forEach(function(t) { t.classList.remove('on'); });
+      if (tabEl) {
+        tabEl.classList.add('on');
+      } else {
+        var tabs = document.querySelectorAll('.loan-tab');
+        if (tabs[index]) tabs[index].classList.add('on');
+      }
+
+      for (var i = 0; i < 3; i++) {
+        var pane = document.getElementById('pane-' + i);
+        if (pane) {
+          pane.style.display = (i === index) ? 'block' : 'none';
+        }
+      }
+
+      var hintEl = document.getElementById('mascotLoanHint');
+      if (hintEl && aiTips[index]) {
+        hintEl.innerHTML = aiTips[index];
+      }
+    }
+
+    // Auto-select tab if specified in URL (?tab=0|1|2)
+    window.addEventListener('DOMContentLoaded', function() {
+      var params = new URLSearchParams(window.location.search);
+      var tabIdx = parseInt(params.get('tab'), 10);
+      if (!isNaN(tabIdx) && tabIdx >= 0 && tabIdx <= 2) {
+        switchTab(tabIdx);
+      }
+    });
+  </script>
+</body>
+</html>

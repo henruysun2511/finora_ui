@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Trung tâm thông báo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 40px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .tx-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+    .nf-mark-btn {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="../home/dashboard.html" class="tx-back" title="Quay lại">
+        <svg class="ic"><use href="#icon-chevron-left"/></svg>
+      </a>
+      <div class="tx-hdr-title">Thông báo</div>
+      <div class="nf-mark-btn" onclick="markAllRead()">Đánh dấu đã đọc</div>
+    </div>
+
+    <div style="background:#fff;flex:1;">
+      <div class="nf-date">Hôm nay</div>
+
+      <div class="nf-item unread">
+        <div class="nf-ic warn"><svg class="ic"><use href="#icon-pie-chart"/></svg></div>
+        <div class="nf-body">
+          <div class="nf-body-t">Ngân sách "Mua sắm" đã vượt 5%</div>
+          <div class="nf-body-tx">Bạn đã chi ₫2,100,000 so với hạn mức ₫2,000,000. Hãy điều chỉnh nhé.</div>
+          <div class="nf-body-time">08:15 <span class="nf-tag">Ngân sách</span></div>
+        </div>
+        <div class="nf-unread gold"></div>
+      </div>
+
+      <div class="nf-item unread">
+        <div class="nf-ic ok"><svg class="ic"><use href="#icon-check-circle-2"/></svg></div>
+        <div class="nf-body">
+          <div class="nf-body-t">Mục tiêu "Chuyến du lịch Tokyo" tiến triển tốt</div>
+          <div class="nf-body-tx">Bạn đã đạt 48% mục tiêu. Hãy tiếp tục duy trì đà tiết kiệm này!</div>
+          <div class="nf-body-time">08:12 <span class="nf-tag">Tiết kiệm</span></div>
+        </div>
+        <div class="nf-unread"></div>
+      </div>
+
+      <div class="nf-item">
+        <div class="nf-ic info"><svg class="ic"><use href="#icon-bot"/></svg></div>
+        <div class="nf-body">
+          <div class="nf-body-t">Nora có lời khuyên cho bạn hôm nay</div>
+          <div class="nf-body-tx">Chi tiêu Ăn uống tuần này tăng 12% so với tuần trước. Hãy thử mang cơm trưa 2 ngày/tuần nhé!</div>
+          <div class="nf-body-time">07:30 <span class="nf-tag">Nora AI</span></div>
+        </div>
+      </div>
+
+      <div class="nf-date">Hôm qua</div>
+
+      <div class="nf-item unread">
+        <div class="nf-ic violet"><svg class="ic"><use href="#icon-bell"/></svg></div>
+        <div class="nf-body">
+          <div class="nf-body-t">Hóa đơn điện sinh hoạt sắp đến hạn</div>
+          <div class="nf-body-tx">Hóa đơn ₫1,800,000 sẽ đến hạn ngày 20/08. Tránh trễ hạn nhé.</div>
+          <div class="nf-body-time">19:45 <span class="nf-tag">Hóa đơn</span></div>
+        </div>
+        <div class="nf-unread gold"></div>
+      </div>
+
+      <div class="nf-item">
+        <div class="nf-ic warn"><svg class="ic"><use href="#icon-target"/></svg></div>
+        <div class="nf-body">
+          <div class="nf-body-t">Nhắc: Khoản mượn từ Trần Ngọc</div>
+          <div class="nf-body-tx">Khoản cho vay ₫3,000,000 đến hạn vào 30/08 (còn 12 ngày).</div>
+          <div class="nf-body-time">18:02 <span class="nf-tag">Sổ nợ</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function markAllRead() {
+      document.querySelectorAll('.nf-item.unread').forEach(function(item) {
+        item.classList.remove('unread');
+      });
+      document.querySelectorAll('.nf-unread').forEach(function(dot) {
+        dot.style.display = 'none';
+      });
+    }
+  </script>
+</body>
+</html>

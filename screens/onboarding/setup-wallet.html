@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nora · Ví & Nguồn tiền</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../../_shared/base.css"/>
+<link rel="stylesheet" href="../../_shared/components.css"/>
+<script src="../../_shared/icons.js"></script>
+<style>
+  .tier-alert {
+    margin-top: 10px; padding: 12px 14px; border-radius: var(--r-md);
+    background: var(--accent); border: 1.5px solid var(--primary-glow);
+    display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700;
+    color: var(--primary); transition: all .2s;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Status bar -->
+  <div class="sbar">
+    <span>9:41</span>
+    <div class="icons">
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-wifi"/></svg>
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-battery"/></svg>
+    </div>
+  </div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a href="setup-profile.html" class="back-btn" title="Quay lại">
+      <svg class="ic"><use href="#icon-arrow-left"/></svg>
+    </a>
+    <span class="topbar-title">Ví & Nguồn tiền</span>
+    <span class="step-badge">Bước 3/5</span>
+  </div>
+
+  <div class="screen-content">
+    <!-- Dialogue with mini Nora -->
+    <div class="mascot-dialogue">
+      <div class="dialogue-avatar" id="dialogue-avatar">
+        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(0, 20)">
+            <!-- Spark Background Aura -->
+            <circle cx="100" cy="90" r="80" fill="#ebf4ff" opacity="0.6" />
+            <!-- Body Blob (Perfectly symmetrical, futuristic) -->
+            <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#0072d5" />
+
+            <!-- Face Plate (Screen aesthetic) -->
+            <rect x="50" y="50" width="100" height="70" rx="35" fill="#ffffff" stroke="#f7fcff" stroke-width="4" />
+
+            <!-- Eyes (Digital/Calm) -->
+            <g transform="translate(75, 80)">
+              <circle cx="0" cy="0" r="10" fill="#0055a9" />
+              <circle cx="2" cy="-2" r="3" fill="#fff" />
+            </g>
+            <g transform="translate(125, 80)">
+              <circle cx="0" cy="0" r="10" fill="#0055a9" />
+              <circle cx="2" cy="-2" r="3" fill="#fff" />
+            </g>
+
+            <!-- Mouth (Perfect smile arc) -->
+            <path d="M 92 98 Q 100 104 108 98" fill="none" stroke="#0055a9" stroke-width="3" stroke-linecap="round" />
+
+            <!-- Prop: Finora Spark ✦ (Floating) -->
+            <g transform="translate(145, 30)">
+              <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#f6e05e" />
+            </g>
+            <g transform="translate(57, 120)">
+              <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#f6e05e"
+                transform="scale(0.6)" />
+            </g>
+
+            <!-- Clean UI Collar -->
+            <path d="M 70 120 L 130 120 L 120 140 L 80 140 Z" fill="#fff" opacity="0.3" />
+
+            <!-- Prop: Bank Card held in the middle (like Penny holds her coin) -->
+            <g transform="translate(100, 140)">
+              <!-- Hands wrapping around the card -->
+              <circle cx="-24" cy="-4" r="9" fill="#d9e6ff" />
+              <circle cx="24" cy="-4" r="9" fill="#d9e6ff" />
+              <!-- Bank card -->
+              <g transform="translate(0, 0) scale(0.72)">
+                <rect x="-24" y="-16" width="48" height="32" rx="6" fill="#ffffff" stroke="#b8c2d4" stroke-width="4" />
+                <rect x="-24" y="-16" width="48" height="13" rx="6" fill="#0072d5" />
+                <rect x="-24" y="-3" width="48" height="4" fill="#c9d3e2" />
+                <rect x="-16" y="-9" width="10" height="8" rx="2" fill="#f5c04a" />
+                <circle cx="8" cy="-7" r="1.6" fill="#8892a6" />
+                <circle cx="15" cy="-7" r="1.6" fill="#8892a6" />
+                <circle cx="22" cy="-7" r="1.6" fill="#8892a6" />
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="dialogue-text" id="speech-bubble">
+        Tạo ví và nhập số dư ban đầu giúp mình nhận diện trợ lý AI phù hợp nhất với bạn! 🎯
+      </div>
+    </div>
+
+    <!-- Wallet Name -->
+    <div class="input-group">
+      <label class="input-label" for="wallet-name">Tên ví quản lý</label>
+      <div class="input-box">
+        <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-wallet"/></svg>
+        <input type="text" id="wallet-name" class="input-field" value="Ví cá nhân" placeholder="Ví cá nhân" />
+      </div>
+    </div>
+
+    <!-- Account Type -->
+    <div class="input-group">
+      <label class="input-label">Nguồn tiền chính</label>
+      <div class="radio-grid">
+        <div class="radio-card on" data-type="cash" data-label="Tiền mặt">
+          <div class="radio-card-icon">💵</div>
+          <div class="radio-card-title">Tiền mặt</div>
+          <div class="radio-card-sub">Chi tiêu thường nhật</div>
+        </div>
+        <div class="radio-card" data-type="bank" data-label="Ngân hàng">
+          <div class="radio-card-icon">🏦</div>
+          <div class="radio-card-title">Ngân hàng</div>
+          <div class="radio-card-sub">MB, VCB, Techcom...</div>
+        </div>
+        <div class="radio-card" data-type="ewallet" data-label="Ví điện tử">
+          <div class="radio-card-icon">📱</div>
+          <div class="radio-card-title">Ví điện tử</div>
+          <div class="radio-card-sub">Momo, ZaloPay...</div>
+        </div>
+        <div class="radio-card" data-type="credit" data-label="Thẻ tín dụng">
+          <div class="radio-card-icon">💳</div>
+          <div class="radio-card-title">Thẻ tín dụng</div>
+          <div class="radio-card-sub">Visa, Mastercard</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Balance Input -->
+    <div class="input-group">
+      <label class="input-label" for="balance-input">Số dư hiện tại</label>
+      <div class="input-box" style="border-color: var(--primary);">
+        <span style="font-size: 18px; font-weight: 900; color: var(--primary);">₫</span>
+        <input type="text" id="balance-input" class="input-field" style="font-size: 18px; font-weight: 900; color: var(--primary);" value="5,000,000" />
+      </div>
+      <div class="chips-row">
+        <div class="chip" data-val="0">0 ₫</div>
+        <div class="chip" data-val="1000000">+1M</div>
+        <div class="chip on" data-val="5000000">+5M</div>
+        <div class="chip" data-val="20000000">+20M</div>
+        <div class="chip" data-val="100000000">+100M</div>
+      </div>
+      <div id="tier-hint" class="tier-alert">
+        <span>✨ Trợ lý tương thích: <b>Nora (Comfortable · 5M – 20M ₫)</b></span>
+      </div>
+    </div>
+
+    <div class="footer-flow">
+      <div class="ob-progress" style="width:100%; margin-bottom:6px;">
+        <i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i>
+      </div>
+      <button type="button" id="btn-next" class="btn btn-p">
+        Tiếp tục <svg class="ic"><use href="#icon-arrow-up-right"/></svg>
+      </button>
+      <button type="button" id="btn-skip" class="btn-ghost">
+        Bỏ qua, nhập số dư sau
+      </button>
+    </div>
+  </div>
+
+  <script src="../../_shared/mascots-data.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var store = window.FinoraMascots.store;
+      var mascots = window.FinoraMascots.MASCOTS;
+      var data = store.get();
+
+      var walletInput = document.getElementById("wallet-name");
+      var balanceInput = document.getElementById("balance-input");
+      var bubble = document.getElementById("speech-bubble");
+      var hintBox = document.getElementById("tier-hint");
+
+      if (data.walletName) walletInput.value = data.walletName;
+      var rawBalance = data.balance !== undefined ? Number(data.balance) : 5000000;
+
+      function updateBalance(num) {
+        rawBalance = num;
+        balanceInput.value = num.toLocaleString("vi-VN");
+        var recId = window.FinoraMascots.getMascotByBalance(rawBalance);
+        var m = mascots[recId];
+        hintBox.innerHTML = '<span>✨ Trợ lý tương thích: <b>' + m.name + ' · ' + m.role + ' (' + m.range + ')</b></span>';
+        hintBox.style.color = m.color;
+        hintBox.style.borderColor = m.color;
+        bubble.textContent = "Số dư " + window.FinoraMascots.formatVND(rawBalance) + "? " + m.name + " (" + m.role + ") sẽ là người đồng hành tuyệt vời!";
+      }
+
+      updateBalance(rawBalance);
+
+      balanceInput.addEventListener("input", function () {
+        var clean = balanceInput.value.replace(/[^0-9\-]/g, "");
+        var num = parseInt(clean, 10);
+        if (isNaN(num)) num = 0;
+        updateBalance(num);
+      });
+
+      // Chips
+      document.querySelectorAll(".chip[data-val]").forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          document.querySelectorAll(".chip[data-val]").forEach(function (c) { c.classList.remove("on"); });
+          chip.classList.add("on");
+          var val = parseInt(chip.getAttribute("data-val"), 10);
+          updateBalance(val);
+        });
+      });
+
+      // Account type
+      var selectedType = data.accountType || "cash";
+      var selectedLabel = data.accountLabel || "Tiền mặt";
+      var typeCards = document.querySelectorAll(".radio-card");
+      typeCards.forEach(function (card) {
+        if (card.getAttribute("data-type") === selectedType) {
+          typeCards.forEach(function (c) { c.classList.remove("on"); });
+          card.classList.add("on");
+        }
+        card.addEventListener("click", function () {
+          typeCards.forEach(function (c) { c.classList.remove("on"); });
+          card.classList.add("on");
+          selectedType = card.getAttribute("data-type");
+          selectedLabel = card.getAttribute("data-label");
+        });
+      });
+
+      function saveAndGo() {
+        var recId = window.FinoraMascots.getMascotByBalance(rawBalance);
+        store.set({
+          walletName: walletInput.value.trim() || "Ví cá nhân",
+          accountType: selectedType,
+          accountLabel: selectedLabel,
+          balance: rawBalance,
+          selectedMascot: recId
+        });
+        window.location.href = "choose-mascot.html";
+      }
+
+      document.getElementById("btn-next").addEventListener("click", saveAndGo);
+      document.getElementById("btn-skip").addEventListener("click", function () {
+        rawBalance = 0;
+        saveAndGo();
+      });
+    });
+  </script>
+</body>
+</html>

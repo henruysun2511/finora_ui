@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Khóa bảo mật PIN & FaceID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--primary);
+      color: #fff;
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .sbar.dark {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      background: transparent;
+    }
+    .pin-k {
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .pin-k:active {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(0.92);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <div class="lock-wrap">
+      <div class="sbar dark"><span>9:41</span><span>● ● ●</span></div>
+      
+      <div style="position:absolute;top:44px;left:18px;">
+        <a href="../profile/profile.html" style="width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;">
+          <svg class="ic" style="width:18px;height:18px;"><use href="#icon-chevron-left"/></svg>
+        </a>
+      </div>
+
+      <div class="lock-logo"><svg class="ic"><use href="#icon-shield-check"/></svg></div>
+      <div class="lock-ttl">Finora App Lock</div>
+      <div class="lock-sub">Nhập mã PIN 4 số để bảo vệ tài khoản</div>
+
+      <div class="pin-dots">
+        <div class="pin-dot" id="dot0"></div>
+        <div class="pin-dot" id="dot1"></div>
+        <div class="pin-dot" id="dot2"></div>
+        <div class="pin-dot" id="dot3"></div>
+      </div>
+
+      <div class="pin-grid">
+        <div class="pin-k" onclick="pressKey(1)">1</div>
+        <div class="pin-k" onclick="pressKey(2)">2</div>
+        <div class="pin-k" onclick="pressKey(3)">3</div>
+        <div class="pin-k" onclick="pressKey(4)">4</div>
+        <div class="pin-k" onclick="pressKey(5)">5</div>
+        <div class="pin-k" onclick="pressKey(6)">6</div>
+        <div class="pin-k" onclick="pressKey(7)">7</div>
+        <div class="pin-k" onclick="pressKey(8)">8</div>
+        <div class="pin-k" onclick="pressKey(9)">9</div>
+        <div class="pin-k" onclick="useFaceId()"><svg class="ic"><use href="#icon-scan-face"/></svg></div>
+        <div class="pin-k" onclick="pressKey(0)">0</div>
+        <div class="pin-k" onclick="deleteKey()"><svg class="ic"><use href="#icon-delete"/></svg></div>
+      </div>
+
+      <div class="bio-btn" onclick="useFaceId()" style="cursor:pointer;">
+        <svg class="ic"><use href="#icon-scan-face"/></svg> Mở khóa bằng Face ID / Vân tay
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var currentPin = '';
+
+    function updateDots() {
+      for (var i = 0; i < 4; i++) {
+        var dot = document.getElementById('dot' + i);
+        if (i < currentPin.length) {
+          dot.classList.add('f');
+        } else {
+          dot.classList.remove('f');
+        }
+      }
+    }
+
+    function pressKey(num) {
+      if (currentPin.length < 4) {
+        currentPin += num;
+        updateDots();
+        if (currentPin.length === 4) {
+          setTimeout(function() {
+            alert('Mã PIN chính xác! Đang mở khóa ứng dụng...');
+            window.location.href = '../home/dashboard.html';
+          }, 300);
+        }
+      }
+    }
+
+    function deleteKey() {
+      if (currentPin.length > 0) {
+        currentPin = currentPin.slice(0, -1);
+        updateDots();
+      }
+    }
+
+    function useFaceId() {
+      alert('Face ID đã xác thực thành công khuôn mặt của bạn!');
+      window.location.href = '../home/dashboard.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Ví chung & Quỹ nhóm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    :root {
+      --primary: #0072D5;
+      --primary-dark: #0055A9;
+      --primary-light: rgba(0, 114, 213, 0.12);
+      --secondary: #F5B53F;
+      --orange: #ea580c;
+      --violet: #7c3aed;
+      --teal: #0d9488;
+      --dash-bg: #f8fafc;
+      --foreground: #0f172a;
+      --ink: #0f172a;
+      --ink-soft: #64748b;
+      --border: #e2e8f0;
+      --card-bg: #ffffff;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 96px;
+    }
+
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─────────────── HERO SECTION (SOLARN BRAND BLUE & GOLD) ─────────────── */
+    .shared-hero {
+      background: linear-gradient(150deg, #0055A9, var(--primary) 55%, var(--secondary));
+      padding: 14px 18px 30px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .shared-hero::after {
+      content: '';
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      top: -60px;
+      right: -40px;
+      pointer-events: none;
+    }
+
+    .sbar-hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+      user-select: none;
+    }
+    .sbar-hero .sbar-icons {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .sbar-hero .ic {
+      width: 14px;
+      height: 14px;
+    }
+
+    .hero-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-nav-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .hero-nav-btn:hover { background: rgba(255, 255, 255, 0.28); }
+    .hero-nav-btn:active { transform: scale(0.94); }
+    .hero-nav-btn .ic { width: 18px; height: 18px; }
+
+    .hero-nav-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Group Selector Pill */
+    .group-selector-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 99px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: all 0.15s;
+    }
+    .group-selector-chip:hover {
+      background: rgba(0, 0, 0, 0.35);
+    }
+    .group-selector-chip .ic { width: 14px; height: 14px; }
+
+    .hero-amt-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 2px;
+    }
+    .hero-amt-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    /* Target Progress */
+    .target-box {
+      background: rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+    }
+    .target-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 6px;
+    }
+    .target-bar-wrap {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .target-bar-fill {
+      height: 100%;
+      width: 62.2%;
+      background: linear-gradient(90deg, #60a5fa, #fbbf24);
+      border-radius: 99px;
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+    }
+
+    /* 2 Mini Summary Boxes */
+    .hero-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .h-sum-box {
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+    .h-sum-lbl {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+    .h-sum-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    /* ─────────────── QUICK ACTIONS ROW ─────────────── */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 0 16px;
+      margin-top: -18px;
+      position: relative;
+      z-index: 10;
+    }
+    .act-card {
+      background: #fff;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      padding: 12px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .act-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.09);
+      border-color: var(--primary);
+    }
+    .act-card:active { transform: scale(0.96); }
+
+    .act-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    .act-icon.blue {
+      background: linear-gradient(135deg, var(--primary), oklch(0.48 0.17 250));
+      box-shadow: 0 4px 12px oklch(0.55 0.18 250 / 0.3);
+    }
+    .act-icon.orange {
+      background: linear-gradient(135deg, var(--orange), #ea580c);
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+    }
+    .act-icon.violet {
+      background: linear-gradient(135deg, var(--violet), #7c3aed);
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    }
+    .act-icon.teal {
+      background: linear-gradient(135deg, var(--teal), #0d9488);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+    }
+    .act-icon .ic { width: 20px; height: 20px; }
+    .act-label {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--foreground);
+      text-align: center;
+    }
+
+    /* ─────────────── TABS / SEGMENTS ─────────────── */
+    .tabs-bar {
+      display: flex;
+      padding: 16px 16px 8px;
+      gap: 8px;
+    }
+    .tab-pill {
+      flex: 1;
+      padding: 8px 0;
+      border-radius: 99px;
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .tab-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 3px 10px oklch(0.55 0.18 250 / 0.25);
+    }
+
+    /* ─────────────── CONTENT CARDS ─────────────── */
+    .content-area {
+      padding: 8px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .ui-card {
+      background: #fff;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      padding: 16px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+    }
+    .card-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .card-title {
+      font-size: 14.5px;
+      font-weight: 900;
+      color: var(--foreground);
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-btn-link {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* ─────────────── MEMBERS CONTRIBUTION LIST ─────────────── */
+    .member-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .member-item:last-child { border-bottom: none; padding-bottom: 2px; }
+    .member-av {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .crown-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--secondary);
+      border: 1.5px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 8px;
+    }
+    .crown-badge .ic { width: 10px; height: 10px; }
+
+    .member-info {
+      flex: 1;
+    }
+    .member-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .member-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--foreground);
+    }
+    .member-amount {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--foreground);
+    }
+    .member-sub-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      margin-bottom: 5px;
+    }
+    .member-progress-bar {
+      width: 100%;
+      height: 5px;
+      background: #f1f5f9;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .member-progress-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 8px;
+      border-radius: 99px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .badge-status.done {
+      background: oklch(0.68 0.18 155 / 0.14);
+      color: var(--success);
+    }
+    .badge-status.due {
+      background: oklch(0.7 0.19 45 / 0.14);
+      color: var(--orange);
+    }
+
+    .btn-remind {
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: var(--dash-bg);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s;
+    }
+    .btn-remind:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* ─────────────── RECENT TRANSACTIONS ─────────────── */
+    .tx-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tx-item:last-child { border-bottom: none; }
+    .tx-cat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .tx-cat-icon.food { background: oklch(0.7 0.19 45 / 0.15); color: var(--orange); }
+    .tx-cat-icon.travel { background: oklch(0.63 0.13 190 / 0.15); color: var(--teal); }
+    .tx-cat-icon.topup { background: oklch(0.68 0.18 155 / 0.15); color: var(--success); }
+    .tx-cat-icon.transport { background: oklch(0.55 0.2 285 / 0.15); color: var(--violet); }
+    .tx-cat-icon .ic { width: 20px; height: 20px; }
+
+    .tx-info {
+      flex: 1;
+      overflow: hidden;
+    }
+    .tx-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--foreground);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .tx-meta {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tx-amount-col {
+      text-align: right;
+    }
+    .tx-amount {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14.5px;
+      font-weight: 900;
+    }
+    .tx-amount.neg { color: var(--danger); }
+    .tx-amount.pos { color: var(--success); }
+    .tx-receipt-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    /* ─────────────── MODAL SHEETS ─────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    .modal-sheet {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-radius: 28px 28px 0 0;
+      padding: 20px 20px 34px;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+      animation: sheetUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    @keyframes sheetUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .sheet-handle {
+      width: 40px;
+      height: 4px;
+      background: #cbd5e1;
+      border-radius: 99px;
+      margin: 0 auto 16px;
+    }
+    .sheet-title {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      color: var(--foreground);
+      margin-bottom: 4px;
+    }
+    .sheet-desc {
+      font-size: 12px;
+      color: var(--ink-soft);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-label {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--dash-bg);
+      border: 1.5px solid var(--border);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--foreground);
+      outline: none;
+      transition: all 0.15s;
+    }
+    .form-input:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px oklch(0.55 0.18 250 / 0.15);
+    }
+    .primary-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 18px oklch(0.55 0.18 250 / 0.35);
+      transition: all 0.15s;
+      margin-top: 8px;
+    }
+    .primary-btn:hover {
+      background: oklch(0.50 0.18 250);
+      transform: translateY(-1px);
+    }
+    .primary-btn:active { transform: scale(0.98); }
+
+    /* ─────────────── BOTTOM NAVIGATION ─────────────── */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 14px;
+      z-index: 40;
+    }
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: color 0.15s;
+    }
+    .bni.on { color: var(--primary); font-weight: 900; }
+    .bni .ic { width: 20px; height: 20px; }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrap">
+    <!-- Hero Header -->
+    <div class="shared-hero">
+      <div class="sbar-hero">
+        <span>09:41</span>
+        <div class="sbar-icons">
+          <svg class="ic"><use href="#icon-wifi"/></svg>
+          <svg class="ic"><use href="#icon-battery"/></svg>
+        </div>
+      </div>
+
+      <div class="hero-nav">
+        <a href="list.html" class="hero-nav-btn" title="Quay lại Danh sách ví">
+          <svg class="ic"><use href="#icon-chevron-left"/></svg>
+        </a>
+        <div class="hero-nav-title">
+          <svg class="ic"><use href="#icon-users"/></svg>
+          <span>Ví chung · Quỹ nhóm</span>
+        </div>
+        <button class="hero-nav-btn" onclick="openMembersModal()" title="Quản lý thành viên">
+          <svg class="ic"><use href="#icon-settings"/></svg>
+        </button>
+      </div>
+
+      <!-- Group Selector Pill -->
+      <div class="group-selector-chip" onclick="switchFundGroup()">
+        <span>🌴 Quỹ Du lịch Đà Lạt</span>
+        <svg class="ic"><use href="#icon-chevron-down"/></svg>
+      </div>
+
+      <div class="hero-amt-label">Số dư khả dụng của quỹ</div>
+      <div class="hero-amt-val" id="heroFundBalance">₫18,650,000</div>
+
+      <!-- Target Progress -->
+      <div class="target-box">
+        <div class="target-hdr">
+          <span>Tiến độ quỹ</span>
+          <span style="color:#fbbf24;">Mục tiêu ₫30,000,000 (62.2%)</span>
+        </div>
+        <div class="target-bar-wrap">
+          <div class="target-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- 2 Mini Summary Boxes -->
+      <div class="hero-summary-grid">
+        <div class="h-sum-box">
+          <div class="h-sum-lbl">Đã chi từ quỹ</div>
+          <div class="h-sum-val" style="color:#fca5a5;">₫6,450,000</div>
+        </div>
+        <div class="h-sum-box">
+          <div class="h-sum-lbl">Đã đóng góp</div>
+          <div class="h-sum-val" style="color:#86efac;">₫25,100,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="action-grid">
+      <div class="act-card" onclick="openDepositModal()">
+        <div class="act-icon blue">
+          <svg class="ic"><use href="#icon-wallet"/></svg>
+        </div>
+        <span class="act-label">Nộp quỹ</span>
+      </div>
+
+      <div class="act-card" onclick="openExpenseModal()">
+        <div class="act-icon orange">
+          <svg class="ic"><use href="#icon-receipt"/></svg>
+        </div>
+        <span class="act-label">Chi tiêu</span>
+      </div>
+
+      <div class="act-card" onclick="openSplitBillModal()">
+        <div class="act-icon violet">
+          <svg class="ic"><use href="#icon-sparkles"/></svg>
+        </div>
+        <span class="act-label">Chia bill</span>
+      </div>
+
+      <div class="act-card" onclick="inviteMember()">
+        <div class="act-icon teal">
+          <svg class="ic"><use href="#icon-user-plus"/></svg>
+        </div>
+        <span class="act-label">Mời bạn</span>
+      </div>
+    </div>
+
+    <!-- Segment Tabs -->
+    <div class="tabs-bar">
+      <button class="tab-pill active" onclick="switchTab('overview', this)">Tổng quan</button>
+      <button class="tab-pill" onclick="switchTab('members', this)">Thành viên (4)</button>
+      <button class="tab-pill" onclick="switchTab('history', this)">Giao dịch quỹ</button>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="content-area">
+
+      <!-- Members Contribution Card -->
+      <div class="ui-card" id="membersCard">
+        <div class="card-hdr">
+          <div class="card-title">
+            <svg class="ic" style="color:var(--primary);"><use href="#icon-users"/></svg>
+            <span>Thành viên đóng góp (4)</span>
+          </div>
+          <span class="card-btn-link" onclick="inviteMember()">+ Thêm</span>
+        </div>
+
+        <!-- Member 1: You (Admin) -->
+        <div class="member-item">
+          <div class="member-av" style="background:linear-gradient(135deg, var(--primary), #0284c7);">
+            ME
+            <div class="crown-badge" title="Trưởng quỹ"><svg class="ic"><use href="#icon-crown"/></svg></div>
+          </div>
+          <div class="member-info">
+            <div class="member-name-row">
+              <span class="member-name">Bạn <small style="color:var(--primary);font-weight:700;">(Trưởng quỹ)</small></span>
+              <span class="member-amount">₫5,000,000</span>
+            </div>
+            <div class="member-sub-row">
+              <span>Chỉ tiêu: ₫5,000,000</span>
+              <span class="badge-status done">✓ Đã đủ 100%</span>
+            </div>
+            <div class="member-progress-bar">
+              <div class="member-progress-fill" style="width:100%; background:var(--success);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Member 2: Trần Ngọc -->
+        <div class="member-item">
+          <div class="member-av" style="background:linear-gradient(135deg, #f59e0b, #ea580c);">TN</div>
+          <div class="member-info">
+            <div class="member-name-row">
+              <span class="member-name">Trần Ngọc</span>
+              <span class="member-amount">₫5,000,000</span>
+            </div>
+            <div class="member-sub-row">
+              <span>Chỉ tiêu: ₫5,000,000</span>
+              <span class="badge-status done">✓ Đã đủ 100%</span>
+            </div>
+            <div class="member-progress-bar">
+              <div class="member-progress-fill" style="width:100%; background:var(--success);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Member 3: Hùng Minh -->
+        <div class="member-item">
+          <div class="member-av" style="background:linear-gradient(135deg, #0ea5e9, #0284c7);">HM</div>
+          <div class="member-info">
+            <div class="member-name-row">
+              <span class="member-name">Hùng Minh</span>
+              <span class="member-amount">₫5,000,000</span>
+            </div>
+            <div class="member-sub-row">
+              <span>Chỉ tiêu: ₫5,000,000</span>
+              <span class="badge-status done">✓ Đã đủ 100%</span>
+            </div>
+            <div class="member-progress-bar">
+              <div class="member-progress-fill" style="width:100%; background:var(--success);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Member 4: Phạm Lan -->
+        <div class="member-item">
+          <div class="member-av" style="background:linear-gradient(135deg, #10b981, #059669);">PL</div>
+          <div class="member-info">
+            <div class="member-name-row">
+              <span class="member-name">Phạm Lan</span>
+              <span class="member-amount">₫3,650,000</span>
+            </div>
+            <div class="member-sub-row">
+              <span>Chỉ tiêu: ₫5,000,000</span>
+              <span class="badge-status due">Thiếu ₫1.35M</span>
+            </div>
+            <div class="member-progress-bar">
+              <div class="member-progress-fill" style="width:73%; background:var(--orange);"></div>
+            </div>
+          </div>
+          <button class="btn-remind" onclick="remindDebt('Phạm Lan')">Nhắc nộp</button>
+        </div>
+      </div>
+
+      <!-- Recent Transactions Card -->
+      <div class="ui-card" id="historyCard">
+        <div class="card-hdr">
+          <div class="card-title">
+            <svg class="ic" style="color:var(--orange);"><use href="#icon-receipt"/></svg>
+            <span>Giao dịch quỹ gần đây</span>
+          </div>
+          <span class="card-btn-link" onclick="openExpenseModal()">+ Chi tiêu</span>
+        </div>
+
+        <!-- Tx 1 -->
+        <div class="tx-item">
+          <div class="tx-cat-icon travel">
+            <svg class="ic"><use href="#icon-plane"/></svg>
+          </div>
+          <div class="tx-info">
+            <div class="tx-title">Đặt Homestay Đà Lạt (3N2Đ)</div>
+            <div class="tx-meta">
+              <span>Bạn chi</span> · <span>Hôm nay 14:30</span>
+            </div>
+            <span class="tx-receipt-tag" onclick="alert('Hóa đơn đặt phòng Homestay đã được lưu trữ an toàn.')">
+              <svg class="ic" style="width:12px;height:12px;"><use href="#icon-image"/></svg> Xem hóa đơn
+            </span>
+          </div>
+          <div class="tx-amount-col">
+            <div class="tx-amount neg">-₫2,400,000</div>
+            <span class="badge-status done" style="font-size:9px;">Đã duyệt</span>
+          </div>
+        </div>
+
+        <!-- Tx 2 -->
+        <div class="tx-item">
+          <div class="tx-cat-icon topup">
+            <svg class="ic"><use href="#icon-wallet"/></svg>
+          </div>
+          <div class="tx-info">
+            <div class="tx-title">Hùng Minh nộp tiền quỹ</div>
+            <div class="tx-meta">
+              <span>Hùng Minh</span> · <span>Hôm qua 09:15</span>
+            </div>
+          </div>
+          <div class="tx-amount-col">
+            <div class="tx-amount pos">+₫2,000,000</div>
+            <span class="badge-status done" style="font-size:9px;">Thành công</span>
+          </div>
+        </div>
+
+        <!-- Tx 3 -->
+        <div class="tx-item">
+          <div class="tx-cat-icon food">
+            <svg class="ic"><use href="#icon-utensils"/></svg>
+          </div>
+          <div class="tx-info">
+            <div class="tx-title">Lẩu gà lá é Quán Tao Ngộ</div>
+            <div class="tx-meta">
+              <span>Trần Ngọc chi</span> · <span>28/09/2026</span>
+            </div>
+            <span class="tx-receipt-tag" onclick="alert('Hóa đơn bữa ăn đã được lưu trữ.')">
+              <svg class="ic" style="width:12px;height:12px;"><use href="#icon-image"/></svg> Xem bill
+            </span>
+          </div>
+          <div class="tx-amount-col">
+            <div class="tx-amount neg">-₫850,000</div>
+            <span class="badge-status done" style="font-size:9px;">Đã duyệt</span>
+          </div>
+        </div>
+
+        <!-- Tx 4 -->
+        <div class="tx-item">
+          <div class="tx-cat-icon transport">
+            <svg class="ic"><use href="#icon-car"/></svg>
+          </div>
+          <div class="tx-info">
+            <div class="tx-title">Thuê xe máy 4 chiếc 3 ngày</div>
+            <div class="tx-meta">
+              <span>Phạm Lan chi</span> · <span>27/09/2026</span>
+            </div>
+          </div>
+          <div class="tx-amount-col">
+            <div class="tx-amount neg">-₫1,200,000</div>
+            <span class="badge-status done" style="font-size:9px;">Đã duyệt</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal: Nộp quỹ -->
+  <div class="modal-overlay" id="depositModal" onclick="closeModal('depositModal')">
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">Nộp tiền vào Quỹ chung</div>
+      <div class="sheet-desc">Tiền sẽ được trích từ nguồn ví cá nhân của bạn và chuyển thẳng vào quỹ.</div>
+
+      <div class="form-group">
+        <label class="form-label">Số tiền nộp (VND)</label>
+        <input type="number" class="form-input" id="depositAmt" placeholder="Nhập số tiền (vd: 1000000)" value="1000000"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Trích từ nguồn ví</label>
+        <select class="form-input" id="depositWalletSource">
+          <option value="vcb">Vietcombank Digital (₫14,350,000)</option>
+          <option value="momo">Ví MoMo (₫4,000,000)</option>
+          <option value="cash">Tiền mặt (₫2,500,000)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Ghi chú</label>
+        <input type="text" class="form-input" id="depositNote" placeholder="Ghi chú nộp quỹ (tùy chọn)" value="Nộp quỹ đợt 2"/>
+      </div>
+
+      <button class="primary-btn" onclick="submitDeposit()">Xác nhận Nộp quỹ</button>
+    </div>
+  </div>
+
+  <!-- Modal: Chi tiêu từ quỹ -->
+  <div class="modal-overlay" id="expenseModal" onclick="closeModal('expenseModal')">
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">Ghi nhận Chi tiêu từ Quỹ</div>
+      <div class="sheet-desc">Trừ tiền từ số dư quỹ chung và thông báo tới toàn bộ thành viên.</div>
+
+      <div class="form-group">
+        <label class="form-label">Số tiền chi (VND)</label>
+        <input type="number" class="form-input" id="expenseAmt" placeholder="Nhập số tiền chi (vd: 450000)" value="450000"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nội dung chi</label>
+        <input type="text" class="form-input" id="expenseDesc" placeholder="Tên khoản chi (vd: Ăn tối nướng ngói)" value="Ăn tối nướng ngói"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Người trực tiếp thanh toán</label>
+        <select class="form-input" id="expensePayer">
+          <option value="me">Bạn (Trưởng quỹ)</option>
+          <option value="tn">Trần Ngọc</option>
+          <option value="hm">Hùng Minh</option>
+          <option value="pl">Phạm Lan</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Danh mục chi tiêu</label>
+        <select class="form-input" id="expenseCategory">
+          <option value="food">Ăn uống 🍜</option>
+          <option value="travel">Du lịch / Khách sạn ✈️</option>
+          <option value="transport">Di chuyển / Đi lại 🚗</option>
+          <option value="shopping">Mua sắm chung 🛍️</option>
+        </select>
+      </div>
+
+      <button class="primary-btn" onclick="submitExpense()">Xác nhận Chi tiêu</button>
+    </div>
+  </div>
+
+  <!-- Modal: Chia bill tự động -->
+  <div class="modal-overlay" id="splitModal" onclick="closeModal('splitModal')">
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">Chia tiền thông minh (Split Bill)</div>
+      <div class="sheet-desc">Tự động chia đều hóa đơn cho 4 thành viên trong quỹ nhóm.</div>
+
+      <div class="form-group">
+        <label class="form-label">Tổng hóa đơn (VND)</label>
+        <input type="number" class="form-input" id="splitTotal" value="1200000" oninput="calcSplit()"/>
+      </div>
+
+      <div style="background:var(--dash-bg);border:1px solid var(--border);border-radius:16px;padding:12px;margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:var(--ink-soft);margin-bottom:4px;">Mỗi người thanh toán:</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:900;color:var(--primary);" id="splitPerPerson">₫300,000 / người</div>
+        <div style="font-size:11px;color:var(--ink-soft);margin-top:2px;">(Chia đều cho: Bạn, Trần Ngọc, Hùng Minh, Phạm Lan)</div>
+      </div>
+
+      <button class="primary-btn" onclick="submitSplit()">Gửi yêu cầu chia tiền</button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard"/></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart"/></svg>
+      <span>Báo cáo</span>
+    </a>
+    <a href="list.html" class="bni on">
+      <svg class="ic"><use href="#icon-wallet"/></svg>
+      <span>Ví tiền</span>
+    </a>
+    <a href="../social/feed.html" class="bni">
+      <svg class="ic"><use href="#icon-users"/></svg>
+      <span>Bảng tin</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user"/></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+
+  <script>
+    let currentBalance = 18650000;
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function openDepositModal() { openModal('depositModal'); }
+    function openExpenseModal() { openModal('expenseModal'); }
+    function openSplitBillModal() { openModal('splitModal'); }
+
+    function switchFundGroup() {
+      alert('Chuyển đổi quỹ:\n1. 🌴 Quỹ Du lịch Đà Lạt (₫18.65M)\n2. 🍜 Quỹ Ăn trưa Team (₫3.2M)\n3. 🏠 Tiền sinh hoạt Căn hộ 402 (₫7.8M)');
+    }
+
+    function openMembersModal() {
+      alert('Cài đặt Quỹ chung:\n· Tên quỹ: Quỹ Du lịch Đà Lạt\n· Mục tiêu: ₫30,000,000\n· Trưởng quỹ: Bạn\n· Phân quyền: Cần trưởng quỹ duyệt chi');
+    }
+
+    function inviteMember() {
+      alert('Sao chép mã mời tham gia quỹ:\nFINORA-DALAT-2026\nĐã sao chép liên kết mời bạn bè!');
+    }
+
+    function remindDebt(name) {
+      alert('Đã gửi thông báo nhắc nộp quỹ tới ' + name + ' qua Finora Chat! 💬');
+    }
+
+    function submitDeposit() {
+      const amt = parseInt(document.getElementById('depositAmt').value, 10);
+      if (amt && amt > 0) {
+        currentBalance += amt;
+        document.getElementById('heroFundBalance').innerText = '₫' + currentBalance.toLocaleString('vi-VN');
+        closeModal('depositModal');
+        alert('🎉 Nộp quỹ thành công! Đã nạp ₫' + amt.toLocaleString('vi-VN') + ' vào Quỹ Du lịch Đà Lạt.');
+      }
+    }
+
+    function submitExpense() {
+      const amt = parseInt(document.getElementById('expenseAmt').value, 10);
+      const desc = document.getElementById('expenseDesc').value;
+      if (amt && amt > 0) {
+        currentBalance = Math.max(0, currentBalance - amt);
+        document.getElementById('heroFundBalance').innerText = '₫' + currentBalance.toLocaleString('vi-VN');
+        closeModal('expenseModal');
+        alert('✓ Đã ghi nhận khoản chi "' + desc + '" (-₫' + amt.toLocaleString('vi-VN') + ') từ Quỹ chung!');
+      }
+    }
+
+    function calcSplit() {
+      const total = parseInt(document.getElementById('splitTotal').value, 10) || 0;
+      const perPerson = Math.round(total / 4);
+      document.getElementById('splitPerPerson').innerText = '₫' + perPerson.toLocaleString('vi-VN') + ' / người';
+    }
+
+    function submitSplit() {
+      closeModal('splitModal');
+      alert('Đã gửi yêu cầu thanh toán chia đều cho 3 thành viên còn lại thành công!');
+    }
+
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const membersCard = document.getElementById('membersCard');
+      const historyCard = document.getElementById('historyCard');
+
+      if (tab === 'members') {
+        membersCard.style.display = 'block';
+        historyCard.style.display = 'none';
+      } else if (tab === 'history') {
+        membersCard.style.display = 'none';
+        historyCard.style.display = 'block';
+      } else {
+        membersCard.style.display = 'block';
+        historyCard.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

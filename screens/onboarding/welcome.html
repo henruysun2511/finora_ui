@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nora · Chào mừng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../../_shared/base.css"/>
+<link rel="stylesheet" href="../../_shared/components.css"/>
+<script src="../../_shared/icons.js"></script>
+</head>
+<body style="background: oklch(0.55 0.18 250); min-height: 100vh;">
+
+  <!-- Status bar light -->
+  <div class="sbar light">
+    <span>9:41</span>
+    <div class="icons">
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-wifi"/></svg>
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-battery"/></svg>
+    </div>
+  </div>
+
+  <!-- Onboarding Hero (exact ui-sample-3 design) -->
+  <div class="ob-hero">
+    <div class="mascot-container">
+      <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(0, 20)">
+            <!-- Spark Background Aura -->
+            <circle cx="100" cy="90" r="80" fill="#ebf4ff" opacity="0.6" />
+            <!-- Body Blob (Perfectly symmetrical, futuristic) -->
+            <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#0072d5" />
+
+            <!-- Face Plate (Screen aesthetic) -->
+            <rect x="50" y="50" width="100" height="70" rx="35" fill="#ffffff" stroke="#f7fcff" stroke-width="4" />
+
+            <!-- Eyes (Digital/Calm) -->
+            <g transform="translate(75, 80)">
+              <circle cx="0" cy="0" r="10" fill="#0055a9" />
+              <circle cx="2" cy="-2" r="3" fill="#fff" />
+            </g>
+            <g transform="translate(125, 80)">
+              <circle cx="0" cy="0" r="10" fill="#0055a9" />
+              <circle cx="2" cy="-2" r="3" fill="#fff" />
+            </g>
+
+            <!-- Mouth (Perfect smile arc) -->
+            <path d="M 92 98 Q 100 104 108 98" fill="none" stroke="#0055a9" stroke-width="3" stroke-linecap="round" />
+
+            <!-- Prop: Finora Spark ✦ (Floating) -->
+            <g transform="translate(145, 30)">
+              <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#f6e05e" />
+            </g>
+            <g transform="translate(57, 120)">
+              <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#f6e05e"
+                transform="scale(0.6)" />
+            </g>
+
+            <!-- Clean UI Collar -->
+            <path d="M 70 120 L 130 120 L 120 140 L 80 140 Z" fill="#fff" opacity="0.3" />
+
+            <!-- Prop: Bank Card held in the middle (like Penny holds her coin) -->
+            <g transform="translate(100, 140)">
+              <!-- Hands wrapping around the card -->
+              <circle cx="-24" cy="-4" r="9" fill="#d9e6ff" />
+              <circle cx="24" cy="-4" r="9" fill="#d9e6ff" />
+              <!-- Bank card -->
+              <g transform="translate(0, 0) scale(0.72)">
+                <rect x="-24" y="-16" width="48" height="32" rx="6" fill="#ffffff" stroke="#b8c2d4" stroke-width="4" />
+                <rect x="-24" y="-16" width="48" height="13" rx="6" fill="#0072d5" />
+                <rect x="-24" y="-3" width="48" height="4" fill="#c9d3e2" />
+                <rect x="-16" y="-9" width="10" height="8" rx="2" fill="#f5c04a" />
+                <circle cx="8" cy="-7" r="1.6" fill="#8892a6" />
+                <circle cx="15" cy="-7" r="1.6" fill="#8892a6" />
+                <circle cx="22" cy="-7" r="1.6" fill="#8892a6" />
+              </g>
+            </g>
+          </g>
+        </svg>
+    </div>
+    <div class="ob-name">Nora</div>
+    <div class="ob-slogan">Quản lý chi tiêu thông minh bằng giọng nói &amp; AI</div>
+  </div>
+
+  <!-- Sliding Bottom Sheet (exact ui-sample-3 design) -->
+  <div class="ob-sheet">
+    <div class="ob-progress">
+      <i class="on"></i><i></i><i></i><i></i><i></i>
+    </div>
+    <h3>Nói là xong — Nora hiểu</h3>
+    <p>"Ăn sáng 40k, grab đi làm 35k" — chỉ cần nhắn thế, Nora lo phần còn lại. Khám phá 7 trợ lý AI đồng hành cá nhân hóa theo tình hình tài chính của bạn.</p>
+    <a href="setup-profile.html" class="btn btn-p">
+      Bắt đầu ngay <svg class="ic"><use href="#icon-arrow-up-right"/></svg>
+    </a>
+    <div style="text-align:center; margin-top:16px; font-size:12.5px; color:var(--ink-soft); font-weight:600;">
+      Đã có tài khoản? <a href="../auth/login.html" style="color:var(--primary); font-weight:800;">Đăng nhập</a>
+    </div>
+  </div>
+
+  <script src="../../_shared/mascots-data.js"></script>
+</body>
+</html>

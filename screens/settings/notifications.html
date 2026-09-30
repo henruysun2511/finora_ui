@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Cài đặt thông báo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 40px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .tx-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+    .toggle {
+      width: 48px;
+      height: 28px;
+      border-radius: 99px;
+      background: var(--border);
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle.on {
+      background: var(--primary);
+    }
+    .toggle-th {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .toggle.on .toggle-th {
+      transform: translateX(20px);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="../profile/profile.html" class="tx-back" title="Quay lại">
+        <svg class="ic"><use href="#icon-chevron-left"/></svg>
+      </a>
+      <div class="tx-hdr-title">Tùy chọn thông báo</div>
+    </div>
+
+    <div style="background:#fff;margin:16px 16px 0;border-radius:20px;border:1px solid var(--border);padding:4px 16px;box-shadow:0 2px 8px rgba(15,23,42,.03);">
+      <div class="notif-set-sec" style="font-size:11px;font-weight:900;color:var(--ink-soft);text-transform:uppercase;letter-spacing:1px;padding:12px 0 6px;">Kênh nhận tin</div>
+      <div class="set-row">
+        <div class="set-ic"><svg class="ic"><use href="#icon-smartphone"/></svg></div>
+        <span class="set-lbl">Thông báo đẩy (Push)</span>
+        <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-th"></div></div>
+      </div>
+      <div class="set-row">
+        <div class="set-ic"><svg class="ic"><use href="#icon-mail"/></svg></div>
+        <span class="set-lbl">Email báo cáo tuần</span>
+        <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-th"></div></div>
+      </div>
+
+      <div class="notif-set-sec" style="font-size:11px;font-weight:900;color:var(--ink-soft);text-transform:uppercase;letter-spacing:1px;padding:16px 0 6px;">Cảnh báo tài chính</div>
+      <div class="set-row">
+        <div class="set-ic"><svg class="ic"><use href="#icon-pie-chart"/></svg></div>
+        <span class="set-lbl">Vượt ngân sách (>80%)</span>
+        <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-th"></div></div>
+      </div>
+      <div class="set-row">
+        <div class="set-ic"><svg class="ic"><use href="#icon-calendar"/></svg></div>
+        <span class="set-lbl">Nhắc hạn hóa đơn</span>
+        <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-th"></div></div>
+      </div>
+      <div class="set-row">
+        <div class="set-ic"><svg class="ic"><use href="#icon-bot"/></svg></div>
+        <span class="set-lbl">Gợi ý tài chính từ AI Mascots</span>
+        <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-th"></div></div>
+      </div>
+    </div>
+
+    <div style="padding:16px;">
+      <button class="btn btn-p" onclick="alert('Đã lưu cấu hình thông báo thành công!');location.href='../profile/profile.html';" style="padding:15px;border-radius:16px;">
+        <svg class="ic"><use href="#icon-check"/></svg> Lưu cấu hình
+      </button>
+    </div>
+  </div>
+</body>
+</html>

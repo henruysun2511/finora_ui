@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Thêm khoản vay nợ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 40px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--dash-bg);
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .sbar-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tx-hdr {
+      background: #fff;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+
+    /* Type Toggle Segment */
+    .type-toggle {
+      display: flex;
+      background: #e2e8f0;
+      border-radius: 14px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+    .type-tab {
+      flex: 1;
+      padding: 9px 4px;
+      text-align: center;
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .type-tab.on {
+      background: #fff;
+      color: var(--primary);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .form-card {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 4px 18px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+      margin-bottom: 16px;
+    }
+    .form-group {
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .form-group:last-child { border-bottom: none; }
+    .form-lbl {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .form-inp {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-weight: 700;
+      font-size: 15px;
+      background: transparent;
+      margin-top: 6px;
+      color: var(--foreground);
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    .form-inp.amt {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 24px;
+      color: var(--primary);
+    }
+    .form-select {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-weight: 700;
+      font-size: 14px;
+      background: transparent;
+      margin-top: 6px;
+      color: var(--foreground);
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 800;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 22px oklch(0.55 0.18 250 / 0.35);
+      transition: transform 0.15s, opacity 0.15s;
+      font-family: inherit;
+    }
+    .btn-submit:hover { opacity: 0.95; }
+    .btn-submit:active { transform: scale(0.98); }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <div class="sbar-icons">
+        <svg class="ic" style="width:13px;height:13px;"><use href="#icon-wifi"/></svg>
+        <svg class="ic" style="width:13px;height:13px;"><use href="#icon-battery"/></svg>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="list.html" class="tx-back"><svg class="ic"><use href="#icon-chevron-left"/></svg></a>
+      <div class="tx-hdr-title" id="pageTitle">Thêm khoản Vay / Nợ mới</div>
+    </div>
+
+    <div style="padding:16px;">
+      <!-- Toggle Cho vay vs Đi vay vs Trả góp -->
+      <div class="type-toggle">
+        <div class="type-tab on" id="tabChoVay" onclick="setLoanType('cho_vay', this)">
+          🤝 Cho vay
+        </div>
+        <div class="type-tab" id="tabDiVay" onclick="setLoanType('di_vay', this)">
+          💸 Đi vay
+        </div>
+        <div class="type-tab" id="tabTraGop" onclick="setLoanType('tra_gop', this)">
+          🛵 Trả góp 0%
+        </div>
+      </div>
+
+      <!-- Main Form Card -->
+      <div class="form-card">
+        <!-- Target Name -->
+        <div class="form-group">
+          <div class="form-lbl" id="personLbl"><svg class="ic" style="width:13px;height:13px;"><use href="#icon-user"/></svg> Người mượn tiền của bạn</div>
+          <input type="text" class="form-inp" id="personName" placeholder="vd: Trần Ngọc, Anh Tuấn..." value="Trần Ngọc"/>
+        </div>
+
+        <!-- Amount -->
+        <div class="form-group">
+          <div class="form-lbl" id="amtLbl"><svg class="ic" style="width:13px;height:13px;"><use href="#icon-coins"/></svg> Số tiền cho vay</div>
+          <input type="text" class="form-inp amt" id="loanAmount" value="₫ 2,000,000"/>
+        </div>
+
+        <!-- Term / Installment (Visible when Trả góp) -->
+        <div class="form-group" id="termGroup" style="display:none;">
+          <div class="form-lbl"><svg class="ic" style="width:13px;height:13px;"><use href="#icon-pie-chart"/></svg> Số kỳ trả góp &amp; Mỗi tháng</div>
+          <select class="form-select" id="termSelect" onchange="calcMonthly()">
+            <option value="3">3 tháng (Kỳ hạn ngắn)</option>
+            <option value="6">6 tháng (Phổ biến)</option>
+            <option value="12" selected>12 tháng (1 năm)</option>
+            <option value="24">24 tháng (2 năm)</option>
+          </select>
+          <div id="monthlyCalcText" style="font-size:12px;color:var(--primary);font-weight:800;margin-top:4px;">
+            Dự kiến thanh toán: ~₫166,666 / tháng (0% lãi)
+          </div>
+        </div>
+
+        <!-- Due Date -->
+        <div class="form-group">
+          <div class="form-lbl" id="dateLbl"><svg class="ic" style="width:13px;height:13px;"><use href="#icon-calendar"/></svg> Hạn thanh toán / hoàn trả</div>
+          <input type="text" class="form-inp" value="30/09/2026"/>
+        </div>
+
+        <!-- Wallet Source -->
+        <div class="form-group">
+          <div class="form-lbl"><svg class="ic" style="width:13px;height:13px;"><use href="#icon-wallet"/></svg> Nguồn tiền thanh toán</div>
+          <select class="form-select">
+            <option>Ví Tiền mặt (₫ 2,500,000)</option>
+            <option>Tài khoản Vietcombank (₫ 18,350,000)</option>
+            <option>Ví MoMo (₫ 4,000,000)</option>
+          </select>
+        </div>
+
+        <!-- Note -->
+        <div class="form-group">
+          <div class="form-lbl"><svg class="ic" style="width:13px;height:13px;"><use href="#icon-pencil"/></svg> Ghi chú / Mục đích</div>
+          <input type="text" class="form-inp" id="loanNote" placeholder="vd: Cho vay cọc phòng trọ, mua sắm..." value="Cho vay cọc phòng trọ"/>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button class="btn-submit" id="submitBtn" onclick="saveLoan()">
+        <svg class="ic" style="width:18px;height:18px;"><use href="#icon-check"/></svg> Lưu vào Sổ Cho vay
+      </button>
+    </div>
+  </div>
+
+  <script>
+    var currentType = 'cho_vay';
+
+    function setLoanType(type, el) {
+      document.querySelectorAll('.type-tab').forEach(function(t) { t.classList.remove('on'); });
+      el.classList.add('on');
+      currentType = type;
+
+      var personLbl = document.getElementById('personLbl');
+      var personName = document.getElementById('personName');
+      var amtLbl = document.getElementById('amtLbl');
+      var amtInp = document.getElementById('loanAmount');
+      var submitBtn = document.getElementById('submitBtn');
+      var termGroup = document.getElementById('termGroup');
+      var noteInp = document.getElementById('loanNote');
+      var dateLbl = document.getElementById('dateLbl');
+
+      if (type === 'cho_vay') {
+        personLbl.innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-user"/></svg> Người mượn tiền của bạn';
+        personName.placeholder = 'vd: Trần Ngọc, Hoàng Nam...';
+        amtLbl.innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-coins"/></svg> Số tiền cho vay';
+        amtInp.style.color = 'var(--primary)';
+        termGroup.style.display = 'none';
+        dateLbl.innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-calendar"/></svg> Hạn hoàn trả';
+        noteInp.placeholder = 'vd: Cho mượn cọc phòng trọ, tiền ăn...';
+        submitBtn.innerHTML = '<svg class="ic" style="width:18px;height:18px;"><use href="#icon-check"/></svg> Lưu vào Sổ Cho vay';
+      } else if (type === 'di_vay') {
+        personLbl.innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-user"/></svg> Người / Tổ chức bạn đang nợ';
+        personName.placeholder = 'vd: Anh Thư, Thấu chi Techcombank...';
+        amtLbl.innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-coins"/></svg> Số tiền bạn đi vay';
+        amtInp.style.color = 'var(--danger)';
+        termGroup.style.display = 'none';
+        dateLbl.innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-calendar"/></svg> Hạn cần thanh toán';
+        noteInp.placeholder = 'vd: Tiền mua sắm, trả tiền vé máy bay...';
+        submitBtn.innerHTML = '<svg class="ic" style="width:18px;height:18px;"><use href="#icon-check"/></svg> Lưu vào Sổ Đi vay';
+      } else if (type === 'tra_gop') {
+        personLbl.innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-tag"/></svg> Tên món đồ / Hợp đồng trả góp';
+        personName.placeholder = 'vd: Xe máy Vision 2024, iPhone 16...';
+        personName.value = 'MacBook Air M3';
+        amtLbl.innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-coins"/></svg> Tổng giá trị trả góp 0%';
+        amtInp.value = '₫ 28,000,000';
+        amtInp.style.color = 'var(--primary)';
+        termGroup.style.display = 'block';
+        dateLbl.innerHTML = '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-calendar"/></svg> Ngày đóng kỳ tiếp theo hàng tháng';
+        noteInp.placeholder = 'vd: Trả góp qua thẻ VCB 0% / Home Credit...';
+        noteInp.value = 'Trả góp thẻ tín dụng Vietcombank 0%';
+        submitBtn.innerHTML = '<svg class="ic" style="width:18px;height:18px;"><use href="#icon-check"/></svg> Lưu Gói Trả góp 0%';
+        calcMonthly();
+      }
+    }
+
+    function calcMonthly() {
+      var amtStr = document.getElementById('loanAmount').value.replace(/[^0-9]/g, '');
+      var total = parseInt(amtStr, 10) || 24000000;
+      var terms = parseInt(document.getElementById('termSelect').value, 10) || 12;
+      var monthly = Math.round(total / terms);
+      document.getElementById('monthlyCalcText').innerText = 'Dự kiến thanh toán: ~₫' + monthly.toLocaleString('vi-VN') + ' / kỳ (' + terms + ' tháng 0% lãi)';
+    }
+
+    function saveLoan() {
+      var tabTarget = 0;
+      if (currentType === 'di_vay') tabTarget = 1;
+      if (currentType === 'tra_gop') tabTarget = 2;
+
+      alert('Đã lưu khoản ' + (currentType === 'cho_vay' ? 'Cho vay' : (currentType === 'di_vay' ? 'Đi vay' : 'Trả góp 0%')) + ' thành công!');
+      location.href = 'list.html?tab=' + tabTarget;
+    }
+  </script>
+</body>
+</html>

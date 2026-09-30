@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Chi tiết giao dịch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 40px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .tx-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+    .tx-hdr-link {
+      margin-left: auto;
+      font-size: 13px;
+      color: var(--primary);
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .receipt-box-preview {
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-top: 10px;
+      position: relative;
+    }
+    .receipt-box-preview img {
+      width: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="list.html" class="tx-back" title="Quay lại">
+        <svg class="ic"><use href="#icon-chevron-left"/></svg>
+      </a>
+      <div class="tx-hdr-title">Chi tiết giao dịch</div>
+      <a href="add-manual.html" class="tx-hdr-link">Sửa</a>
+    </div>
+
+    <!-- Hero Card -->
+    <div class="detail-hero">
+      <div class="detail-ic">
+        <svg class="ic" style="color:var(--orange);width:34px;height:34px;"><use href="#icon-utensils"/></svg>
+      </div>
+      <div class="detail-amt">-₫150,000</div>
+      <div class="detail-name">Cơm trưa Team</div>
+      <div class="detail-badge">
+        <svg class="ic"><use href="#icon-check-circle-2"/></svg>
+        Đã ghi sổ thành công
+      </div>
+    </div>
+
+    <!-- Rows Breakdown -->
+    <div style="background:#fff;margin:16px 16px 0;border-radius:20px;border:1px solid var(--border);padding:4px 18px;box-shadow:0 2px 10px rgba(15,23,42,.03);">
+      <div class="detail-row">
+        <span class="detail-row-l">Thời gian</span>
+        <span class="detail-row-v">18/08/2026 · 12:30</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-l">Danh mục</span>
+        <span class="detail-row-v"><svg class="ic" style="color:var(--orange);"><use href="#icon-utensils"/></svg> Ăn uống</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-l">Ví thanh toán</span>
+        <span class="detail-row-v"><svg class="ic" style="color:var(--success);"><use href="#icon-wallet"/></svg> Tiền mặt</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-l">Lặp lại</span>
+        <span class="detail-row-v">Không</span>
+      </div>
+      <div class="detail-row" style="border-bottom:none;">
+        <span class="detail-row-l">Ghi chú & Địa điểm</span>
+        <span class="detail-row-v">Quán Bếp Xanh</span>
+      </div>
+    </div>
+
+    <!-- Split Friend Bill Widget -->
+    <div class="split-card">
+      <div class="split-hdr">
+        <b>Chia đều cho bạn bè</b>
+        <span>₫37,500 / người</span>
+      </div>
+      <div class="split-people">
+        <div class="split-p">
+          <div class="split-av" style="background:linear-gradient(135deg,var(--primary),var(--violet));">T</div>
+          <span class="split-nm">Trung</span>
+        </div>
+        <div class="split-p">
+          <div class="split-av" style="background:linear-gradient(135deg,var(--secondary),var(--orange));">H</div>
+          <span class="split-nm">Hoa</span>
+        </div>
+        <div class="split-p off">
+          <div class="split-av" style="background:linear-gradient(135deg,var(--teal),var(--success));">L</div>
+          <span class="split-nm">Linh</span>
+        </div>
+        <div class="split-p">
+          <div class="split-av add"><svg class="ic"><use href="#icon-plus"/></svg></div>
+          <span class="split-nm">Thêm</span>
+        </div>
+      </div>
+      <div class="split-foot">
+        <span>3 người · mỗi người trả phần của mình</span>
+        <b>₫37,500</b>
+      </div>
+    </div>
+
+    <!-- Receipt Photo Attachment -->
+    <div style="margin:16px 16px 0;background:#fff;border-radius:20px;border:1px solid var(--border);padding:16px;box-shadow:0 2px 10px rgba(15,23,42,.03);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:11px;font-weight:900;color:var(--ink-soft);letter-spacing:1px;text-transform:uppercase;">Ảnh hóa đơn đính kèm</span>
+        <a href="scan-receipt.html" style="font-size:11px;font-weight:800;color:var(--primary);text-decoration:none;">Chụp lại</a>
+      </div>
+      <div class="receipt-box-preview">
+        <img src="../assets/receipt-photo.svg" alt="Hoá đơn chi tiết Bếp Xanh"/>
+      </div>
+    </div>
+
+    <!-- Action Buttons: Xoá & Sửa -->
+    <div class="detail-actions" style="padding:16px 16px 0;">
+      <button class="detail-del" onclick="deleteTx()">
+        <svg class="ic"><use href="#icon-trash-2"/></svg> Xóa giao dịch
+      </button>
+      <button class="detail-edit" onclick="location.href='add-manual.html'">
+        <svg class="ic"><use href="#icon-pencil"/></svg> Chỉnh sửa
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function deleteTx() {
+      if (confirm('Bạn có chắc chắn muốn xóa giao dịch này?')) {
+        alert('Đã xóa giao dịch thành công.');
+        window.location.href = 'list.html';
+      }
+    }
+  </script>
+</body>
+</html>

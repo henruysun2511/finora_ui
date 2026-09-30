@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Chi tiết ví & Tài khoản</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 88px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .tx-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+
+    /* Bank Card Visual */
+    .bank-card-hero {
+      background: linear-gradient(135deg, oklch(0.55 0.18 250), oklch(0.42 0.15 250));
+      border-radius: 24px;
+      margin: 16px 16px 0;
+      padding: 22px;
+      color: #fff;
+      box-shadow: 0 12px 30px oklch(0.55 0.18 250 / 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .bank-card-hero::after {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      top: -50px;
+      right: -30px;
+      pointer-events: none;
+    }
+    .bc-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .bc-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      opacity: 0.9;
+    }
+    .bc-bal {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .bc-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      padding-top: 12px;
+    }
+    .bc-num {
+      font-family: monospace;
+      font-size: 13px;
+      letter-spacing: 2px;
+      opacity: 0.85;
+    }
+
+    /* Quick Action Grid */
+    .wa-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 16px;
+    }
+    .wa-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--foreground);
+      transition: transform 0.15s;
+    }
+    .wa-item:hover { transform: translateY(-2px); }
+    .wa-ic {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="list.html" class="tx-back" title="Quay lại">
+        <svg class="ic"><use href="#icon-chevron-left"/></svg>
+      </a>
+      <div class="tx-hdr-title">Vietcombank Digital</div>
+      <a href="../accounts/detail.html" class="tx-back" style="margin-left:auto;" title="Cài đặt kết nối Open Banking">
+        <svg class="ic"><use href="#icon-sliders"/></svg>
+      </a>
+    </div>
+
+    <!-- Bank Card Hero -->
+    <div class="bank-card-hero">
+      <div class="bc-top">
+        <div class="bc-chip">
+          <svg class="ic" style="width:20px;height:20px;"><use href="#icon-landmark"/></svg>
+          Vietcombank VCB Digibank
+        </div>
+        <span style="font-size:10px;font-weight:900;background:rgba(255,255,255,0.22);padding:4px 8px;border-radius:99px;">Tài khoản chính</span>
+      </div>
+      <div style="font-size:11px;opacity:0.8;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Số dư khả dụng</div>
+      <div class="bc-bal">₫ 14,350,000</div>
+      <div class="bc-bottom">
+        <div>
+          <div style="font-size:10px;opacity:0.75;font-weight:700;">CHỦ TÀI KHOẢN</div>
+          <div style="font-size:12px;font-weight:900;letter-spacing:0.5px;">NGUYEN VAN FINORA</div>
+        </div>
+        <div class="bc-num">9876 **** 8899</div>
+      </div>
+    </div>
+
+    <!-- Quick Actions for this wallet -->
+    <div class="wa-grid">
+      <a href="../transactions/add-manual.html" class="wa-item">
+        <div class="wa-ic" style="background:oklch(0.55 0.18 250 / 0.12);color:var(--primary);">
+          <svg class="ic"><use href="#icon-plus"/></svg>
+        </div>
+        <span style="font-size:11px;font-weight:800;">Ghi sổ GD</span>
+      </a>
+      <div class="wa-item" onclick="alert('Tính năng chuyển khoản liên ngân hàng 24/7')">
+        <div class="wa-ic" style="background:oklch(0.63 0.13 190 / 0.12);color:var(--teal);">
+          <svg class="ic"><use href="#icon-repeat"/></svg>
+        </div>
+        <span style="font-size:11px;font-weight:800;">Chuyển tiền</span>
+      </div>
+      <div class="wa-item" onclick="alert('Đang đồng bộ giao dịch tự động qua Open Banking...')">
+        <div class="wa-ic" style="background:oklch(0.68 0.18 155 / 0.12);color:var(--success);">
+          <svg class="ic"><use href="#icon-refresh-cw"/></svg>
+        </div>
+        <span style="font-size:11px;font-weight:800;">Đồng bộ</span>
+      </div>
+    </div>
+
+    <!-- Transaction History of this wallet -->
+    <div style="padding:0 16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span style="font-size:13.5px;font-weight:900;letter-spacing:-0.3px;">Lịch sử giao dịch ví</span>
+        <a href="../transactions/list.html" style="font-size:12px;font-weight:800;color:var(--primary);text-decoration:none;">Xem tất cả</a>
+      </div>
+
+      <div style="background:#fff;border-radius:18px;border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,.03);">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);">
+          <div style="width:36px;height:36px;border-radius:11px;background:oklch(0.68 0.18 155 / 0.12);color:var(--success);display:flex;align-items:center;justify-content:center;">
+            <svg class="ic"><use href="#icon-banknote"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:800;font-size:13px;">Lương tháng Finora</div>
+            <div style="font-size:11px;color:var(--ink-soft);margin-top:2px;">17/08 · 16:45</div>
+          </div>
+          <div style="font-weight:900;font-size:13.5px;color:var(--success);">+₫15,000,000</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
+          <div style="width:36px;height:36px;border-radius:11px;background:oklch(0.64 0.20 350 / 0.12);color:var(--pink);display:flex;align-items:center;justify-content:center;">
+            <svg class="ic"><use href="#icon-shopping-bag"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:800;font-size:13px;">Siêu thị WinMart</div>
+            <div style="font-size:11px;color:var(--ink-soft);margin-top:2px;">15/08 · 19:20</div>
+          </div>
+          <div style="font-weight:900;font-size:13.5px;color:var(--danger);">-₫420,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard" /></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart" /></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch"><svg class="ic"><use href="#icon-plus" /></svg></a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic"><use href="#icon-bot" /></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user" /></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+</body>
+</html>

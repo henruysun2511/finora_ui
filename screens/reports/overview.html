@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Báo cáo Thống kê</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 84px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .tx-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+
+    /* Bottom Navigation */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 14px;
+      z-index: 40;
+    }
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: color 0.15s;
+    }
+    .bni .ic { width: 20px; height: 20px; }
+    .bni.on { color: var(--primary); font-weight: 900; }
+    .bnav-fab {
+      position: relative;
+      top: -14px;
+    }
+    .bnav-fab .fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), oklch(0.48 0.16 250));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px oklch(0.55 0.18 250 / 0.45);
+      border: 3.5px solid #fff;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .bnav-fab .fab:hover { transform: scale(1.06); }
+    .bnav-fab .fab .ic { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="../home/dashboard.html" class="tx-back" title="Quay lại">
+        <svg class="ic"><use href="#icon-chevron-left"/></svg>
+      </a>
+      <div class="tx-hdr-title">Báo cáo Tài chính</div>
+      <div style="margin-left:auto;display:flex;gap:6px;">
+        <button class="tx-back" onclick="alert('Xuất báo cáo định dạng PDF/Excel')"><svg class="ic"><use href="#icon-share-2"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Stats Header & Periods -->
+    <div class="stats-hdr" style="padding-top:14px;">
+      <div class="stats-ttl">Tháng 8, 2026</div>
+      <div class="period-pills">
+        <button class="pp" onclick="selectPeriod(this)">Tuần</button>
+        <button class="pp on" onclick="selectPeriod(this)">Tháng</button>
+        <button class="pp" onclick="selectPeriod(this)">Năm</button>
+        <button class="pp" onclick="selectPeriod(this)">Tất cả</button>
+      </div>
+
+      <!-- Stat 4 Boxes Grid -->
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-box-lbl">Thu nhập</div>
+          <div class="stat-box-val sv-green">₫15.0M</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-lbl">Chi tiêu</div>
+          <div class="stat-box-val sv-red">₫8.3M</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-lbl">Tiết kiệm</div>
+          <div class="stat-box-val sv-orange">₫4.0M</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-lbl">Dòng tiền dư</div>
+          <div class="stat-box-val sv-violet">₫2.7M</div>
+        </div>
+      </div>
+
+      <!-- Income vs Expense Bar Chart -->
+      <div class="bar-wrap">
+        <div class="bar-col-g"><div class="bar-stack"><div class="bar-inc" style="height:50%;"></div><div class="bar-exp" style="height:38%;"></div></div><div class="bar-bl">T2</div></div>
+        <div class="bar-col-g"><div class="bar-stack"><div class="bar-inc" style="height:55%;"></div><div class="bar-exp" style="height:44%;"></div></div><div class="bar-bl">T3</div></div>
+        <div class="bar-col-g"><div class="bar-stack"><div class="bar-inc" style="height:68%;"></div><div class="bar-exp" style="height:42%;"></div></div><div class="bar-bl">T4</div></div>
+        <div class="bar-col-g"><div class="bar-stack"><div class="bar-inc" style="height:60%;"></div><div class="bar-exp" style="height:50%;"></div></div><div class="bar-bl">T5</div></div>
+        <div class="bar-col-g"><div class="bar-stack"><div class="bar-inc" style="height:75%;"></div><div class="bar-exp" style="height:46%;"></div></div><div class="bar-bl">T6</div></div>
+        <div class="bar-col-g"><div class="bar-stack"><div class="bar-inc" style="height:72%;"></div><div class="bar-exp" style="height:55%;"></div></div><div class="bar-bl">T7</div></div>
+        <div class="bar-col-g"><div class="bar-stack"><div class="bar-inc hi" style="height:100%;"></div><div class="bar-exp" style="height:55%;background:oklch(0.62 0.22 25 / .8);"></div></div><div class="bar-bl hi">T8</div></div>
+      </div>
+    </div>
+
+    <!-- Category Donut Breakdown -->
+    <div class="cat-wrap">
+      <div class="cat-hdr">
+        <b>Cơ cấu theo danh mục</b>
+        <div class="cat-legend">
+          <span><i style="background:var(--success);"></i>Thu</span>
+          <span><i style="background:var(--danger);"></i>Chi</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:16px;align-items:center;">
+        <div class="donut-wrap">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--border)" stroke-width="13"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--primary)" stroke-width="13" stroke-dasharray="90 150" stroke-dashoffset="25" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--secondary)" stroke-width="13" stroke-dasharray="40 200" stroke-dashoffset="-65" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--success)" stroke-width="13" stroke-dasharray="25 215" stroke-dashoffset="-105" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="oklch(0.55 0.2 285)" stroke-width="13" stroke-dasharray="20 220" stroke-dashoffset="-130" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--danger)" stroke-width="13" stroke-dasharray="15 225" stroke-dashoffset="-150" stroke-linecap="round"/>
+          </svg>
+          <div class="donut-center">
+            <div class="donut-v">₫8.3M</div>
+            <div class="donut-l">Chi tiêu</div>
+          </div>
+        </div>
+
+        <div class="cat-table">
+          <div class="cat-tr"><div class="cat-dot" style="background:var(--primary);"></div><span class="cat-nm">Ăn uống</span><div class="cat-bar-bg"><div class="cat-bar-fg" style="width:38%;background:var(--primary);"></div></div><span class="cat-pct">38%</span></div>
+          <div class="cat-tr"><div class="cat-dot" style="background:var(--secondary);"></div><span class="cat-nm">Mua sắm</span><div class="cat-bar-bg"><div class="cat-bar-fg" style="width:25%;background:var(--secondary);"></div></div><span class="cat-pct">25%</span></div>
+          <div class="cat-tr"><div class="cat-dot" style="background:var(--success);"></div><span class="cat-nm">Hóa đơn</span><div class="cat-bar-bg"><div class="cat-bar-fg" style="width:15%;background:var(--success);"></div></div><span class="cat-pct">15%</span></div>
+          <div class="cat-tr"><div class="cat-dot" style="background:oklch(0.55 0.2 285);"></div><span class="cat-nm">Di chuyển</span><div class="cat-bar-bg"><div class="cat-bar-fg" style="width:12%;background:oklch(0.55 0.2 285);"></div></div><span class="cat-pct">12%</span></div>
+          <div class="cat-tr"><div class="cat-dot" style="background:var(--danger);"></div><span class="cat-nm">Giải trí</span><div class="cat-bar-bg"><div class="cat-bar-fg" style="width:10%;background:var(--danger);"></div></div><span class="cat-pct">10%</span></div>
+        </div>
+      </div>
+
+      <!-- AI Insight Card -->
+      <div class="ai-insight" style="margin-top:20px;">
+        <div class="ai-insight-ttl"><svg class="ic"><use href="#icon-sparkles"/></svg> Nhận xét từ Nora AI</div>
+        <div class="ai-insight-body">
+          Tháng này chi <strong>Ăn uống</strong> tăng 22% — chủ yếu từ tuần 2. Cắt 3 bữa ngoài/tuần sẽ giúp bạn tiết kiệm thêm ~₫800,000 để sớm hoàn thành mục tiêu <strong>Du lịch Nhật Bản</strong>!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard"/></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="overview.html" class="bni on">
+      <svg class="ic"><use href="#icon-pie-chart"/></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch">
+        <svg class="ic"><use href="#icon-plus"/></svg>
+      </a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic"><use href="#icon-bot"/></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user"/></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+
+  <script>
+    function selectPeriod(btn) {
+      document.querySelectorAll('.pp').forEach(function(p){ p.classList.remove('on'); });
+      btn.classList.add('on');
+    }
+  </script>
+</body>
+</html>

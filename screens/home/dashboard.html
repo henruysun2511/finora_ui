@@ -1,0 +1,2231 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finora · Dashboard Trang chủ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="../../_shared/base.css" />
+  <link rel="stylesheet" href="../../_shared/components.css" />
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    /* ui-sample-3 Authentic Theme Tokens */
+    :root {
+      --primary: oklch(0.55 0.18 250);
+      --secondary: oklch(0.78 0.16 65);
+      --orange: oklch(0.70 0.19 45);
+      --violet: oklch(0.55 0.20 285);
+      --teal: oklch(0.63 0.13 190);
+      --pink: oklch(0.64 0.20 350);
+      --background: oklch(0.99 0.01 230);
+      --foreground: oklch(0.25 0.06 240);
+      --muted-fore: oklch(0.55 0.02 240);
+      --accent: oklch(0.55 0.18 250 / 0.12);
+      --border: oklch(0.92 0.01 240);
+      --dash-bg: oklch(0.97 0.01 240);
+      --success: oklch(0.68 0.18 155);
+      --danger: oklch(0.62 0.22 25);
+      --ink: oklch(0.28 0.05 240);
+      --ink-soft: oklch(0.60 0.02 240);
+      --ink-faint: oklch(0.75 0.02 240);
+      --r-xl: 28px;
+      --r-md: 16px;
+      --r-sm: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    *::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+
+    html, body {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--foreground);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top App Header */
+    .home-hdr {
+      background: #ffffff;
+      padding: 0 20px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .home-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 16px 0 16px;
+    }
+
+    .greeting-line {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .user-name {
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      color: var(--foreground);
+      margin-top: 2px;
+    }
+
+    .user-name b {
+      color: var(--primary);
+    }
+
+    .hdr-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .hdr-chip {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--foreground);
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .hdr-chip:hover {
+      background: var(--border);
+    }
+
+    .hdr-chip .dot {
+      position: absolute;
+      top: 9px;
+      right: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--secondary);
+      border: 2px solid #fff;
+    }
+
+    /* Balance Hero Card */
+    .balance-card {
+      background: linear-gradient(135deg, oklch(0.50 0.17 250) 0%, oklch(0.42 0.15 250) 55%, var(--orange));
+      border-radius: 26px;
+      padding: 20px 22px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 36px oklch(0.55 0.18 250 / .35);
+    }
+
+    .balance-card::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      top: -70px;
+      right: -50px;
+      pointer-events: none;
+    }
+
+    .bal-label {
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bal-amount {
+      font-family: 'Outfit', sans-serif;
+      font-size: 33px;
+      font-weight: 900;
+      letter-spacing: -1.2px;
+      margin: 6px 0 14px;
+      position: relative;
+    }
+
+    .bal-row {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      padding-top: 12px;
+    }
+
+    .bal-col {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bal-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bal-col-label {
+      font-size: 10.5px;
+      opacity: 0.75;
+      font-weight: 600;
+    }
+
+    .bal-col-val {
+      font-size: 13.5px;
+      font-weight: 800;
+    }
+
+    /* Home Body Content */
+    .hbody {
+      flex: 1;
+      padding: 16px 18px 85px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* Nora Mascot Insight Card */
+    .mascot-ai-bar {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 1.5px solid #bfdbfe;
+      border-radius: 20px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.08);
+    }
+
+    .nora-avatar-mini {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 16px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .nora-avatar-mini svg {
+      width: 38px;
+      height: 38px;
+    }
+
+    .ai-bubble-text {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #1e3a8a;
+      line-height: 1.45;
+    }
+
+    .ai-bubble-text strong {
+      color: #1d4ed8;
+      font-weight: 800;
+    }
+
+    /* Section Titles */
+    .sec-h {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--foreground);
+    }
+
+    .sec-h .r {
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Accounts Horizontal Scroll */
+    .acc-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 2px;
+    }
+
+    .acc-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .acc-card {
+      min-width: 140px;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .acc-card.on {
+      border-color: var(--primary);
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+
+    .acc-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .acc-ic {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .acc-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    .acc-balance {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--foreground);
+    }
+
+    .acc-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ink-soft);
+      margin-top: 6px;
+    }
+
+    .acc-chip i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    /* Quick Grid Actions */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .qk-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .qk-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transition: transform 0.15s;
+    }
+
+    .qk-icon:active {
+      transform: scale(0.92);
+    }
+
+    .qk-icon.pri {
+      background: var(--primary);
+    }
+
+    .qk-icon.teal {
+      background: var(--teal);
+    }
+
+    .qk-icon.orange {
+      background: var(--orange);
+    }
+
+    .qk-icon.violet {
+      background: var(--violet);
+    }
+
+    .qk-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* Transactions Card */
+    .tx-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 8px 16px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .tx-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tx-row:last-child {
+      border-bottom: none;
+    }
+
+    .tx-ic {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+    }
+
+    .tx-info-col {
+      flex: 1;
+    }
+
+    .tx-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--foreground);
+    }
+
+    .tx-meta {
+      font-size: 11px;
+      color: var(--ink-soft);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .tx-amt {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .tx-amt.pos {
+      color: var(--success);
+    }
+
+    .tx-amt.neg {
+      color: var(--danger);
+    }
+
+    /* Bottom Navigation Bar */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 14px 22px;
+      z-index: 20;
+    }
+
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ink-soft);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .bni.on {
+      color: var(--primary);
+    }
+
+    .bni .ic {
+      width: 20px;
+      height: 20px;
+    }
+
+    .bnav-fab {
+      position: relative;
+      top: -12px;
+    }
+
+    .fab {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px var(--primary-glow);
+      cursor: pointer;
+    }
+
+    /* ==========================================
+       PHOTO CALENDAR (ui-sample-3 authentic)
+       ========================================== */
+    .cal-wrap-card {
+      background: #ffffff;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+    }
+
+    .cal-hdr {
+      background: #ffffff;
+      padding: 14px 16px 8px;
+    }
+
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .cal-nav-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--foreground);
+      transition: background 0.15s;
+    }
+
+    .cal-nav-btn:hover {
+      background: var(--border);
+    }
+
+    .cal-nav-btn .ic {
+      width: 17px;
+      height: 17px;
+    }
+
+    .cal-nav-title {
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      color: var(--foreground);
+    }
+
+    .cal-sub {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      font-weight: 600;
+      margin: 4px 0 6px;
+    }
+
+    .cal-card {
+      background: #ffffff;
+      border-radius: 0;
+      border: none;
+      margin: 0;
+      padding: 4px 14px 14px;
+    }
+
+    .lc-dow {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-bottom: 9px;
+    }
+
+    .lc-dow span {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 900;
+      color: var(--ink-faint);
+      letter-spacing: 0.3px;
+    }
+
+    .lc-cells {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .mcell {
+      aspect-ratio: 1;
+      border-radius: 14px;
+      background: var(--dash-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .mcell:hover {
+      transform: scale(1.06);
+    }
+
+    .mcell .m-num {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1;
+      position: relative;
+      z-index: 2;
+    }
+
+    .mcell.empty .m-num {
+      color: var(--ink-faint);
+    }
+
+    .mcell.has {
+      background: oklch(0.55 0.18 250 / 0.07);
+    }
+
+    .mcell.has .m-num {
+      color: var(--primary);
+    }
+
+    .mcell.has-photo {
+      background-size: cover;
+      background-position: center;
+      padding: 0;
+    }
+
+    .mcell.fan {
+      background: var(--dash-bg);
+    }
+
+    .mcell .m-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--primary);
+      z-index: 2;
+    }
+
+    .mcell .m-count {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 99px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      z-index: 6;
+    }
+
+    .pnum {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      min-width: 16px;
+      height: 15px;
+      padding: 0 4px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--foreground);
+      font-size: 9px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      z-index: 5;
+    }
+
+    .phic {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      width: 13px;
+      height: 13px;
+      color: rgba(255, 255, 255, 0.92);
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+      z-index: 5;
+      opacity: 0.92;
+    }
+
+    .fan-stack {
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      top: 15%;
+      bottom: 15%;
+      z-index: 2;
+    }
+
+    .fan-stack .fan-c {
+      position: absolute;
+      top: 0;
+      left: 11%;
+      width: 78%;
+      height: 100%;
+      border-radius: 9px;
+      background-size: cover;
+      background-position: center;
+      border: 1.5px solid #fff;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.28);
+    }
+
+    .mcell.sel {
+      box-shadow: 0 0 0 2px var(--primary), 0 0 0 4px #fff, 0 6px 14px oklch(0.55 0.18 250 / 0.35);
+    }
+
+    .mcell.sel .m-count {
+      background: #fff;
+      color: var(--primary);
+    }
+
+    .mcell.sel .m-dot {
+      background: var(--primary);
+    }
+
+    .cal-detail {
+      border-top: 1px solid var(--border);
+      background: #ffffff;
+      padding: 14px 16px 16px;
+    }
+
+    .cal-detail-title {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--foreground);
+      margin-bottom: 8px;
+    }
+
+    .cd-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cd-row:last-child {
+      border-bottom: none;
+    }
+
+    .cd-ic {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--foreground);
+    }
+
+    .cd-ic .ic {
+      width: 18px;
+      height: 18px;
+    }
+
+    .cd-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--foreground);
+    }
+
+    .cd-meta {
+      font-size: 10.5px;
+      color: var(--ink-faint);
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    .cd-amt {
+      margin-left: auto;
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--danger);
+    }
+
+    .btn-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 13px;
+      border-radius: 99px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 14px oklch(0.55 0.18 250 / 0.25);
+      text-decoration: none;
+    }
+
+    .btn-sm .ic {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ==========================================
+       SMART FINANCIAL ANALYTICS (Charts & Trends)
+       ========================================== */
+    .ana-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 16px 18px 18px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+
+    .ana-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .ana-card-title {
+      font-size: 14.5px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+      color: var(--foreground);
+    }
+
+    .ana-card-sub {
+      font-size: 11px;
+      color: var(--ink-soft);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .ana-pills {
+      display: inline-flex;
+      background: var(--dash-bg);
+      padding: 3px;
+      border-radius: 12px;
+      gap: 2px;
+    }
+
+    .ana-pill {
+      border: none;
+      background: transparent;
+      padding: 5px 10px;
+      border-radius: 9px;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ana-pill.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Summary Indicators */
+    .ana-stat-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .ana-stat-chip {
+      flex: 1;
+      background: var(--dash-bg);
+      border-radius: 14px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ana-stat-chip-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .ana-stat-chip-lbl i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .ana-stat-chip-val {
+      font-size: 13.5px;
+      font-weight: 900;
+      font-family: 'Outfit', sans-serif;
+      color: var(--foreground);
+    }
+
+    /* Bar Chart Component */
+    .ana-chart-canvas {
+      position: relative;
+      height: 140px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 22px 6px 6px;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .ana-bench-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      border-top: 1px dashed oklch(0.55 0.18 250 / 0.35);
+      display: flex;
+      justify-content: flex-end;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .ana-bench-badge {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--primary);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
+      padding: 0 4px;
+      position: relative;
+      top: -8px;
+    }
+
+    .ana-bar-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ana-bars-pair {
+      height: 95px;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .ana-bar {
+      width: 8px;
+      border-radius: 6px 6px 2px 2px;
+      transition: height 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.15s, filter 0.15s;
+    }
+
+    .ana-bar.income {
+      background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+    }
+
+    .ana-bar.expense {
+      background: linear-gradient(180deg, #f43f5e 0%, #e11d48 100%);
+    }
+
+    .ana-bar-lbl {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--ink-soft);
+      transition: color 0.15s;
+    }
+
+    .ana-bar-col:hover .ana-bar,
+    .ana-bar-col.active .ana-bar {
+      transform: scaleY(1.06);
+      filter: brightness(1.15) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+    }
+
+    .ana-bar-col.active .ana-bar-lbl {
+      color: var(--primary);
+      font-weight: 900;
+    }
+
+    .ana-bar-col.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .ana-day-detail-box {
+      background: var(--dash-bg);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .ana-day-detail-box .hl {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    /* Donut Breakdown Component */
+    .ana-donut-section {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .ana-donut-vis {
+      position: relative;
+      width: 112px;
+      height: 112px;
+      flex-shrink: 0;
+    }
+
+    .ana-donut-vis svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .ana-d-seg {
+      transition: stroke-width 0.2s, filter 0.2s;
+      cursor: pointer;
+    }
+
+    .ana-d-seg:hover {
+      stroke-width: 16;
+      filter: brightness(1.12);
+    }
+
+    .ana-donut-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .ana-donut-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--foreground);
+      line-height: 1.1;
+    }
+
+    .ana-donut-lbl {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    .ana-cat-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .ana-cat-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 10px;
+      transition: background 0.15s;
+    }
+
+    .ana-cat-row:hover,
+    .ana-cat-row.active {
+      background: var(--dash-bg);
+    }
+
+    .ana-cat-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .ana-cat-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .ana-cat-topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    .ana-cat-bar-bg {
+      height: 4.5px;
+      background: var(--dash-bg);
+      border-radius: 99px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .ana-cat-bar-fg {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.3s ease;
+    }
+
+    /* Budget Pacing & Health */
+    .ana-pacing-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ana-pacing-metrics {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .ana-pacing-nums {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ana-pacing-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 3px 8px;
+      border-radius: 99px;
+    }
+
+    .ana-dual-prog {
+      position: relative;
+      height: 10px;
+      background: var(--dash-bg);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 4px 0 2px;
+    }
+
+    .ana-dual-prog-spend {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #3b82f6);
+      border-radius: 99px;
+      z-index: 2;
+    }
+
+    .ana-dual-prog-time {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: oklch(0.55 0.18 250 / 0.18);
+      border-radius: 99px;
+      z-index: 1;
+    }
+
+    .ana-pacing-subline {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    .ana-mini-tiles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .ana-mini-tile {
+      background: var(--dash-bg);
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ana-mini-tile-ic {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      flex-shrink: 0;
+    }
+
+    .ana-mini-tile-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ana-mini-tile-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    .ana-mini-tile-val {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--foreground);
+    }
+
+    .ana-nora-banner {
+      background: linear-gradient(135deg, #f0f7ff 0%, #e0edff 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ana-nora-banner-text {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #1e40af;
+      line-height: 1.45;
+      flex: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top App Bar -->
+  <div class="home-hdr">
+    <div class="sbar">
+      <span>9:41</span>
+      <div class="icons">
+        <svg class="ic" style="width:14px;height:14px;">
+          <use href="#icon-wifi" />
+        </svg>
+        <svg class="ic" style="width:14px;height:14px;">
+          <use href="#icon-zap" />
+        </svg>
+      </div>
+    </div>
+
+    <div class="home-top">
+      <div>
+        <div class="greeting-line">
+          <span>Chào buổi sáng</span>
+          <span style="color:#f59e0b;">✦</span>
+        </div>
+        <div class="user-name" id="displayUserName">Nguyễn Văn <b>A</b></div>
+      </div>
+      <div class="hdr-actions">
+        <!-- Social Feed Link -->
+        <a href="../social/feed.html" class="hdr-chip" title="Bảng tin bạn bè">
+          <svg class="ic">
+            <use href="#icon-users" />
+          </svg>
+        </a>
+        <!-- Sign out link back to gateway -->
+        <a href="../auth/welcome.html" class="hdr-chip" title="Đăng xuất / Quay lại Mascot">
+          <svg class="ic">
+            <use href="#icon-log-out" />
+          </svg>
+        </a>
+        <a href="../notifications/list.html" class="hdr-chip" title="Thông báo">
+          <div class="dot"></div>
+          <svg class="ic">
+            <use href="#icon-bell" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Balance Hero Card -->
+    <div class="balance-card">
+      <div class="bal-label">
+        <svg class="ic" style="width:13px;height:13px;">
+          <use href="#icon-wallet" />
+        </svg>
+        <span>Tổng tài sản khả dụng</span>
+      </div>
+      <div class="bal-amount">₫ 24,850,000</div>
+      <div class="bal-row">
+        <div class="bal-col">
+          <div class="bal-icon"><svg class="ic" style="width:14px;height:14px;">
+              <use href="#icon-arrow-up" />
+            </svg></div>
+          <div>
+            <div class="bal-col-label">Thu tháng này</div>
+            <div class="bal-col-val">₫ 15,000,000</div>
+          </div>
+        </div>
+        <div class="bal-col">
+          <div class="bal-icon"><svg class="ic" style="width:14px;height:14px;">
+              <use href="#icon-arrow-down" />
+            </svg></div>
+          <div>
+            <div class="bal-col-label">Chi tháng này</div>
+            <div class="bal-col-val">₫ 8,320,000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body Content -->
+  <div class="hbody">
+
+    <!-- Nora AI Companion Card -->
+    <a href="../chat-ai/chat.html" style="text-decoration:none;color:inherit;display:block;" title="Trò chuyện cùng Nora">
+      <div class="mascot-ai-bar">
+        <div class="nora-avatar-mini">
+          <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#ffffff" />
+            <rect x="50" y="50" width="100" height="70" rx="35" fill="#0055a9" />
+            <circle cx="75" cy="80" r="7" fill="#fff" />
+            <circle cx="125" cy="80" r="7" fill="#fff" />
+            <path d="M 94 98 Q 100 104 106 98" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" />
+            <circle cx="152" cy="52" r="16" fill="#f59e0b" />
+          </svg>
+        </div>
+        <div class="ai-bubble-text">
+          <strong>Trợ lý Nora:</strong> "Đăng nhập thành công! Tuần này bạn đã tiết kiệm vượt mục tiêu
+          <strong>+12%</strong>. Chạm vào đây để trò chuyện nhé!"
+        </div>
+      </div>
+    </a>
+
+    <!-- Accounts -->
+    <div class="sec-h">
+      <span>Tài khoản &amp; Nguồn tiền</span>
+      <a href="../wallets/list.html" class="r" style="text-decoration:none;color:var(--primary);">Xem tất cả</a>
+    </div>
+    <div class="acc-scroll">
+      <a href="../wallets/list.html" style="text-decoration:none;color:inherit;" class="acc-card">
+        <div class="acc-top">
+          <div class="acc-ic"><svg class="ic">
+              <use href="#icon-wallet" />
+            </svg></div>
+          <div class="acc-name">Tiền mặt</div>
+        </div>
+        <div class="acc-balance">₫ 2,500,000</div>
+        <div class="acc-chip"><i style="background:var(--success);"></i>Ví chính</div>
+      </a>
+
+      <a href="../wallets/detail.html" style="text-decoration:none;color:inherit;" class="acc-card on">
+        <div class="acc-top">
+          <div class="acc-ic"><svg class="ic">
+              <use href="#icon-landmark" />
+            </svg></div>
+          <div class="acc-name">Vietcombank</div>
+        </div>
+        <div class="acc-balance">₫ 18,350,000</div>
+        <div class="acc-chip"><i style="background:var(--primary);"></i>Tài khoản lương</div>
+      </a>
+
+      <a href="../wallets/list.html" style="text-decoration:none;color:inherit;" class="acc-card">
+        <div class="acc-top">
+          <div class="acc-ic"><svg class="ic">
+              <use href="#icon-smartphone" />
+            </svg></div>
+          <div class="acc-name">MoMo</div>
+        </div>
+        <div class="acc-balance">₫ 4,000,000</div>
+        <div class="acc-chip"><i style="background:var(--secondary);"></i>Ví điện tử</div>
+      </a>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="sec-h">
+      <span>Thao tác nhanh</span>
+    </div>
+    <div class="quick-grid">
+      <a href="../transactions/add-manual.html" class="qk-item" style="text-decoration:none;color:inherit;">
+        <div class="qk-icon pri"><svg class="ic">
+            <use href="#icon-plus" />
+          </svg></div>
+        <span class="qk-label">Thu/Chi</span>
+      </a>
+      <a href="../wallets/list.html" class="qk-item" style="text-decoration:none;color:inherit;">
+        <div class="qk-icon teal"><svg class="ic">
+            <use href="#icon-repeat" />
+          </svg></div>
+        <span class="qk-label">Chuyển</span>
+      </a>
+      <a href="../reports/overview.html" class="qk-item" style="text-decoration:none;color:inherit;">
+        <div class="qk-icon orange"><svg class="ic">
+            <use href="#icon-pie-chart" />
+          </svg></div>
+        <span class="qk-label">Báo cáo</span>
+      </a>
+      <a href="../budgets/list.html" class="qk-item" style="text-decoration:none;color:inherit;">
+        <div class="qk-icon violet"><svg class="ic">
+            <use href="#icon-target" />
+          </svg></div>
+        <span class="qk-label">Ngân sách</span>
+      </a>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="sec-h">
+      <span>Giao dịch gần đây</span>
+      <a href="../transactions/list.html" class="r" style="text-decoration:none;color:var(--primary);">Tất cả</a>
+    </div>
+    <div class="tx-card">
+      <a href="../transactions/detail.html" style="text-decoration:none;color:inherit;display:block;" class="tx-row">
+        <div class="tx-ic"><svg class="ic">
+            <use href="#icon-utensils" />
+          </svg></div>
+        <div class="tx-info-col">
+          <div class="tx-name">Ăn trưa văn phòng</div>
+          <div class="tx-meta">Ăn uống · Hôm nay 12:30</div>
+        </div>
+        <div class="tx-amt neg">-₫55,000</div>
+      </a>
+
+      <a href="../transactions/detail.html" style="text-decoration:none;color:inherit;display:block;" class="tx-row">
+        <div class="tx-ic"><svg class="ic">
+            <use href="#icon-banknote" />
+          </svg></div>
+        <div class="tx-info-col">
+          <div class="tx-name">Lương tháng Finora</div>
+          <div class="tx-meta">Thu nhập · Hôm qua 16:45</div>
+        </div>
+        <div class="tx-amt pos">+₫15,000,000</div>
+      </a>
+
+      <a href="../transactions/detail.html" style="text-decoration:none;color:inherit;display:block;" class="tx-row">
+        <div class="tx-ic"><svg class="ic">
+            <use href="#icon-shopping-bag" />
+          </svg></div>
+        <div class="tx-info-col">
+          <div class="tx-name">Siêu thị VinMart</div>
+          <div class="tx-meta">Tiêu dùng · 28/09</div>
+        </div>
+        <div class="tx-amt neg">-₫420,000</div>
+      </a>
+    </div>
+
+    <!-- Photo Calendar (Lịch ảnh chi tiêu - ui-sample-3 authentic) -->
+    <div class="sec-h" style="margin-top:6px;">
+      <span>Lịch ảnh chi tiêu</span>
+      <span class="r" style="color:var(--primary);cursor:pointer;" onclick="document.getElementById('calCardWidget').scrollIntoView({behavior:'smooth'})">Tháng 8 · 2026</span>
+    </div>
+
+    <div class="cal-wrap-card" id="calCardWidget">
+      <div class="cal-hdr">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" type="button" onclick="shiftMonth(-1)"><svg class="ic"><use href="#icon-chevron-left"/></svg></button>
+          <div class="cal-nav-title" id="calTitleDisplay">Tháng 8 · 2026</div>
+          <button class="cal-nav-btn" type="button" onclick="shiftMonth(1)"><svg class="ic"><use href="#icon-chevron-right"/></svg></button>
+        </div>
+        <div class="cal-sub">
+          <span id="calCountSub">33 giao dịch trong tháng</span>
+          <a href="../transactions/add-manual.html" class="btn-sm"><svg class="ic"><use href="#icon-plus"/></svg> Thêm GD</a>
+        </div>
+      </div>
+      <div class="cal-card">
+        <div class="lc-dow"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span></div>
+        <div class="lc-cells" id="calCellsGrid">
+
+          <div class="mcell has-photo" data-day="1" data-date="Thứ sáu, 1/8/2026" style="background-image:linear-gradient(135deg,#FFE4C6,#FFA94D);"><span class="pnum">1</span><svg class="ic phic"><use href="#icon-coffee"/></svg></div>
+          <div class="mcell empty" data-day="2" data-date="Thứ bảy, 2/8/2026"><span class="m-num">2</span></div>
+          <div class="mcell empty" data-day="3" data-date="Chủ nhật, 3/8/2026"><span class="m-num">3</span></div>
+          <div class="mcell fan" data-day="4" data-date="Thứ hai, 4/8/2026">
+            <span class="pnum">4</span>
+            <div class="fan-stack">
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#C8D8FF,#6E8BFF);transform:translate(-28%,3%) rotate(-12deg);"></div>
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#FFD5AB,#FF9C47);transform:translate(22%,-1%) rotate(10deg);"></div>
+            </div>
+          </div>
+          <div class="mcell has-photo" data-day="5" data-date="Thứ ba, 5/8/2026" style="background-image:linear-gradient(135deg,#B9D4FF,#5F8BFF);"><span class="pnum">5</span><svg class="ic phic"><use href="#icon-car"/></svg></div>
+          <div class="mcell empty" data-day="6" data-date="Thứ tư, 6/8/2026"><span class="m-num">6</span></div>
+          <div class="mcell empty" data-day="7" data-date="Thứ năm, 7/8/2026"><span class="m-num">7</span></div>
+
+          <div class="mcell has-photo sel" data-day="8" data-date="Thứ ba, 8/8/2026" style="background-image:linear-gradient(135deg,#B8D4FF,#4F7BFF);"><span class="pnum">8</span><svg class="ic phic"><use href="#icon-utensils"/></svg><span class="m-count">3</span></div>
+          <div class="mcell empty" data-day="9" data-date="Thứ bảy, 9/8/2026"><span class="m-num">9</span></div>
+          <div class="mcell fan" data-day="10" data-date="Thứ hai, 10/8/2026">
+            <span class="pnum">10</span>
+            <div class="fan-stack">
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#FFE9B0,#FFC857);transform:translate(-28%,3%) rotate(-12deg);"></div>
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#FFD2E0,#FF7FA5);transform:translate(22%,-1%) rotate(10deg);"></div>
+            </div>
+            <span class="m-count">1</span>
+          </div>
+          <div class="mcell empty" data-day="11" data-date="Thứ ba, 11/8/2026"><span class="m-num">11</span></div>
+          <div class="mcell empty" data-day="12" data-date="Thứ tư, 12/8/2026"><span class="m-num">12</span></div>
+          <div class="mcell has-photo" data-day="13" data-date="Thứ năm, 13/8/2026" style="background-image:linear-gradient(135deg,#C9F0DA,#5FCF8B);"><span class="pnum">13</span><svg class="ic phic"><use href="#icon-piggy-bank"/></svg></div>
+          <div class="mcell empty" data-day="14" data-date="Thứ sáu, 14/8/2026"><span class="m-num">14</span></div>
+
+          <div class="mcell empty" data-day="15" data-date="Thứ bảy, 15/8/2026"><span class="m-num">15</span></div>
+          <div class="mcell empty" data-day="16" data-date="Chủ nhật, 16/8/2026"><span class="m-num">16</span></div>
+          <div class="mcell fan" data-day="17" data-date="Thứ hai, 17/8/2026">
+            <span class="pnum">17</span>
+            <div class="fan-stack">
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#D9F0DC,#57CF7E);transform:translate(-28%,3%) rotate(-12deg);"></div>
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#DBCCFF,#8F74FF);transform:translate(22%,-1%) rotate(10deg);"></div>
+            </div>
+          </div>
+          <div class="mcell empty" data-day="18" data-date="Thứ ba, 18/8/2026"><span class="m-num">18</span></div>
+          <div class="mcell has-photo" data-day="19" data-date="Thứ tư, 19/8/2026" style="background-image:linear-gradient(135deg,#FFD8E0,#FF7FA5);"><span class="pnum">19</span><svg class="ic phic"><use href="#icon-receipt"/></svg></div>
+          <div class="mcell has" data-day="20" data-date="Thứ năm, 20/8/2026"><span class="m-num">20</span><span class="m-dot"></span></div>
+          <div class="mcell empty" data-day="21" data-date="Thứ sáu, 21/8/2026"><span class="m-num">21</span></div>
+
+          <div class="mcell empty" data-day="22" data-date="Thứ bảy, 22/8/2026"><span class="m-num">22</span></div>
+          <div class="mcell has-photo" data-day="23" data-date="Chủ nhật, 23/8/2026" style="background-image:linear-gradient(135deg,#FFE9B8,#FFC857);"><span class="pnum">23</span><svg class="ic phic"><use href="#icon-banknote"/></svg></div>
+          <div class="mcell fan" data-day="24" data-date="Thứ hai, 24/8/2026">
+            <span class="pnum">24</span>
+            <div class="fan-stack">
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#C2EEF0,#5FC9CF);transform:translate(-28%,3%) rotate(-12deg);"></div>
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#FFD5AB,#FF9C47);transform:translate(22%,-1%) rotate(10deg);"></div>
+            </div>
+            <span class="m-count">2</span>
+          </div>
+          <div class="mcell has-photo" data-day="25" data-date="Thứ ba, 25/8/2026" style="background-image:linear-gradient(135deg,#D9CCFF,#8F74FF);"><span class="pnum">25</span><svg class="ic phic"><use href="#icon-plane"/></svg></div>
+          <div class="mcell empty" data-day="26" data-date="Thứ tư, 26/8/2026"><span class="m-num">26</span></div>
+          <div class="mcell fan" data-day="27" data-date="Thứ năm, 27/8/2026">
+            <span class="pnum">27</span>
+            <div class="fan-stack">
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#D9CCFF,#8F74FF);transform:translate(-28%,3%) rotate(-12deg);"></div>
+              <div class="fan-c" style="background-image:linear-gradient(135deg,#FFD2E0,#FF7FA5);transform:translate(22%,-1%) rotate(10deg);"></div>
+            </div>
+          </div>
+          <div class="mcell empty" data-day="28" data-date="Thứ sáu, 28/8/2026"><span class="m-num">28</span></div>
+
+          <div class="mcell empty" data-day="29" data-date="Thứ bảy, 29/8/2026"><span class="m-num">29</span></div>
+          <div class="mcell has-photo" data-day="30" data-date="Chủ nhật, 30/8/2026" style="background-image:linear-gradient(135deg,#C2EEF0,#4FBAC1);"><span class="pnum">30</span><svg class="ic phic"><use href="#icon-coffee"/></svg></div>
+          <div class="mcell has-photo" data-day="31" data-date="Thứ hai, 31/8/2026" style="background-image:linear-gradient(135deg,#FFC9A6,#FF7A59);"><span class="pnum">31</span><svg class="ic phic"><use href="#icon-shopping-bag"/></svg><span class="m-count">2</span></div>
+
+        </div>
+      </div>
+      <div class="cal-detail" id="calDetailBlock">
+        <div class="cal-detail-title" id="calDetailHeader">Thứ ba, 8/8/2026 · -₫120,000</div>
+        <div id="calDetailItems">
+          <div class="cd-row">
+            <div class="cd-ic"><svg class="ic"><use href="#icon-utensils"/></svg></div>
+            <div><div class="cd-name">Ăn uống</div><div class="cd-meta">ăn tối · Tiền mặt</div></div>
+            <div class="cd-amt">-₫120,000</div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-ic"><svg class="ic"><use href="#icon-coffee"/></svg></div>
+            <div><div class="cd-name">Cà phê</div><div class="cd-meta">cà phê sáng · MoMo</div></div>
+            <div class="cd-amt">-₫45,000</div>
+          </div>
+          <div class="cd-row">
+            <div class="cd-ic"><svg class="ic"><use href="#icon-car"/></svg></div>
+            <div><div class="cd-name">Di chuyển</div><div class="cd-meta">Grab về nhà · Tiền mặt</div></div>
+            <div class="cd-amt">-₫35,000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PHÂN TÍCH TÀI CHÍNH THÔNG MINH (Biểu đồ phân tích)
+         ========================================== -->
+    <div class="sec-h" style="margin-top: 6px;">
+      <span style="display:flex;align-items:center;gap:6px;">
+        <svg class="ic" style="width:16px;height:16px;color:var(--primary);"><use href="#icon-bar-chart-3"/></svg>
+        Phân tích &amp; Thống kê
+      </span>
+      <a href="../reports/overview.html" class="r" style="text-decoration:none;display:flex;align-items:center;gap:2px;">
+        Chi tiết <svg class="ic" style="width:12px;height:12px;"><use href="#icon-chevron-right"/></svg>
+      </a>
+    </div>
+
+    <!-- Chart Card 1: Xu hướng Thu & Chi 7 ngày qua -->
+    <div class="ana-card" id="incomeExpenseChartCard">
+      <div class="ana-card-head">
+        <div>
+          <div class="ana-card-title">Xu hướng Thu &amp; Chi</div>
+          <div class="ana-card-sub" id="anaPeriodSub">7 ngày gần nhất · Đơn vị: nghìn ₫</div>
+        </div>
+        <div class="ana-pills">
+          <button class="ana-pill active" type="button" onclick="switchAnaChart('7d')">7 ngày</button>
+          <button class="ana-pill" type="button" onclick="switchAnaChart('4w')">4 tuần</button>
+          <button class="ana-pill" type="button" onclick="switchAnaChart('month')">Tháng</button>
+        </div>
+      </div>
+
+      <!-- Quick stat indicators -->
+      <div class="ana-stat-row">
+        <div class="ana-stat-chip">
+          <div class="ana-stat-chip-lbl"><i style="background:#10b981;"></i>Tổng thu</div>
+          <div class="ana-stat-chip-val" id="anaTotalIncome" style="color:#059669;">₫15,350K</div>
+        </div>
+        <div class="ana-stat-chip">
+          <div class="ana-stat-chip-lbl"><i style="background:#f43f5e;"></i>Tổng chi</div>
+          <div class="ana-stat-chip-val" id="anaTotalExpense" style="color:#e11d48;">₫8,320K</div>
+        </div>
+        <div class="ana-stat-chip">
+          <div class="ana-stat-chip-lbl"><i style="background:var(--primary);"></i>Thặng dư</div>
+          <div class="ana-stat-chip-val" id="anaSurplus" style="color:var(--primary);">+₫7,030K</div>
+        </div>
+      </div>
+
+      <!-- Interactive Dual Bar Chart -->
+      <div class="ana-chart-canvas" id="anaBarCanvas">
+        <div class="ana-bench-line">
+          <span class="ana-bench-badge">Trung bình chi: ₫280K/d</span>
+        </div>
+        <div class="ana-bar-col" data-day="T2" onclick="selectAnaDay(0)">
+          <div class="ana-bars-pair">
+            <div class="ana-bar income" style="height: 18%;" title="Thu: ₫0"></div>
+            <div class="ana-bar expense" style="height: 38%;" title="Chi: ₫120K"></div>
+          </div>
+          <span class="ana-bar-lbl">T2</span>
+        </div>
+        <div class="ana-bar-col" data-day="T3" onclick="selectAnaDay(1)">
+          <div class="ana-bars-pair">
+            <div class="ana-bar income" style="height: 18%;" title="Thu: ₫0"></div>
+            <div class="ana-bar expense" style="height: 25%;" title="Chi: ₫80K"></div>
+          </div>
+          <span class="ana-bar-lbl">T3</span>
+        </div>
+        <div class="ana-bar-col" data-day="T4" onclick="selectAnaDay(2)">
+          <div class="ana-bars-pair">
+            <div class="ana-bar income" style="height: 25%;" title="Thu: ₫350K"></div>
+            <div class="ana-bar expense" style="height: 28%;" title="Chi: ₫95K"></div>
+          </div>
+          <span class="ana-bar-lbl">T4</span>
+        </div>
+        <div class="ana-bar-col" data-day="T5" onclick="selectAnaDay(3)">
+          <div class="ana-bars-pair">
+            <div class="ana-bar income" style="height: 18%;" title="Thu: ₫0"></div>
+            <div class="ana-bar expense" style="height: 48%;" title="Chi: ₫210K"></div>
+          </div>
+          <span class="ana-bar-lbl">T5</span>
+        </div>
+        <div class="ana-bar-col active" data-day="T6" onclick="selectAnaDay(4)">
+          <div class="ana-bars-pair">
+            <div class="ana-bar income" style="height: 95%;" title="Thu: ₫15,000K (Lương)"></div>
+            <div class="ana-bar expense" style="height: 65%;" title="Chi: ₫420K"></div>
+          </div>
+          <span class="ana-bar-lbl">T6</span>
+        </div>
+        <div class="ana-bar-col" data-day="T7" onclick="selectAnaDay(5)">
+          <div class="ana-bars-pair">
+            <div class="ana-bar income" style="height: 18%;" title="Thu: ₫0"></div>
+            <div class="ana-bar expense" style="height: 52%;" title="Chi: ₫260K"></div>
+          </div>
+          <span class="ana-bar-lbl">T7</span>
+        </div>
+        <div class="ana-bar-col" data-day="CN" onclick="selectAnaDay(6)">
+          <div class="ana-bars-pair">
+            <div class="ana-bar income" style="height: 18%;" title="Thu: ₫0"></div>
+            <div class="ana-bar expense" style="height: 35%;" title="Chi: ₫110K"></div>
+          </div>
+          <span class="ana-bar-lbl">CN</span>
+        </div>
+      </div>
+
+      <!-- Interactive Day Inspection Details -->
+      <div class="ana-day-detail-box" id="anaDayDetailBox">
+        <div>
+          <span id="anaDayTitle">Thứ Sáu · Ngày 29/08</span>: 
+          <span style="color:#059669;margin-left:4px;">+₫15,000K</span>
+          <span style="color:#e11d48;margin-left:4px;">-₫420K</span>
+        </div>
+        <div class="hl" id="anaDayNote">Lương Finora + Siêu thị</div>
+      </div>
+    </div>
+
+    <!-- Chart Card 2: Cơ cấu Danh mục Chi tiêu (Donut + Breakdown Progress) -->
+    <div class="ana-card" id="categoryBreakdownCard">
+      <div class="ana-card-head">
+        <div>
+          <div class="ana-card-title">Cơ cấu Chi tiêu</div>
+          <div class="ana-card-sub">Phân bổ 5 nhóm danh mục tháng 8</div>
+        </div>
+        <span class="step-badge" style="font-size:10px;padding:3px 8px;">Tháng 8</span>
+      </div>
+
+      <div class="ana-donut-section">
+        <!-- SVG Donut Chart -->
+        <div class="ana-donut-vis">
+          <svg viewBox="0 0 100 100">
+            <!-- Background circle -->
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--dash-bg)" stroke-width="14"/>
+            <!-- Segment 1: Ăn uống 38% -->
+            <circle class="ana-d-seg" cx="50" cy="50" r="38" fill="none" stroke="oklch(0.55 0.18 250)" stroke-width="14" stroke-dasharray="90.7 148" stroke-dashoffset="0" stroke-linecap="round"/>
+            <!-- Segment 2: Mua sắm 25% -->
+            <circle class="ana-d-seg" cx="50" cy="50" r="38" fill="none" stroke="#f97316" stroke-width="14" stroke-dasharray="59.7 179" stroke-dashoffset="-90.7" stroke-linecap="round"/>
+            <!-- Segment 3: Hóa đơn 15% -->
+            <circle class="ana-d-seg" cx="50" cy="50" r="38" fill="none" stroke="#10b981" stroke-width="14" stroke-dasharray="35.8 203" stroke-dashoffset="-150.4" stroke-linecap="round"/>
+            <!-- Segment 4: Di chuyển 12% -->
+            <circle class="ana-d-seg" cx="50" cy="50" r="38" fill="none" stroke="#8b5cf6" stroke-width="14" stroke-dasharray="28.6 210" stroke-dashoffset="-186.2" stroke-linecap="round"/>
+            <!-- Segment 5: Giải trí 10% -->
+            <circle class="ana-d-seg" cx="50" cy="50" r="38" fill="none" stroke="#ec4899" stroke-width="14" stroke-dasharray="23.8 215" stroke-dashoffset="-214.8" stroke-linecap="round"/>
+          </svg>
+          <div class="ana-donut-center">
+            <div class="ana-donut-val">₫8.3M</div>
+            <div class="ana-donut-lbl">Tổng chi</div>
+          </div>
+        </div>
+
+        <!-- Category Progress List -->
+        <div class="ana-cat-list">
+          <div class="ana-cat-row active" onclick="highlightCat('Ăn uống', '₫3,160,000 (38%) · Tăng 8% vs tháng 7')">
+            <div class="ana-cat-dot" style="background:oklch(0.55 0.18 250);"></div>
+            <div class="ana-cat-info">
+              <div class="ana-cat-topline">
+                <span>Ăn uống</span>
+                <b>38% · ₫3.16M</b>
+              </div>
+              <div class="ana-cat-bar-bg">
+                <div class="ana-cat-bar-fg" style="width:38%;background:oklch(0.55 0.18 250);"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ana-cat-row" onclick="highlightCat('Mua sắm', '₫2,080,000 (25%) · Giảm 12% - Tiết kiệm tốt')">
+            <div class="ana-cat-dot" style="background:#f97316;"></div>
+            <div class="ana-cat-info">
+              <div class="ana-cat-topline">
+                <span>Mua sắm</span>
+                <b>25% · ₫2.08M</b>
+              </div>
+              <div class="ana-cat-bar-bg">
+                <div class="ana-cat-bar-fg" style="width:25%;background:#f97316;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ana-cat-row" onclick="highlightCat('Hóa đơn', '₫1,248,000 (15%) · Cố định hàng tháng')">
+            <div class="ana-cat-dot" style="background:#10b981;"></div>
+            <div class="ana-cat-info">
+              <div class="ana-cat-topline">
+                <span>Hóa đơn</span>
+                <b>15% · ₫1.25M</b>
+              </div>
+              <div class="ana-cat-bar-bg">
+                <div class="ana-cat-bar-fg" style="width:15%;background:#10b981;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ana-cat-row" onclick="highlightCat('Di chuyển', '₫998,000 (12%) · Grab &amp; Xăng xe')">
+            <div class="ana-cat-dot" style="background:#8b5cf6;"></div>
+            <div class="ana-cat-info">
+              <div class="ana-cat-topline">
+                <span>Di chuyển</span>
+                <b>12% · ₫998K</b>
+              </div>
+              <div class="ana-cat-bar-bg">
+                <div class="ana-cat-bar-fg" style="width:12%;background:#8b5cf6;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ana-cat-row" onclick="highlightCat('Khác &amp; Giải trí', '₫834,000 (10%) · Trong tầm kiểm soát')">
+            <div class="ana-cat-dot" style="background:#ec4899;"></div>
+            <div class="ana-cat-info">
+              <div class="ana-cat-topline">
+                <span>Khác &amp; Giải trí</span>
+                <b>10% · ₫834K</b>
+              </div>
+              <div class="ana-cat-bar-bg">
+                <div class="ana-cat-bar-fg" style="width:10%;background:#ec4899;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ana-day-detail-box" id="anaCatDetailBox" style="background:#f8fafc;border:1px solid var(--border);">
+        <span id="anaCatDetailText">✦ <b>Ăn uống</b> chiếm tỷ trọng lớn nhất (38%). Bấm từng danh mục để xem phân tích.</span>
+      </div>
+    </div>
+
+    <!-- Chart Card 3: Tiến độ Ngân sách & Sức khỏe Dòng tiền -->
+    <div class="ana-card" id="budgetPacingCard">
+      <div class="ana-card-head">
+        <div>
+          <div class="ana-card-title">Tiến độ Ngân sách &amp; Sức khỏe</div>
+          <div class="ana-card-sub">So sánh tốc độ chi tiêu so với số ngày còn lại</div>
+        </div>
+        <span class="ana-pacing-tag">
+          <svg class="ic" style="width:11px;height:11px;"><use href="#icon-shield-check"/></svg> An toàn
+        </span>
+      </div>
+
+      <div class="ana-pacing-box">
+        <div class="ana-pacing-metrics">
+          <div class="ana-pacing-nums">
+            <span style="font-size:10.5px;color:var(--ink-soft);font-weight:700;">Đã chi tiêu</span>
+            <b style="font-size:16px;font-family:'Outfit',sans-serif;color:var(--foreground);">₫8,320,000 <span style="font-size:12px;font-weight:600;color:var(--ink-soft);">/ ₫13,500,000</span></b>
+          </div>
+          <span style="font-size:13px;font-weight:900;color:var(--primary);">62%</span>
+        </div>
+
+        <!-- Dual Progress Bar: Spending (62%) vs Time (74%) -->
+        <div class="ana-dual-prog" title="Đã chi 62% ngân sách trong khi đã trôi qua 74% tháng">
+          <div class="ana-dual-prog-time" style="width:74%;" title="Tiến độ thời gian: 74%"></div>
+          <div class="ana-dual-prog-spend" style="width:62%;" title="Tiến độ chi tiêu: 62%"></div>
+        </div>
+
+        <div class="ana-pacing-subline">
+          <span>Tiến độ chi: <b>62%</b></span>
+          <span style="color:#10b981;font-weight:800;">✦ Tiêu chậm hơn thời gian (-12%)</span>
+          <span>Thời gian: <b>74% (ngày 23/31)</b></span>
+        </div>
+      </div>
+
+      <!-- 2 Mini KPI Tiles -->
+      <div class="ana-mini-tiles">
+        <div class="ana-mini-tile">
+          <div class="ana-mini-tile-ic" style="color:var(--primary);">
+            <svg class="ic" style="width:16px;height:16px;"><use href="#icon-trending-up"/></svg>
+          </div>
+          <div class="ana-mini-tile-info">
+            <span class="ana-mini-tile-lbl">Tỷ lệ tiết kiệm</span>
+            <span class="ana-mini-tile-val" style="color:#10b981;">44.5% <small style="font-size:10px;color:var(--ink-soft);font-weight:600;">(Đạt)</small></span>
+          </div>
+        </div>
+
+        <div class="ana-mini-tile">
+          <div class="ana-mini-tile-ic" style="color:#f59e0b;">
+            <svg class="ic" style="width:16px;height:16px;"><use href="#icon-sparkles"/></svg>
+          </div>
+          <div class="ana-mini-tile-info">
+            <span class="ana-mini-tile-lbl">Điểm sức khỏe</span>
+            <span class="ana-mini-tile-val" style="color:var(--foreground);">88/100 <small style="font-size:10px;color:#10b981;font-weight:800;">Tốt ✦</small></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nora AI Mini Tip Banner -->
+      <div class="ana-nora-banner">
+        <div class="nora-avatar-mini" style="width:34px;height:34px;border-radius:10px;flex-shrink:0;">
+          <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:26px;">
+            <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#ffffff" />
+            <rect x="50" y="50" width="100" height="70" rx="35" fill="#0055a9" />
+            <circle cx="75" cy="80" r="7" fill="#fff" />
+            <circle cx="125" cy="80" r="7" fill="#fff" />
+            <path d="M 94 98 Q 100 104 106 98" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" />
+            <circle cx="152" cy="52" r="16" fill="#f59e0b" />
+          </svg>
+        </div>
+        <div class="ana-nora-banner-text">
+          <strong>Nora AI phân tích:</strong> Dự kiến số dư cuối tháng sẽ đạt <b>~₫16.5M</b> (thặng dư +₫6.68M). Bạn có thể trích ₫3.5M vào mục tiêu <em>Du lịch</em> mà vẫn đảm bảo an toàn tài chính!
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="bnav">
+    <a href="dashboard.html" class="bni on">
+      <svg class="ic">
+        <use href="#icon-layout-dashboard" />
+      </svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic">
+        <use href="#icon-pie-chart" />
+      </svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch"><svg class="ic">
+          <use href="#icon-plus" />
+        </svg></a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic">
+        <use href="#icon-bot" />
+      </svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni" title="Hồ sơ cá nhân">
+      <svg class="ic">
+        <use href="#icon-user" />
+      </svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+
+  <script>
+    // Personalize name if set from registration
+    try {
+      var savedName = sessionStorage.getItem('finora_user_name');
+      if (savedName) {
+        document.getElementById('displayUserName').innerHTML = savedName;
+      }
+    } catch (e) { }
+
+    // Photo Calendar interaction
+    var dayTxMap = {
+      '1': {
+        title: 'Thứ sáu, 1/8/2026 · -₫35,000',
+        items: [
+          { ic: '#icon-coffee', name: 'Cà phê sáng', meta: 'Highlands Coffee · MoMo', amt: '-₫35,000' }
+        ]
+      },
+      '4': {
+        title: 'Thứ hai, 4/8/2026 · -₫120,000',
+        items: [
+          { ic: '#icon-utensils', name: 'Cơm trưa văn phòng', meta: 'Cơm niêu · Thẻ VCB', amt: '-₫65,000' },
+          { ic: '#icon-coffee', name: 'Trà sữa Koi Thé', meta: 'Trà sữa · MoMo', amt: '-₫55,000' }
+        ]
+      },
+      '5': {
+        title: 'Thứ ba, 5/8/2026 · -₫28,000',
+        items: [
+          { ic: '#icon-car', name: 'Di chuyển BeBike', meta: 'Đi làm · Ví MoMo', amt: '-₫28,000' }
+        ]
+      },
+      '8': {
+        title: 'Thứ ba, 8/8/2026 · -₫120,000',
+        items: [
+          { ic: '#icon-utensils', name: 'Ăn uống', meta: 'ăn tối · Tiền mặt', amt: '-₫120,000' },
+          { ic: '#icon-coffee', name: 'Cà phê', meta: 'cà phê sáng · MoMo', amt: '-₫45,000' },
+          { ic: '#icon-car', name: 'Di chuyển', meta: 'Grab về nhà · Tiền mặt', amt: '-₫35,000' }
+        ]
+      },
+      '10': {
+        title: 'Thứ hai, 10/8/2026 · -₫180,000',
+        items: [
+          { ic: '#icon-shopping-bag', name: 'Siêu thị WinMart', meta: 'Thực phẩm tuần · Thẻ VCB', amt: '-₫180,000' }
+        ]
+      },
+      '13': {
+        title: 'Thứ năm, 13/8/2026 · -₫500,000',
+        items: [
+          { ic: '#icon-piggy-bank', name: 'Tiết kiệm mục tiêu', meta: 'Quỹ khẩn cấp · Tự động', amt: '-₫500,000' }
+        ]
+      },
+      '17': {
+        title: 'Thứ hai, 17/8/2026 · -₫165,000',
+        items: [
+          { ic: '#icon-utensils', name: 'Lẩu mini trưa', meta: 'Ăn trưa nhóm · MoMo', amt: '-₫120,000' },
+          { ic: '#icon-coffee', name: 'Cà phê muối', meta: 'Đồ uống · Tiền mặt', amt: '-₫45,000' }
+        ]
+      },
+      '19': {
+        title: 'Thứ tư, 19/8/2026 · -₫85,000',
+        items: [
+          { ic: '#icon-receipt', name: 'Tiền điện thoại', meta: 'Nạp Viettel · MoMo', amt: '-₫85,000' }
+        ]
+      },
+      '20': {
+        title: 'Thứ năm, 20/8/2026 · -₫45,000',
+        items: [
+          { ic: '#icon-car', name: 'GrabBike', meta: 'Di chuyển gặp bạn · Tiền mặt', amt: '-₫45,000' }
+        ]
+      },
+      '23': {
+        title: 'Chủ nhật, 23/8/2026 · +₫350,000',
+        items: [
+          { ic: '#icon-banknote', name: 'Thu hồi nợ bạn bè', meta: 'Chuyển khoản · VCB', amt: '+₫350,000' }
+        ]
+      },
+      '24': {
+        title: 'Thứ hai, 24/8/2026 · -₫95,000',
+        items: [
+          { ic: '#icon-shopping-bag', name: 'Nhà sách Fahasa', meta: 'Sách & văn phòng · MoMo', amt: '-₫95,000' }
+        ]
+      },
+      '25': {
+        title: 'Thứ ba, 25/8/2026 · -₫1,250,000',
+        items: [
+          { ic: '#icon-plane', name: 'Vé máy bay Đà Nẵng', meta: 'Du lịch nghỉ dưỡng · Thẻ tín dụng', amt: '-₫1,250,000' }
+        ]
+      },
+      '27': {
+        title: 'Thứ năm, 27/8/2026 · -₫210,000',
+        items: [
+          { ic: '#icon-utensils', name: 'Buffet trưa', meta: 'Họp mặt đồng nghiệp · Thẻ VCB', amt: '-₫210,000' }
+        ]
+      },
+      '30': {
+        title: 'Chủ nhật, 30/8/2026 · -₫65,000',
+        items: [
+          { ic: '#icon-coffee', name: 'The Coffee House', meta: 'Cà phê cuối tuần · MoMo', amt: '-₫65,000' }
+        ]
+      },
+      '31': {
+        title: 'Thứ hai, 31/8/2026 · -₫420,000',
+        items: [
+          { ic: '#icon-shopping-bag', name: 'Mua sắm gia đình', meta: 'Siêu thị Go! · Thẻ VCB', amt: '-₫420,000' }
+        ]
+      }
+    };
+
+    var cells = document.querySelectorAll('#calCellsGrid .mcell');
+    cells.forEach(function(cell) {
+      cell.addEventListener('click', function() {
+        cells.forEach(function(c) { c.classList.remove('sel'); });
+        cell.classList.add('sel');
+        var day = cell.getAttribute('data-day');
+        var data = dayTxMap[day];
+        var titleEl = document.getElementById('calDetailHeader');
+        var itemsEl = document.getElementById('calDetailItems');
+        if (data) {
+          titleEl.textContent = data.title;
+          var html = '';
+          data.items.forEach(function(it) {
+            html += '<div class="cd-row">' +
+              '<div class="cd-ic"><svg class="ic"><use href="' + it.ic + '"/></svg></div>' +
+              '<div><div class="cd-name">' + it.name + '</div><div class="cd-meta">' + it.meta + '</div></div>' +
+              '<div class="cd-amt" style="' + (it.amt.startsWith('+') ? 'color:var(--success);' : '') + '">' + it.amt + '</div>' +
+            '</div>';
+          });
+          itemsEl.innerHTML = html;
+        } else {
+          var dateName = cell.getAttribute('data-date') || ('Ngày ' + day + '/8/2026');
+          titleEl.textContent = dateName + ' · Chưa có giao dịch';
+          itemsEl.innerHTML = '<div style="text-align:center;padding:16px 0;color:var(--ink-faint);font-size:12px;font-weight:600;">Không có chi tiêu nào được ghi nhận trong ngày này.</div>';
+        }
+      });
+    });
+
+    function shiftMonth(dir) {
+      var title = document.getElementById('calTitleDisplay');
+      if (dir === -1) {
+        title.textContent = 'Tháng 7 · 2026';
+        document.getElementById('calCountSub').textContent = '28 giao dịch trong tháng';
+      } else {
+        title.textContent = 'Tháng 8 · 2026';
+        document.getElementById('calCountSub').textContent = '33 giao dịch trong tháng';
+      }
+    }
+
+    // ==========================================
+    // Analytics Charts Logic
+    // ==========================================
+    var anaChartDatasets = {
+      '7d': {
+        sub: '7 ngày gần nhất · Đơn vị: nghìn ₫',
+        income: '₫15,350K',
+        expense: '₫8,320K',
+        surplus: '+₫7,030K',
+        bench: 'Trung bình chi: ₫280K/d',
+        days: [
+          { day: 'T2', inH: '18%', expH: '38%', inVal: '₫0', expVal: '₫120K', title: 'Thứ Hai · Ngày 25/08', note: 'Ăn tối ngoài & Cà phê' },
+          { day: 'T3', inH: '18%', expH: '25%', inVal: '₫0', expVal: '₫80K', title: 'Thứ Ba · Ngày 26/08', note: 'Ăn trưa & BeBike' },
+          { day: 'T4', inH: '25%', expH: '28%', inVal: '₫350K', expVal: '₫95K', title: 'Thứ Tư · Ngày 27/08', note: 'Thu nợ bạn + Cơm văn phòng' },
+          { day: 'T5', inH: '18%', expH: '48%', inVal: '₫0', expVal: '₫210K', title: 'Thứ Năm · Ngày 28/08', note: 'Buffet trưa đồng nghiệp' },
+          { day: 'T6', inH: '95%', expH: '65%', inVal: '₫15,000K', expVal: '₫420K', title: 'Thứ Sáu · Ngày 29/08', note: 'Lương Finora + Siêu thị WinMart' },
+          { day: 'T7', inH: '18%', expH: '52%', inVal: '₫0', expVal: '₫260K', title: 'Thứ Bảy · Ngày 30/08', note: 'Cà phê cuối tuần & Mua sắm' },
+          { day: 'CN', inH: '18%', expH: '35%', inVal: '₫0', expVal: '₫110K', title: 'Chủ Nhật · Ngày 31/08', note: 'Xem phim & Ăn tối' }
+        ]
+      },
+      '4w': {
+        sub: '4 tuần qua trong tháng 8 · Đơn vị: triệu ₫',
+        income: '₫15.35M',
+        expense: '₫8.32M',
+        surplus: '+₫7.03M',
+        bench: 'Trung bình: ₫2.08M/tuần',
+        days: [
+          { day: 'W1', inH: '20%', expH: '45%', inVal: '₫0', expVal: '₫1.85M', title: 'Tuần 1 (01 - 07/08)', note: 'Ăn uống & Tiện ích đầu tháng' },
+          { day: 'W2', inH: '25%', expH: '60%', inVal: '₫350K', expVal: '₫2.45M', title: 'Tuần 2 (08 - 14/08)', note: 'Chi tiêu ăn ngoài tăng (+22%)' },
+          { day: 'W3', inH: '20%', expH: '40%', inVal: '₫0', expVal: '₫1.62M', title: 'Tuần 3 (15 - 21/08)', note: 'Kiểm soát ngân sách tốt' },
+          { day: 'W4', inH: '95%', expH: '55%', inVal: '₫15.0M', expVal: '₫2.40M', title: 'Tuần 4 (22 - 31/08)', note: 'Nhận lương tháng + Mua sắm tuần' }
+        ]
+      },
+      'month': {
+        sub: 'So sánh 6 tháng gần nhất · Đơn vị: triệu ₫',
+        income: '₫92.0M',
+        expense: '₫51.8M',
+        surplus: '+₫40.2M',
+        bench: 'Trung bình chi: ₫8.6M/tháng',
+        days: [
+          { day: 'T3', inH: '70%', expH: '50%', inVal: '₫14.5M', expVal: '₫8.1M', title: 'Tháng 3 · 2026', note: 'Tiết kiệm đạt 44%' },
+          { day: 'T4', inH: '72%', expH: '55%', inVal: '₫15.0M', expVal: '₫8.9M', title: 'Tháng 4 · 2026', note: 'Chi lễ 30/4 & Du lịch' },
+          { day: 'T5', inH: '70%', expH: '48%', inVal: '₫14.8M', expVal: '₫7.8M', title: 'Tháng 5 · 2026', note: 'Dòng tiền thặng dư cao (+₫7.0M)' },
+          { day: 'T6', inH: '85%', expH: '65%', inVal: '₫17.5M', expVal: '₫10.2M', title: 'Tháng 6 · 2026', note: 'Thưởng quý 2 + Mua sắm hè' },
+          { day: 'T7', inH: '72%', expH: '52%', inVal: '₫15.2M', expVal: '₫8.5M', title: 'Tháng 7 · 2026', note: 'Chi tiêu theo đúng ngân sách' },
+          { day: 'T8', inH: '80%', expH: '52%', inVal: '₫15.35M', expVal: '₫8.32M', title: 'Tháng 8 · Hiện tại', note: 'Tỷ lệ tiết kiệm đạt 44.5%' }
+        ]
+      }
+    };
+
+    var currentAnaPeriod = '7d';
+    function switchAnaChart(period) {
+      currentAnaPeriod = period;
+      document.querySelectorAll('.ana-pill').forEach(function(p){ p.classList.remove('active'); });
+      if (window.event && window.event.target) {
+        window.event.target.classList.add('active');
+      }
+      var data = anaChartDatasets[period];
+      if (!data) return;
+
+      document.getElementById('anaPeriodSub').textContent = data.sub;
+      document.getElementById('anaTotalIncome').textContent = data.income;
+      document.getElementById('anaTotalExpense').textContent = data.expense;
+      document.getElementById('anaSurplus').textContent = data.surplus;
+
+      var canvas = document.getElementById('anaBarCanvas');
+      var colsHtml = '<div class="ana-bench-line"><span class="ana-bench-badge">' + data.bench + '</span></div>';
+      var activeIdx = (data.days.length > 4) ? data.days.length - 3 : data.days.length - 1;
+      
+      data.days.forEach(function(d, idx) {
+        var activeClass = (idx === activeIdx) ? ' active' : '';
+        colsHtml += '<div class="ana-bar-col' + activeClass + '" data-day="' + d.day + '" onclick="selectAnaDay(' + idx + ')">' +
+          '<div class="ana-bars-pair">' +
+            '<div class="ana-bar income" style="height:' + d.inH + ';" title="Thu: ' + d.inVal + '"></div>' +
+            '<div class="ana-bar expense" style="height:' + d.expH + ';" title="Chi: ' + d.expVal + '"></div>' +
+          '</div>' +
+          '<span class="ana-bar-lbl">' + d.day + '</span>' +
+        '</div>';
+      });
+      canvas.innerHTML = colsHtml;
+
+      selectAnaDay(activeIdx);
+    }
+
+    function selectAnaDay(idx) {
+      var data = anaChartDatasets[currentAnaPeriod];
+      if (!data || !data.days[idx]) return;
+      var d = data.days[idx];
+
+      var cols = document.querySelectorAll('#anaBarCanvas .ana-bar-col');
+      cols.forEach(function(c, i){
+        if (i === idx) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+
+      var titleEl = document.getElementById('anaDayTitle');
+      if (titleEl && titleEl.parentElement) {
+        titleEl.parentElement.innerHTML = '<span id="anaDayTitle">' + d.title + '</span>: ' +
+          '<span style="color:#059669;margin-left:4px;">+' + d.inVal + '</span> ' +
+          '<span style="color:#e11d48;margin-left:4px;">-' + d.expVal + '</span>';
+      }
+      var noteEl = document.getElementById('anaDayNote');
+      if (noteEl) noteEl.textContent = d.note;
+    }
+
+    function highlightCat(name, desc) {
+      document.querySelectorAll('.ana-cat-row').forEach(function(r) {
+        if (r.textContent.indexOf(name) !== -1) {
+          r.classList.add('active');
+        } else {
+          r.classList.remove('active');
+        }
+      });
+      var box = document.getElementById('anaCatDetailText');
+      if (box) {
+        box.innerHTML = '✦ <b>' + name + '</b>: ' + desc;
+      }
+    }
+  </script>
+</body>
+
+</html>

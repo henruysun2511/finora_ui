@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Tạo mục tiêu tiết kiệm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+</head>
+<body style="background:var(--dash-bg);font-family:'Inter',sans-serif;margin:0;padding-bottom:40px;">
+  <div style="max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;">
+    <div class="sbar"><span>9:41</span><span>● ● ●</span></div>
+    <div class="tx-hdr">
+      <a href="list.html" class="tx-back"><svg class="ic"><use href="#icon-chevron-left"/></svg></a>
+      <div class="tx-hdr-title">Tạo mục tiêu mới</div>
+    </div>
+    <div style="padding:16px;">
+      <div style="background:#fff;border-radius:18px;border:1px solid var(--border);padding:4px 16px;margin-bottom:16px;">
+        <div style="padding:12px 0;border-bottom:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;">Tên mục tiêu</div>
+          <input type="text" value="Mua xe máy mới" style="width:100%;border:none;outline:none;font-weight:700;font-size:14px;background:transparent;margin-top:4px;" />
+        </div>
+        <div style="padding:12px 0;border-bottom:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;">Số tiền cần tích lũy</div>
+          <input type="text" value="₫ 45,000,000" style="width:100%;border:none;outline:none;font-family:'Outfit',sans-serif;font-weight:900;font-size:18px;color:var(--primary);background:transparent;margin-top:4px;" />
+        </div>
+        <div style="padding:12px 0;">
+          <div style="font-size:11px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;">Thời hạn hoàn thành</div>
+          <input type="text" value="12/2026" style="width:100%;border:none;outline:none;font-weight:700;font-size:14px;background:transparent;margin-top:4px;" />
+        </div>
+      </div>
+      <button class="btn btn-p" onclick="alert('Đã tạo mục tiêu tiết kiệm thành công!');location.href='list.html';" style="padding:15px;border-radius:16px;">
+        <svg class="ic"><use href="#icon-check"/></svg> Tạo mục tiêu ngay
+      </button>
+    </div>
+  </div>
+</body>
+</html>

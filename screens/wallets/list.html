@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Tài khoản & Nguồn tiền</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 96px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Accounts Header with Brand Colors #0072D5 & #F5B53F */
+    .acc-hero {
+      background: linear-gradient(150deg, oklch(0.42 0.16 250), #0072D5 55%, #F5B53F);
+      padding: 14px 18px 36px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .acc-hero::after {
+      content: '';
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.07);
+      top: -50px;
+      right: -30px;
+      pointer-events: none;
+    }
+
+    /* Integrated Status Bar */
+    .sbar-hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+      user-select: none;
+    }
+    .sbar-hero .sbar-icons {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    /* Header Nav */
+    .acc-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
+    }
+    .acc-nav-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      transition: background 0.15s, transform 0.1s;
+    }
+    .acc-nav-btn:active { transform: scale(0.94); }
+    .acc-nav-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      color: #fff;
+    }
+
+    .acc-hdr-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+    .acc-hdr-lbl {
+      font-size: 11px;
+      opacity: .8;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .acc-hdr-hide {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      opacity: .85;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .acc-hdr-hide .ic { width: 14px; height: 14px; }
+    .acc-hdr-amt {
+      font-family: 'Outfit', 'Inter', sans-serif;
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .acc-hdr-boxes {
+      display: flex;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .acc-hdr-box {
+      flex: 1;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 10px 14px;
+    }
+    .acc-hdr-box-lbl {
+      font-size: 10px;
+      opacity: .8;
+      font-weight: 800;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .acc-hdr-box-val {
+      font-family: 'Outfit', 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      margin-top: 3px;
+    }
+
+    /* Accounts Body */
+    .acc-body {
+      padding: 16px 18px 24px;
+      margin-top: -12px;
+      position: relative;
+      z-index: 3;
+    }
+    .wallet-card {
+      background: #fff;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 16px rgba(15,23,42,.05);
+    }
+    .wallet-hdr {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 15px 16px 12px;
+    }
+    .wallet-ic {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .wallet-ic .ic { width: 20px; height: 20px; }
+    .wallet-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--foreground);
+    }
+    .wallet-meta {
+      font-size: 11px;
+      color: var(--ink-faint);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .wallet-total {
+      margin-left: auto;
+      font-family: 'Outfit', 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--foreground);
+    }
+    .wallet-rows {
+      border-top: 1px solid var(--border);
+    }
+    .wallet-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+    }
+    .wallet-row:last-child {
+      border-bottom: none;
+    }
+    .wallet-row:hover {
+      background: oklch(0.98 0.01 240);
+    }
+    .wallet-row-l {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .wallet-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .wallet-row-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .wallet-row-name .ic {
+      width: 15px;
+      height: 15px;
+      color: var(--ink-faint);
+    }
+    .wallet-row-amt {
+      font-family: 'Outfit', 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--foreground);
+    }
+
+    .dashed-add {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      background: #fff;
+      border: 2px dashed var(--border);
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.15s;
+      margin-top: 4px;
+    }
+    .dashed-add .ic { width: 16px; height: 16px; }
+    .dashed-add:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--accent);
+    }
+
+    /* Net Loans Summary Card */
+    .net-card {
+      background: linear-gradient(135deg, oklch(0.5 0.17 250), oklch(0.42 0.15 250) 60%, #F5B53F);
+      color: #fff;
+      border-radius: 20px;
+      padding: 15px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      box-shadow: 0 10px 26px oklch(0.55 0.18 250 / .28);
+      text-decoration: none;
+    }
+    .net-lbl {
+      font-size: 10px;
+      opacity: .8;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+    }
+    .net-amt {
+      font-family: 'Outfit', 'Inter', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      margin-top: 3px;
+      letter-spacing: -.5px;
+    }
+    .net-side { text-align: right; }
+    .net-side-lbl { font-size: 10px; opacity: .75; font-weight: 600; }
+    .net-side-val { font-size: 13.5px; font-weight: 800; margin-top: 2px; }
+    .net-side-val.pos { color: #6EF0C4; }
+    .net-side-val.neg { color: #FF8FAA; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Header with Integrated Status Bar -->
+    <div class="acc-hero">
+      <div class="sbar-hero">
+        <span>9:41</span>
+        <div class="sbar-icons">
+          <svg class="ic" style="width:14px;height:14px;"><use href="#icon-wifi"/></svg>
+          <svg class="ic" style="width:14px;height:14px;"><use href="#icon-battery"/></svg>
+        </div>
+      </div>
+
+      <div class="acc-nav-bar">
+        <a href="../home/dashboard.html" class="acc-nav-btn" title="Quay lại Tổng quan">
+          <svg class="ic" style="width:18px;height:18px;"><use href="#icon-chevron-left"/></svg>
+        </a>
+        <div class="acc-nav-title">Tài khoản &amp; Nguồn tiền</div>
+        <a href="add.html" class="acc-nav-btn" title="Thêm ví mới">
+          <svg class="ic" style="width:18px;height:18px;"><use href="#icon-plus"/></svg>
+        </a>
+      </div>
+
+      <div class="acc-hdr-top">
+        <div class="acc-hdr-lbl">TỔNG TÀI SẢN</div>
+        <div class="acc-hdr-hide" onclick="toggleHideAmt()">
+          <svg class="ic"><use href="#icon-eye-off"/></svg>
+          <span id="hideText">Ẩn</span>
+        </div>
+      </div>
+      <div class="acc-hdr-amt" id="totalAmt">₫ 24,850,000</div>
+      <div class="acc-hdr-boxes">
+        <div class="acc-hdr-box">
+          <div class="acc-hdr-box-lbl">Tiết kiệm</div>
+          <div class="acc-hdr-box-val" style="color:#d1e8ff;">₫4,000,000</div>
+        </div>
+        <div class="acc-hdr-box">
+          <div class="acc-hdr-box-lbl">Khả dụng</div>
+          <div class="acc-hdr-box-val">₫20,850,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accounts Body -->
+    <div class="acc-body">
+      <!-- Wallet Card 1: Ví Cá nhân -->
+      <div class="wallet-card">
+        <div class="wallet-hdr">
+          <div class="wallet-ic" style="background:oklch(0.55 0.18 250 / 0.12);color:var(--primary);"><svg class="ic"><use href="#icon-user"/></svg></div>
+          <div>
+            <div class="wallet-name">Ví Cá nhân</div>
+            <div class="wallet-meta">VND · 3 tài khoản kết nối</div>
+          </div>
+          <div class="wallet-total">₫20.85M</div>
+        </div>
+        <div class="wallet-rows">
+          <a href="detail.html?id=cash" class="wallet-row">
+            <div class="wallet-row-l">
+              <div class="wallet-dot" style="background:var(--success);"></div>
+              <span class="wallet-row-name"><svg class="ic"><use href="#icon-wallet"/></svg> Tiền mặt</span>
+            </div>
+            <span class="wallet-row-amt">₫2,500,000</span>
+          </a>
+          <a href="detail.html?id=vcb" class="wallet-row">
+            <div class="wallet-row-l">
+              <div class="wallet-dot" style="background:var(--primary);"></div>
+              <span class="wallet-row-name"><svg class="ic"><use href="#icon-landmark"/></svg> Vietcombank</span>
+            </div>
+            <span class="wallet-row-amt">₫14,350,000</span>
+          </a>
+          <a href="detail.html?id=momo" class="wallet-row">
+            <div class="wallet-row-l">
+              <div class="wallet-dot" style="background:var(--secondary);"></div>
+              <span class="wallet-row-name"><svg class="ic"><use href="#icon-smartphone"/></svg> MoMo</span>
+            </div>
+            <span class="wallet-row-amt">₫4,000,000</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Wallet Card 2: Ví Du lịch / USD -->
+      <div class="wallet-card">
+        <div class="wallet-hdr">
+          <div class="wallet-ic" style="background:oklch(0.63 0.13 190 / 0.14);color:var(--teal);"><svg class="ic"><use href="#icon-plane"/></svg></div>
+          <div>
+            <div class="wallet-name">Ví Du lịch &amp; Ngoại tệ</div>
+            <div class="wallet-meta">USD · 1 tài khoản</div>
+          </div>
+          <div class="wallet-total">$160.00</div>
+        </div>
+        <div class="wallet-rows">
+          <a href="detail.html?id=usd" class="wallet-row">
+            <div class="wallet-row-l">
+              <div class="wallet-dot" style="background:var(--success);"></div>
+              <span class="wallet-row-name"><svg class="ic"><use href="#icon-wallet"/></svg> Tiền mặt USD</span>
+            </div>
+            <span class="wallet-row-amt">$160.00</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Wallet Card 3: Ví chung / Quỹ nhóm (Shared Wallets) -->
+      <div class="wallet-card" style="border: 1.5px solid oklch(0.55 0.18 250 / 0.28); background: linear-gradient(180deg, #fff, oklch(0.55 0.18 250 / 0.03));">
+        <div class="wallet-hdr">
+          <div class="wallet-ic" style="background:oklch(0.55 0.18 250 / 0.14);color:var(--primary);"><svg class="ic"><use href="#icon-users"/></svg></div>
+          <div>
+            <div class="wallet-name" style="display:flex;align-items:center;gap:6px;">
+              <span>Ví chung &amp; Quỹ nhóm</span>
+              <span style="font-size:10px;font-weight:900;background:var(--primary);color:#fff;padding:2px 7px;border-radius:99px;">MỚI</span>
+            </div>
+            <div class="wallet-meta">VND · 4 thành viên tham gia</div>
+          </div>
+          <div class="wallet-total" style="color:var(--primary);">₫18.65M</div>
+        </div>
+        <div class="wallet-rows">
+          <a href="shared.html" class="wallet-row">
+            <div class="wallet-row-l">
+              <div class="wallet-dot" style="background:var(--primary);"></div>
+              <span class="wallet-row-name"><svg class="ic"><use href="#icon-plane"/></svg> 🌴 Quỹ Du lịch Đà Lạt</span>
+            </div>
+            <div style="text-align:right;">
+              <span class="wallet-row-amt">₫18,650,000</span>
+              <div style="font-size:10px;color:var(--success);font-weight:700;">62.2% mục tiêu</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Net Loans Card -->
+      <a href="../loans/list.html" class="net-card">
+        <div>
+          <div class="net-lbl">Net (Cho vay − Đi vay)</div>
+          <div class="net-amt">+₫2,500,000</div>
+        </div>
+        <div class="net-side">
+          <div class="net-side-lbl">Người nợ bạn</div>
+          <div class="net-side-val pos">+₫5,000,000</div>
+          <div class="net-side-lbl" style="margin-top:4px;">Bạn đang nợ</div>
+          <div class="net-side-val neg">-₫2,500,000</div>
+        </div>
+      </a>
+
+      <!-- Add New Wallet Button -->
+      <a href="add.html" class="dashed-add">
+        <svg class="ic"><use href="#icon-plus"/></svg> Thêm nguồn tiền mới
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard" /></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart" /></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch">
+        <svg class="ic"><use href="#icon-plus" /></svg>
+      </a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic"><use href="#icon-bot" /></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user" /></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+
+  <script>
+    var isHidden = false;
+    function toggleHideAmt() {
+      isHidden = !isHidden;
+      document.getElementById('totalAmt').textContent = isHidden ? '••••••••' : '₫ 24,850,000';
+      document.getElementById('hideText').textContent = isHidden ? 'Hiện' : 'Ẩn';
+    }
+  </script>
+</body>
+</html>

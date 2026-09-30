@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nora · Hoàn tất thiết lập</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../../_shared/base.css"/>
+<link rel="stylesheet" href="../../_shared/components.css"/>
+<script src="../../_shared/icons.js"></script>
+<style>
+  body {
+    background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 50%);
+    position: relative;
+  }
+  #confetti-canvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 99;
+  }
+  .celebrate-stage {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 10px 0 16px; text-align: center;
+  }
+  .mascot-celebrate-wrap {
+    width: 150px; height: 160px; margin-bottom: 8px; position: relative;
+  }
+  .mascot-celebrate-wrap::before {
+    content: ""; position: absolute; top: 50%; left: 50%; width: 140px; height: 140px;
+    background: var(--blob-color, #edf2f7); border-radius: 50%;
+    transform: translate(-50%, -50%); z-index: 0; opacity: 0.5; filter: blur(20px);
+  }
+  .mascot-celebrate-wrap svg { position: relative; z-index: 1; }
+  .congrats-bubble {
+    background: #fff; border: 1.5px solid var(--border); border-radius: var(--r-lg);
+    padding: 12px 18px; max-width: 290px; box-shadow: var(--shadow-md); margin-bottom: 16px;
+    font-size: 13px; font-weight: 700; color: var(--foreground); line-height: 1.5;
+    text-align: center; position: relative;
+  }
+</style>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Status bar -->
+  <div class="sbar">
+    <span>9:41</span>
+    <div class="icons">
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-wifi"/></svg>
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-battery"/></svg>
+    </div>
+  </div>
+
+  <div class="screen-content">
+    <div class="celebrate-stage">
+      <div id="mascot-happy" class="mascot-celebrate-wrap anim-float"></div>
+
+      <div id="congrats-bubble" class="congrats-bubble">
+        Tuyệt vời! Mình đã sẵn sàng cùng bạn quản lý chi tiêu và tự do tài chính! 🚀
+      </div>
+
+      <h1 style="font-size: 24px; font-weight: 900; letter-spacing: -.6px; margin-bottom: 4px;" id="done-title">
+        Tất cả đã sẵn sàng! 🎉
+      </h1>
+      <p style="font-size: 12.5px; color: var(--ink-soft); font-weight: 500; margin-bottom: 14px;">
+        Hồ sơ và ví của bạn đã được thiết lập thành công.
+      </p>
+    </div>
+
+    <!-- Summary Box (SOLARN styled) -->
+    <div class="summary-box">
+      <div class="sum-row">
+        <span class="label">Chủ tài khoản:</span>
+        <span class="val" id="sum-name">Nguyễn Minh</span>
+      </div>
+      <div class="sum-row">
+        <span class="label">Ví &amp; Nguồn tiền:</span>
+        <span class="val" id="sum-wallet">Ví cá nhân (Tiền mặt)</span>
+      </div>
+      <div class="sum-row">
+        <span class="label">Số dư khởi điểm:</span>
+        <span class="val" id="sum-balance" style="color: var(--primary);">5.000.000 ₫</span>
+      </div>
+      <div class="sum-row">
+        <span class="label">Trợ lý AI đồng hành:</span>
+        <span class="val" id="sum-mascot">Nora (Comfortable)</span>
+      </div>
+    </div>
+
+    <div class="footer-flow">
+      <div class="ob-progress" style="width:100%; margin-bottom:6px;">
+        <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+      </div>
+      <a href="../home/dashboard.html" class="btn btn-p" style="font-size: 16px;">
+        Vào Finora ngay <svg class="ic"><use href="#icon-arrow-up-right"/></svg>
+      </a>
+      <a href="welcome.html" class="btn-ghost">
+        Thiết lập lại từ đầu
+      </a>
+    </div>
+  </div>
+
+  <script src="../../_shared/mascots-data.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var store = window.FinoraMascots.store;
+      var mascots = window.FinoraMascots.MASCOTS;
+      var data = store.get();
+
+      var mId = data.selectedMascot || "nora";
+      var m = mascots[mId] || mascots.nora;
+
+      var happyWrap = document.getElementById("mascot-happy");
+      happyWrap.style.setProperty("--blob-color", m.blobColor);
+      happyWrap.innerHTML = m.svg;
+
+      document.getElementById("congrats-bubble").innerHTML = 
+        "Tuyệt vời <b>" + (data.name || "bạn") + "</b>! Mình là <b>" + m.name + " (" + m.role + ")</b>, sẵn sàng đồng hành cùng bạn trên con đường tự do tài chính! 🚀";
+
+      document.getElementById("done-title").textContent = "Chào mừng, " + (data.name || "bạn") + "! 🎉";
+
+      document.getElementById("sum-name").textContent = data.name || "Nguyễn Minh";
+      document.getElementById("sum-wallet").textContent = (data.walletName || "Ví cá nhân") + " (" + (data.accountLabel || "Tiền mặt") + ")";
+      document.getElementById("sum-balance").textContent = window.FinoraMascots.formatVND(data.balance || 5000000);
+      document.getElementById("sum-mascot").innerHTML = '<b style="color:' + m.color + '">' + m.name + '</b> (' + m.tier + ')';
+
+      runConfetti();
+    });
+
+    function runConfetti() {
+      var canvas = document.getElementById("confetti-canvas");
+      var ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      var pieces = [];
+      var colors = ["#0072d5", "#48bb78", "#ed8936", "#ec4899", "#b7791f", "#38bdf8", "#facc15"];
+
+      for (var i = 0; i < 70; i++) {
+        pieces.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * -canvas.height,
+          size: Math.random() * 8 + 4,
+          speed: Math.random() * 3 + 2,
+          angle: Math.random() * 360,
+          rotSpeed: Math.random() * 4 - 2,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+
+      var start = Date.now();
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(function (p) {
+          p.y += p.speed;
+          p.angle += p.rotSpeed;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.angle * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          ctx.restore();
+        });
+
+        if (Date.now() - start < 3500) {
+          requestAnimationFrame(draw);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+  </script>
+</body>
+</html>

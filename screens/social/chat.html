@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Nhắn tin bạn bè (Locket Chat)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    :root {
+      --primary: #0072D5;
+      --primary-dark: #0055A9;
+      --primary-light: rgba(0, 114, 213, 0.12);
+      --primary-glow: rgba(0, 114, 213, 0.28);
+      --dash-bg: #f8fafc;
+      --foreground: #0f172a;
+      --ink: #0f172a;
+      --ink-soft: #64748b;
+      --border: #e2e8f0;
+      --card-bg: #ffffff;
+      --bubble-in: #ffffff;
+      --bubble-out: #0072D5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #f1f5f9;
+      position: relative;
+      box-shadow: 0 0 35px rgba(15, 23, 42, 0.08);
+    }
+
+    /* ─────────────── STATUS BAR ─────────────── */
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #ffffff;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    }
+    .sbar-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sbar-icons .ic {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ─────────────── CHAT HEADER ─────────────── */
+    .chat-hdr {
+      background: #ffffff;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      z-index: 30;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+    }
+    .hdr-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: all 0.15s;
+      border: 1px solid var(--border);
+    }
+    .back-btn:hover {
+      background: var(--border);
+      transform: scale(0.97);
+    }
+    .back-btn .ic {
+      width: 18px;
+      height: 18px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .user-av-wrap {
+      position: relative;
+    }
+    .user-av {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
+    }
+    .online-indicator {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 11px;
+      height: 11px;
+      background: #10b981;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+    }
+    .user-meta {
+      display: flex;
+      flex-direction: column;
+    }
+    .user-name {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--foreground);
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .user-status {
+      font-size: 11px;
+      color: #10b981;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .user-status::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+
+    .hdr-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hdr-act-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: all 0.15s;
+    }
+    .hdr-act-btn:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+      border-color: rgba(0, 114, 213, 0.2);
+    }
+    .hdr-act-btn .ic {
+      width: 17px;
+      height: 17px;
+    }
+
+    /* ─────────────── CHAT BODY ─────────────── */
+    .chat-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+    }
+    .chat-body::-webkit-scrollbar {
+      width: 4px;
+    }
+    .chat-body::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    /* Date Separator */
+    .date-divider {
+      text-align: center;
+      position: relative;
+      margin: 4px 0 10px;
+    }
+    .date-divider span {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #e2e8f0;
+      color: var(--ink-soft);
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 99px;
+      letter-spacing: 0.2px;
+    }
+
+    /* ─────────────── MESSAGE ROW ─────────────── */
+    .chat-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      width: 100%;
+      animation: msgPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes msgPop {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .chat-row.in {
+      justify-content: flex-start;
+    }
+    .chat-row.out {
+      justify-content: flex-end;
+    }
+
+    .msg-av-small {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-bottom: 2px;
+    }
+
+    .bubble-wrap {
+      max-width: 82%;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .chat-row.out .bubble-wrap {
+      align-items: flex-end;
+    }
+
+    /* ─────────────── LOCKET CARD (PHOTO + BADGES + CAPTION) ─────────────── */
+    .locket-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #0f172a;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
+    }
+    .locket-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+    }
+
+    .locket-media {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .locket-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s;
+    }
+    .locket-card:hover .locket-media img {
+      transform: scale(1.03);
+    }
+
+    /* Dark Overlay */
+    .locket-dark-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 45%, rgba(0,0,0,0.85) 100%);
+      pointer-events: none;
+    }
+
+    /* Card Top Bar */
+    .locket-top-bar {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+    }
+    .locket-author-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 99px;
+      padding: 3px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .locket-zoom-hint {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .locket-zoom-hint .ic {
+      width: 13px;
+      height: 13px;
+    }
+
+    /* Card Bottom Bar (Badges on top, Caption underneath) */
+    .locket-bottom-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px 14px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .locket-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .locket-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 99px;
+      padding: 3px 9px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      line-height: 1.2;
+    }
+    .locket-pill.pos { color: #4ade80; }
+    .locket-pill.neg { color: #f87171; }
+    .locket-pill .ic { width: 11px; height: 11px; }
+
+    .locket-caption {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+      margin: 0;
+    }
+
+    /* Attached Reply Text Bubble */
+    .reply-text-bubble {
+      padding: 11px 15px;
+      font-size: 13.5px;
+      line-height: 1.45;
+      font-weight: 600;
+      box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+      position: relative;
+    }
+    .chat-row.in .reply-text-bubble {
+      background: #ffffff;
+      color: var(--foreground);
+      border-radius: 4px 18px 18px 18px;
+      border: 1px solid var(--border);
+    }
+    .chat-row.out .reply-text-bubble {
+      background: linear-gradient(135deg, #0072D5, #005bb5);
+      color: #ffffff;
+      border-radius: 18px 4px 18px 18px;
+      box-shadow: 0 4px 14px rgba(0, 114, 213, 0.22);
+      border: 1px solid #0055A9;
+    }
+
+    /* Standalone standard text message (without photo) */
+    .plain-text-bubble {
+      padding: 10px 14px;
+      font-size: 13.5px;
+      font-weight: 600;
+      line-height: 1.45;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+    .chat-row.in .plain-text-bubble {
+      background: #ffffff;
+      color: var(--foreground);
+      border-bottom-left-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .chat-row.out .plain-text-bubble {
+      background: linear-gradient(135deg, #0072D5, #005bb5);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 14px rgba(0, 114, 213, 0.22);
+      border: 1px solid #0055A9;
+    }
+
+    /* Floating Reaction Badge attached to card corner */
+    .floating-reaction {
+      position: absolute;
+      bottom: -10px;
+      right: 12px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 2px 7px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+      z-index: 5;
+    }
+
+    /* Time Stamp */
+    .msg-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      padding: 2px 4px;
+    }
+    .chat-row.out .msg-meta-row {
+      justify-content: flex-end;
+    }
+    .seen-check {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    /* ─────────────── ACTIVE REPLY BANNER (ABOVE INPUT) ─────────────── */
+    .reply-context-banner {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      animation: slideUp 0.2s ease;
+      flex-shrink: 0;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .rcb-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .rcb-thumb {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .rcb-info {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .rcb-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .rcb-desc {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--foreground);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 280px;
+    }
+    .rcb-close {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--dash-bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink-soft);
+    }
+    .rcb-close .ic {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ─────────────── QUICK REACTION ROW (LOCKET STYLE) ─────────────── */
+    .quick-react-bar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 8px 14px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      border-top: 1px solid rgba(226, 232, 240, 0.7);
+      flex-shrink: 0;
+    }
+    .quick-react-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .qr-chip {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+    .qr-chip:hover {
+      transform: scale(1.22) translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 114, 213, 0.2);
+      border-color: var(--primary);
+    }
+    .qr-chip:active {
+      transform: scale(0.92);
+    }
+
+    /* ─────────────── BOTTOM INPUT BAR ─────────────── */
+    .chat-input-bar {
+      background: #ffffff;
+      padding: 8px 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+      position: relative;
+    }
+    .action-icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--dash-bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .action-icon-btn:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+      border-color: rgba(0, 114, 213, 0.2);
+    }
+    .action-icon-btn .ic {
+      width: 19px;
+      height: 19px;
+    }
+
+    .input-box-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: var(--dash-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 99px;
+      padding: 0 14px;
+      height: 42px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .input-box-wrap:focus-within {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(0, 114, 213, 0.2);
+    }
+    .chat-text-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 13.5px;
+      font-family: inherit;
+      color: var(--foreground);
+      font-weight: 600;
+    }
+    .chat-text-input::placeholder {
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .send-msg-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0072D5, #0055A9);
+      border: none;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(0, 114, 213, 0.35);
+      transition: all 0.15s;
+    }
+    .send-msg-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 16px rgba(0, 114, 213, 0.2);
+    }
+    .send-msg-btn:active {
+      transform: scale(0.95);
+    }
+    .send-msg-btn .ic {
+      width: 17px;
+      height: 17px;
+      margin-left: 2px;
+    }
+
+    /* ─────────────── LIGHTBOX MODAL (PHOTO VIEW) ─────────────── */
+    .lightbox-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .lightbox-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+    .lightbox-content {
+      max-width: 420px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+    .lightbox-close-btn {
+      position: absolute;
+      top: -46px;
+      right: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .lightbox-close-btn .ic {
+      width: 18px;
+      height: 18px;
+    }
+    .lightbox-img {
+      width: 100%;
+      max-height: 480px;
+      border-radius: 24px;
+      object-fit: cover;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .lightbox-info {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 14px 18px;
+      color: #fff;
+    }
+    .lb-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .lb-caption {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    /* Floating flying emoji animation */
+    .flying-emoji {
+      position: fixed;
+      font-size: 32px;
+      pointer-events: none;
+      z-index: 999;
+      animation: flyUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    @keyframes flyUp {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.5);
+      }
+      50% {
+        transform: translate(calc(var(--rx) * 1px), -120px) scale(1.4);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(calc(var(--rx) * 1.5px), -240px) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrap">
+    <!-- Status Bar -->
+    <div class="sbar">
+      <span>09:41</span>
+      <div class="sbar-icons">
+        <svg class="ic"><use href="#icon-wifi"/></svg>
+        <svg class="ic"><use href="#icon-battery"/></svg>
+      </div>
+    </div>
+
+    <!-- Chat Header -->
+    <div class="chat-hdr">
+      <div class="hdr-left">
+        <a href="feed.html" class="back-btn" title="Quay lại Bảng tin">
+          <svg class="ic"><use href="#icon-chevron-left"/></svg>
+        </a>
+        <div class="user-profile" onclick="viewUserInfo()">
+          <div class="user-av-wrap">
+            <div class="user-av" id="chatAvatar">TN</div>
+            <div class="online-indicator"></div>
+          </div>
+          <div class="user-meta">
+            <div class="user-name" id="chatUserName">Trần Ngọc</div>
+            <div class="user-status">Đang hoạt động</div>
+          </div>
+        </div>
+      </div>
+      <div class="hdr-actions">
+        <div class="hdr-act-btn" onclick="startCall('voice')" title="Gọi thoại">
+          <svg class="ic"><use href="#icon-phone"/></svg>
+        </div>
+        <div class="hdr-act-btn" onclick="startCall('video')" title="Gọi video">
+          <svg class="ic"><use href="#icon-video"/></svg>
+        </div>
+        <div class="hdr-act-btn" onclick="openMoreOptions()" title="Tùy chọn">
+          <svg class="ic"><use href="#icon-more-horizontal"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Body Messages -->
+    <div class="chat-body" id="chatBody">
+      <!-- Date Divider -->
+      <div class="date-divider">
+        <span>Hôm nay, 30 tháng 9</span>
+      </div>
+
+      <!-- Message 1: Incoming Locket Post (Trần Ngọc post Bún bò Huế) + Reply -->
+      <div class="chat-row in">
+        <div class="msg-av-small">TN</div>
+        <div class="bubble-wrap">
+          <div class="locket-card" onclick="openLightbox('https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80', '-₫85,000', 'Ăn uống', 'Bún bò Huế quán quen, chia bill cùng team trưa nay 🍜', '#icon-utensils')">
+            <div class="locket-media">
+              <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80" alt="Bún bò Huế"/>
+              <div class="locket-dark-overlay"></div>
+              <div class="locket-top-bar">
+                <div class="locket-author-chip">Trần Ngọc · 11:42</div>
+                <div class="locket-zoom-hint"><svg class="ic"><use href="#icon-eye"/></svg></div>
+              </div>
+              <div class="locket-bottom-bar">
+                <div class="locket-pills">
+                  <span class="locket-pill neg">-₫85,000</span>
+                  <span class="locket-pill"><svg class="ic"><use href="#icon-utensils"/></svg> Ăn uống</span>
+                </div>
+                <p class="locket-caption">Bún bò Huế quán quen, chia bill cùng team trưa nay 🍜</p>
+              </div>
+            </div>
+            <div class="floating-reaction">🔥 2</div>
+          </div>
+          <div class="reply-text-bubble">
+            Ngon thế bạn ơi! Trưa mai dắt tui đi ăn bún bò quán này với nhé! 😋🍜
+          </div>
+          <div class="msg-meta-row">
+            <span>11:43</span> · <span>Đã nhận</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 2: Outgoing Response from You -->
+      <div class="chat-row out">
+        <div class="bubble-wrap">
+          <div class="plain-text-bubble">
+            Oki luôn nha! Quán Bếp Xanh ngay gần công ty đó, 12h trưa mai hẹn nhau ở sảnh tầng 1 nha 👍✨
+          </div>
+          <div class="msg-meta-row">
+            <span>11:45</span> · <span class="seen-check">Đã xem ✓✓</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 3: Incoming Locket Post (Trần Ngọc post Starbucks) -->
+      <div class="chat-row in">
+        <div class="msg-av-small">TN</div>
+        <div class="bubble-wrap">
+          <div class="locket-card" onclick="openLightbox('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80', '-₫115,000', 'Cà phê', 'Cold Brew cam sả chiều thứ 7 chill chill cùng hội bạn thân ☕✨', '#icon-coffee')">
+            <div class="locket-media">
+              <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80" alt="Cà phê"/>
+              <div class="locket-dark-overlay"></div>
+              <div class="locket-top-bar">
+                <div class="locket-author-chip">Trần Ngọc · 14:15</div>
+                <div class="locket-zoom-hint"><svg class="ic"><use href="#icon-eye"/></svg></div>
+              </div>
+              <div class="locket-bottom-bar">
+                <div class="locket-pills">
+                  <span class="locket-pill neg">-₫115,000</span>
+                  <span class="locket-pill"><svg class="ic"><use href="#icon-coffee"/></svg> Cà phê</span>
+                </div>
+                <p class="locket-caption">Cold Brew cam sả chiều thứ 7 chill chill cùng hội bạn thân ☕✨</p>
+              </div>
+            </div>
+            <div class="floating-reaction">❤️ 1</div>
+          </div>
+          <div class="reply-text-bubble">
+            Đang ngồi bên Starbucks Hàn Thuyên nè, cậu có rảnh ghé làm một ly không? View công viên thoáng mát lắm!
+          </div>
+          <div class="msg-meta-row">
+            <span>14:16</span> · <span>Đã nhận</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 4: Outgoing Locket Reply (You reply with Gym moment) -->
+      <div class="chat-row out">
+        <div class="bubble-wrap">
+          <div class="locket-card" onclick="openLightbox('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=80', '-₫650,000', 'Thể thao', 'Gia hạn gói tập gym 3 tháng, kỷ luật chi tiêu cho sức khỏe! 💪🏋️', '#icon-dumbbell')">
+            <div class="locket-media">
+              <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=80" alt="Gym"/>
+              <div class="locket-dark-overlay"></div>
+              <div class="locket-top-bar">
+                <div class="locket-author-chip">Bạn · 14:22</div>
+                <div class="locket-zoom-hint"><svg class="ic"><use href="#icon-eye"/></svg></div>
+              </div>
+              <div class="locket-bottom-bar">
+                <div class="locket-pills">
+                  <span class="locket-pill neg">-₫650,000</span>
+                  <span class="locket-pill"><svg class="ic"><use href="#icon-dumbbell"/></svg> Thể thao</span>
+                </div>
+                <p class="locket-caption">Gia hạn gói tập gym 3 tháng, kỷ luật chi tiêu cho sức khỏe! 💪🏋️</p>
+              </div>
+            </div>
+            <div class="floating-reaction">💪 1</div>
+          </div>
+          <div class="reply-text-bubble">
+            Tớ vừa check-in vào phòng gym tập tạ rồi nè! Tiếc ghê, hẹn cậu tối hoặc trưa mai ăn bún bò xong rồi đi cà phê bù nhé 🏃‍♂️💨
+          </div>
+          <div class="msg-meta-row">
+            <span>14:23</span> · <span class="seen-check">Đã xem ✓✓</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 5: Incoming Quick Reply -->
+      <div class="chat-row in">
+        <div class="msg-av-small">TN</div>
+        <div class="bubble-wrap">
+          <div class="plain-text-bubble">
+            Oke chốt kèo luôn nha bạn iu! Tập hăng say nào 💪🔥
+          </div>
+          <div class="msg-meta-row">
+            <span>14:25</span> · <span>Vừa xong</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Active Locket Reply Context Banner (Optional attach preview) -->
+    <div class="reply-context-banner" id="replyContextBanner" style="display: flex;">
+      <div class="rcb-left">
+        <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=200&auto=format&fit=crop&q=80" alt="Khoảnh khắc" class="rcb-thumb" id="rcbImg"/>
+        <div class="rcb-info">
+          <span class="rcb-title" id="rcbTitle">Trả lời khoảnh khắc Locket</span>
+          <span class="rcb-desc" id="rcbDesc">Bún bò Huế quán quen (-₫85,000)</span>
+        </div>
+      </div>
+      <div class="rcb-close" onclick="cancelReplyContext()" title="Hủy đính kèm khoảnh khắc">
+        <svg class="ic"><use href="#icon-x"/></svg>
+      </div>
+    </div>
+
+    <!-- Quick Reaction Bar (Locket-style) -->
+    <div class="quick-react-bar">
+      <div class="qr-chip" onclick="sendReaction('❤️', event)">❤️</div>
+      <div class="qr-chip" onclick="sendReaction('🔥', event)">🔥</div>
+      <div class="qr-chip" onclick="sendReaction('😋', event)">😋</div>
+      <div class="qr-chip" onclick="sendReaction('☕', event)">☕</div>
+      <div class="qr-chip" onclick="sendReaction('👏', event)">👏</div>
+      <div class="qr-chip" onclick="sendReaction('💸', event)">💸</div>
+      <div class="qr-chip" onclick="sendReaction('✨', event)">✨</div>
+      <div class="qr-chip" onclick="sendReaction('💪', event)">💪</div>
+    </div>
+
+    <!-- Bottom Input Bar -->
+    <div class="chat-input-bar">
+      <button class="action-icon-btn" onclick="triggerCamera()" title="Chụp ảnh Locket mới">
+        <svg class="ic"><use href="#icon-camera"/></svg>
+      </button>
+      <button class="action-icon-btn" onclick="triggerAttach()" title="Chọn khoảnh khắc chi tiêu">
+        <svg class="ic"><use href="#icon-image"/></svg>
+      </button>
+
+      <div class="input-box-wrap">
+        <input type="text" id="chatInput" class="chat-text-input" placeholder="Nhập tin nhắn trả lời..." autocomplete="off"/>
+      </div>
+
+      <button class="send-msg-btn" id="sendBtn" onclick="handleSend()">
+        <svg class="ic"><use href="#icon-send"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Lightbox Modal for Full Locket Image Zoom -->
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <div class="lightbox-close-btn" onclick="closeLightboxDirect()">
+        <svg class="ic"><use href="#icon-x"/></svg>
+      </div>
+      <img src="" alt="Full view" class="lightbox-img" id="lbImg"/>
+      <div class="lightbox-info">
+        <div class="lb-pills">
+          <span class="locket-pill" id="lbAmount">-₫85,000</span>
+          <span class="locket-pill" id="lbCategory"><svg class="ic" id="lbIcon"><use href="#icon-utensils"/></svg> <span id="lbCatText">Ăn uống</span></span>
+        </div>
+        <p class="lb-caption" id="lbCaption">Bún bò Huế quán quen, chia bill cùng team trưa nay 🍜</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Parse URL params for customized conversation (Trần Ngọc, Hùng Minh, etc.)
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetUser = urlParams.get('user') || 'Trần Ngọc';
+    const targetPost = urlParams.get('post');
+
+    document.getElementById('chatUserName').innerText = targetUser;
+    const initials = targetUser.split(' ').map(n => n[0]).slice(-2).join('').toUpperCase();
+    document.getElementById('chatAvatar').innerText = initials || 'TN';
+
+    if (targetPost) {
+      document.getElementById('rcbDesc').innerText = targetPost;
+    }
+
+    // Scroll to bottom initially
+    const chatBody = document.getElementById('chatBody');
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    // Send Message Handler
+    const chatInput = document.getElementById('chatInput');
+    chatInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        handleSend();
+      }
+    });
+
+    let currentReplyContext = {
+      active: true,
+      img: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80',
+      amount: '-₫85,000',
+      cat: 'Ăn uống',
+      icon: '#icon-utensils',
+      caption: 'Bún bò Huế quán quen, chia bill cùng team trưa nay 🍜'
+    };
+
+    function cancelReplyContext() {
+      currentReplyContext.active = false;
+      document.getElementById('replyContextBanner').style.display = 'none';
+    }
+
+    function setReplyContext(img, amount, cat, icon, caption) {
+      currentReplyContext = { active: true, img, amount, cat, icon, caption };
+      document.getElementById('rcbImg').src = img;
+      document.getElementById('rcbDesc').innerText = caption + ' (' + amount + ')';
+      document.getElementById('replyContextBanner').style.display = 'flex';
+      chatInput.focus();
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      const now = new Date();
+      const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+      const outRow = document.createElement('div');
+      outRow.className = 'chat-row out';
+
+      if (currentReplyContext.active) {
+        outRow.innerHTML = `
+          <div class="bubble-wrap">
+            <div class="locket-card" onclick="openLightbox('${currentReplyContext.img}', '${currentReplyContext.amount}', '${currentReplyContext.cat}', '${currentReplyContext.caption}', '${currentReplyContext.icon}')">
+              <div class="locket-media">
+                <img src="${currentReplyContext.img}" alt="Locket"/>
+                <div class="locket-dark-overlay"></div>
+                <div class="locket-top-bar">
+                  <div class="locket-author-chip">Bạn · ${timeStr}</div>
+                  <div class="locket-zoom-hint"><svg class="ic"><use href="#icon-eye"/></svg></div>
+                </div>
+                <div class="locket-bottom-bar">
+                  <div class="locket-pills">
+                    <span class="locket-pill neg">${currentReplyContext.amount}</span>
+                    <span class="locket-pill"><svg class="ic"><use href="${currentReplyContext.icon}"/></svg> ${currentReplyContext.cat}</span>
+                  </div>
+                  <p class="locket-caption">${currentReplyContext.caption}</p>
+                </div>
+              </div>
+            </div>
+            <div class="reply-text-bubble">${escapeHtml(text)}</div>
+            <div class="msg-meta-row">
+              <span>${timeStr}</span> · <span class="seen-check">Đã gửi ✓✓</span>
+            </div>
+          </div>
+        `;
+        // Once sent, dismiss context banner
+        cancelReplyContext();
+      } else {
+        outRow.innerHTML = `
+          <div class="bubble-wrap">
+            <div class="plain-text-bubble">${escapeHtml(text)}</div>
+            <div class="msg-meta-row">
+              <span>${timeStr}</span> · <span class="seen-check">Đã gửi ✓✓</span>
+            </div>
+          </div>
+        `;
+      }
+
+      chatBody.appendChild(outRow);
+      chatInput.value = '';
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Simulated auto-reply after 1.5s
+      setTimeout(() => {
+        simulateFriendReply();
+      }, 1400);
+    }
+
+    function simulateFriendReply() {
+      const now = new Date();
+      const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      const replies = [
+        'Dạ vâng luôn nha! Mai 12h gặp nhau ở sảnh nha ❤️',
+        'Haha tuyệt vời quá bạn ơi! 🥳✨',
+        'Quá đỉnh! Để tui ghi sổ chi tiêu vào Finora liền đây nè 💸',
+        'Nhất trí nha! Mai chụp thêm ảnh locket kỷ niệm nữa nha 📸'
+      ];
+      const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+      const inRow = document.createElement('div');
+      inRow.className = 'chat-row in';
+      inRow.innerHTML = `
+        <div class="msg-av-small">${initials}</div>
+        <div class="bubble-wrap">
+          <div class="plain-text-bubble">${randomReply}</div>
+          <div class="msg-meta-row">
+            <span>${timeStr}</span> · <span>Vừa xong</span>
+          </div>
+        </div>
+      `;
+      chatBody.appendChild(inRow);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    // Flying Emoji Reaction
+    function sendReaction(emoji, e) {
+      // Spawn flying emoji animation
+      const rect = e.target.getBoundingClientRect();
+      const floater = document.createElement('div');
+      floater.className = 'flying-emoji';
+      floater.innerText = emoji;
+      floater.style.left = (rect.left + rect.width / 2 - 16) + 'px';
+      floater.style.top = (rect.top - 10) + 'px';
+      floater.style.setProperty('--rx', (Math.random() * 80 - 40));
+      document.body.appendChild(floater);
+
+      setTimeout(() => {
+        floater.remove();
+      }, 1200);
+
+      // Append reaction bubble in chat
+      const now = new Date();
+      const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      const outRow = document.createElement('div');
+      outRow.className = 'chat-row out';
+      outRow.innerHTML = `
+        <div class="bubble-wrap">
+          <div class="plain-text-bubble" style="font-size:24px; padding: 6px 14px; background: transparent; border: none; box-shadow: none;">
+            ${emoji}
+          </div>
+          <div class="msg-meta-row">
+            <span>${timeStr}</span> · <span class="seen-check">Đã gửi ✓</span>
+          </div>
+        </div>
+      `;
+      chatBody.appendChild(outRow);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    // Lightbox modal methods
+    function openLightbox(img, amount, cat, caption, iconHref) {
+      document.getElementById('lbImg').src = img;
+      document.getElementById('lbAmount').innerText = amount;
+      document.getElementById('lbAmount').className = 'locket-pill ' + (amount.startsWith('+') ? 'pos' : 'neg');
+      document.getElementById('lbCatText').innerText = cat;
+      document.getElementById('lbCaption').innerText = caption;
+      const iconEl = document.querySelector('#lbIcon use');
+      if (iconEl && iconHref) {
+        iconEl.setAttribute('href', iconHref);
+      }
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.add('active');
+    }
+
+    function closeLightbox(e) {
+      document.getElementById('lightboxModal').classList.remove('active');
+    }
+
+    function closeLightboxDirect() {
+      document.getElementById('lightboxModal').classList.remove('active');
+    }
+
+    function triggerCamera() {
+      alert('Mở camera chụp khoảnh khắc Locket chi tiêu mới! 📸\n(Chức năng chụp & chia sẻ ảnh)');
+    }
+
+    function triggerAttach() {
+      alert('Đính kèm giao dịch hoặc khoảnh khắc gần đây từ Finora 💳✨');
+    }
+
+    function startCall(type) {
+      alert('Đang kết nối ' + (type === 'video' ? 'cuộc gọi Video' : 'cuộc gọi thoại') + ' tới ' + targetUser + '... 📞');
+    }
+
+    function openMoreOptions() {
+      alert('Tùy chọn đoạn chat:\n· Xem trang cá nhân ' + targetUser + '\n· Tìm kiếm trong cuộc trò chuyện\n· Kho ảnh Locket chung\n· Tắt thông báo');
+    }
+
+    function viewUserInfo() {
+      window.location.href = 'friends.html';
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>

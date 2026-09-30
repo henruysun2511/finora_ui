@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nora · Thiết lập hồ sơ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../../_shared/base.css"/>
+<link rel="stylesheet" href="../../_shared/components.css"/>
+<script src="../../_shared/icons.js"></script>
+</head>
+<body>
+
+  <!-- Status bar -->
+  <div class="sbar">
+    <span>9:41</span>
+    <div class="icons">
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-wifi"/></svg>
+      <svg class="ic" style="width:14px;height:14px;"><use href="#icon-battery"/></svg>
+    </div>
+  </div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a href="welcome.html" class="back-btn" title="Quay lại">
+      <svg class="ic"><use href="#icon-arrow-left"/></svg>
+    </a>
+    <span class="topbar-title">Thiết lập hồ sơ</span>
+    <span class="step-badge">Bước 2/5</span>
+  </div>
+
+  <div class="screen-content">
+    <!-- Dialogue with mini Nora -->
+    <div class="mascot-dialogue">
+      <div class="dialogue-avatar" id="dialogue-avatar">
+        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(0, 20)">
+            <!-- Spark Background Aura -->
+            <circle cx="100" cy="90" r="80" fill="#ebf4ff" opacity="0.6" />
+            <!-- Body Blob (Perfectly symmetrical, futuristic) -->
+            <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#0072d5" />
+
+            <!-- Face Plate (Screen aesthetic) -->
+            <rect x="50" y="50" width="100" height="70" rx="35" fill="#ffffff" stroke="#f7fcff" stroke-width="4" />
+
+            <!-- Eyes (Digital/Calm) -->
+            <g transform="translate(75, 80)">
+              <circle cx="0" cy="0" r="10" fill="#0055a9" />
+              <circle cx="2" cy="-2" r="3" fill="#fff" />
+            </g>
+            <g transform="translate(125, 80)">
+              <circle cx="0" cy="0" r="10" fill="#0055a9" />
+              <circle cx="2" cy="-2" r="3" fill="#fff" />
+            </g>
+
+            <!-- Mouth (Perfect smile arc) -->
+            <path d="M 92 98 Q 100 104 108 98" fill="none" stroke="#0055a9" stroke-width="3" stroke-linecap="round" />
+
+            <!-- Prop: Finora Spark ✦ (Floating) -->
+            <g transform="translate(145, 30)">
+              <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#f6e05e" />
+            </g>
+            <g transform="translate(57, 120)">
+              <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#f6e05e"
+                transform="scale(0.6)" />
+            </g>
+
+            <!-- Clean UI Collar -->
+            <path d="M 70 120 L 130 120 L 120 140 L 80 140 Z" fill="#fff" opacity="0.3" />
+
+            <!-- Prop: Bank Card held in the middle (like Penny holds her coin) -->
+            <g transform="translate(100, 140)">
+              <!-- Hands wrapping around the card -->
+              <circle cx="-24" cy="-4" r="9" fill="#d9e6ff" />
+              <circle cx="24" cy="-4" r="9" fill="#d9e6ff" />
+              <!-- Bank card -->
+              <g transform="translate(0, 0) scale(0.72)">
+                <rect x="-24" y="-16" width="48" height="32" rx="6" fill="#ffffff" stroke="#b8c2d4" stroke-width="4" />
+                <rect x="-24" y="-16" width="48" height="13" rx="6" fill="#0072d5" />
+                <rect x="-24" y="-3" width="48" height="4" fill="#c9d3e2" />
+                <rect x="-16" y="-9" width="10" height="8" rx="2" fill="#f5c04a" />
+                <circle cx="8" cy="-7" r="1.6" fill="#8892a6" />
+                <circle cx="15" cy="-7" r="1.6" fill="#8892a6" />
+                <circle cx="22" cy="-7" r="1.6" fill="#8892a6" />
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="dialogue-text" id="speech-bubble">
+        Cho mình biết tên để chúng mình dễ xưng hô và cá nhân hóa tư vấn nhé! 💙
+      </div>
+    </div>
+
+    <!-- Inputs -->
+    <div class="input-group">
+      <label class="input-label" for="username">Tên của bạn</label>
+      <div class="input-box">
+        <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-user"/></svg>
+        <input type="text" id="username" class="input-field" placeholder="Ví dụ: Nguyễn Minh" value="Nguyễn Minh" />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Ngôn ngữ hiển thị</label>
+      <div class="seg-control">
+        <button type="button" class="seg-btn on" data-lang="vi">🇻🇳 Tiếng Việt</button>
+        <button type="button" class="seg-btn" data-lang="en">🇬🇧 English</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Đơn vị tiền tệ chính</label>
+      <div class="radio-grid">
+        <div class="radio-card on" data-cur="VND">
+          <div class="radio-card-icon">🇻🇳</div>
+          <div class="radio-card-title">VND (₫)</div>
+          <div class="radio-card-sub">Đồng Việt Nam</div>
+        </div>
+        <div class="radio-card" data-cur="USD">
+          <div class="radio-card-icon">🇺🇸</div>
+          <div class="radio-card-title">USD ($)</div>
+          <div class="radio-card-sub">Đô la Mỹ</div>
+        </div>
+      </div>
+      <div class="chips-row">
+        <div class="chip" data-cur="EUR">🇪🇺 EUR (€)</div>
+        <div class="chip" data-cur="JPY">🇯🇵 JPY (¥)</div>
+        <div class="chip" data-cur="SGD">🇸🇬 SGD ($)</div>
+      </div>
+    </div>
+
+    <div class="footer-flow">
+      <div class="ob-progress" style="width:100%; margin-bottom:6px;">
+        <i class="on"></i><i class="on"></i><i></i><i></i><i></i>
+      </div>
+      <button type="button" id="btn-next" class="btn btn-p">
+        Tiếp tục <svg class="ic"><use href="#icon-arrow-up-right"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="../../_shared/mascots-data.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var store = window.FinoraMascots.store;
+      var data = store.get();
+
+      var nameInput = document.getElementById("username");
+      var bubble = document.getElementById("speech-bubble");
+      if (data.name) nameInput.value = data.name;
+
+      nameInput.addEventListener("focus", function () {
+        bubble.textContent = "Tên này sẽ hiển thị trên dashboard và các báo cáo tài chính của bạn!";
+      });
+      nameInput.addEventListener("blur", function () {
+        if (!nameInput.value.trim()) {
+          bubble.textContent = "Đừng quên điền tên để mình biết gọi bạn là gì nhé!";
+        } else {
+          bubble.textContent = "Chào " + nameInput.value.trim() + "! Chọn ngôn ngữ và tiền tệ yêu thích nhé.";
+        }
+      });
+
+      // Language
+      var langBtns = document.querySelectorAll(".seg-btn");
+      var selectedLang = data.language || "vi";
+      langBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          langBtns.forEach(function (b) { b.classList.remove("on"); });
+          btn.classList.add("on");
+          selectedLang = btn.getAttribute("data-lang");
+          bubble.textContent = selectedLang === "vi" 
+            ? "Tuyệt! Giao diện sẽ hiển thị bằng Tiếng Việt thân thiện." 
+            : "Awesome! Finora will be ready in English.";
+        });
+      });
+
+      // Currency
+      var curCards = document.querySelectorAll(".radio-card, .chip");
+      var selectedCur = data.currency || "VND";
+      curCards.forEach(function (card) {
+        card.addEventListener("click", function () {
+          document.querySelectorAll(".radio-card").forEach(function (c) { c.classList.remove("on"); });
+          document.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("on"); });
+          card.classList.add("on");
+          selectedCur = card.getAttribute("data-cur");
+          bubble.textContent = "Đã chọn đơn vị tiền tệ chính: " + selectedCur;
+        });
+      });
+
+      // Next
+      document.getElementById("btn-next").addEventListener("click", function () {
+        var name = nameInput.value.trim() || "Nguyễn Minh";
+        store.set({ name: name, language: selectedLang, currency: selectedCur });
+        window.location.href = "setup-wallet.html";
+      });
+    });
+  </script>
+</body>
+</html>

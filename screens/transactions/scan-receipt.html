@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Quét hóa đơn AI OCR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: #0f172a;
+      color: #fff;
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      background: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+    }
+    .camera-hud {
+      position: relative;
+      flex: 1;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, #1e293b 0%, #090d16 100%);
+      overflow: hidden;
+      padding: 60px 20px 20px;
+    }
+    .cam-top-actions {
+      position: absolute;
+      top: 48px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 25;
+    }
+    .cam-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Viewfinder Frame */
+    .viewfinder {
+      width: 280px;
+      height: 380px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .viewfinder::before, .viewfinder::after {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-color: var(--primary);
+      border-style: solid;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .viewfinder::before {
+      top: 10px;
+      left: 10px;
+      border-width: 4px 0 0 4px;
+      border-radius: 6px 0 0 0;
+    }
+    .viewfinder::after {
+      bottom: 10px;
+      right: 10px;
+      border-width: 0 4px 4px 0;
+      border-radius: 0 0 6px 0;
+    }
+
+    /* Scanning laser beam */
+    .laser {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #38bdf8, #0072D5, #38bdf8, transparent);
+      box-shadow: 0 0 16px #38bdf8;
+      top: 10%;
+      animation: scanLaser 2.2s ease-in-out infinite alternate;
+      z-index: 10;
+    }
+    @keyframes scanLaser {
+      0% { top: 12%; opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { top: 86%; opacity: 0.7; }
+    }
+
+    .bill-preview-mock {
+      width: 86%;
+      opacity: 0.85;
+      transform: rotate(-1deg);
+      border-radius: 8px;
+    }
+
+    /* Bottom OCR Drawer */
+    .ocr-sheet {
+      background: #fff;
+      border-radius: 28px 28px 0 0;
+      padding: 22px 20px 24px;
+      color: var(--foreground);
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 20;
+    }
+    .sheet-handle {
+      width: 44px;
+      height: 5px;
+      border-radius: 99px;
+      background: var(--border);
+      margin: 0 auto 16px;
+    }
+    .mascot-ai-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: oklch(0.55 0.18 250 / 0.12);
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .mascot-ai-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: pulseDot 1.4s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.5; }
+    }
+
+    .ocr-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .ocr-item-row b {
+      font-size: 14px;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Camera Viewport HUD -->
+    <div class="camera-hud">
+      <div class="cam-top-actions">
+        <a href="add-manual.html" class="cam-btn" title="Hủy">
+          <svg class="ic" style="width:18px;height:18px;"><use href="#icon-x"/></svg>
+        </a>
+        <div style="font-size:14px;font-weight:800;letter-spacing:-0.2px;">AI OCR Camera</div>
+        <div class="cam-btn" title="Bật đèn Flash">
+          <svg class="ic" style="width:18px;height:18px;"><use href="#icon-zap"/></svg>
+        </div>
+      </div>
+
+      <div class="viewfinder">
+        <div class="laser"></div>
+        <img src="../assets/receipt-photo.svg" class="bill-preview-mock" alt="Bill Preview">
+      </div>
+      <div style="margin-top:16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);text-align:center;">
+        Căn chỉnh hóa đơn trong khung hình để AI đọc tự động
+      </div>
+    </div>
+
+    <!-- Live OCR Detection Drawer -->
+    <div class="ocr-sheet">
+      <div class="sheet-handle"></div>
+      
+      <div class="mascot-ai-pill">
+        <div class="dot"></div>
+        <span>Nora AI · Nhận diện thành công 100%</span>
+      </div>
+
+      <div style="font-size:18px;font-weight:900;letter-spacing:-0.5px;margin-bottom:12px;">
+        Hóa đơn Bếp Xanh Quán
+      </div>
+
+      <div class="ocr-item-row">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:30px;height:30px;border-radius:9px;background:oklch(0.70 0.19 45 / 0.12);color:var(--orange);display:flex;align-items:center;justify-content:center;">
+            <svg class="ic" style="width:16px;height:16px;"><use href="#icon-utensils"/></svg>
+          </div>
+          <div>
+            <div style="font-weight:800;font-size:13px;">Cơm trưa Team (x3 phần)</div>
+            <div style="font-size:11px;color:var(--ink-soft);">Ăn uống · 18/08/2026</div>
+          </div>
+        </div>
+        <b>₫150,000</b>
+      </div>
+
+      <div class="ocr-item-row" style="border-bottom:none;padding-top:12px;">
+        <span style="font-size:12px;font-weight:700;color:var(--ink-soft);">Nguồn tiền đề xuất</span>
+        <span style="font-size:12px;font-weight:800;color:var(--primary);display:flex;align-items:center;gap:4px;">
+          <svg class="ic" style="width:14px;height:14px;"><use href="#icon-wallet"/></svg> Tiền mặt
+        </span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <a href="add-manual.html" class="btn btn-sm-soft" style="flex:1;text-decoration:none;padding:14px;border-radius:16px;">
+          Chỉnh sửa
+        </a>
+        <button class="btn btn-p" onclick="confirmScan()" style="flex:2;padding:14px;border-radius:16px;">
+          <svg class="ic"><use href="#icon-check"/></svg>
+          Xác nhận ghi sổ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function confirmScan() {
+      alert('Nora đã ghi sổ thành công ₫150,000 cho bạn!');
+      window.location.href = 'list.html';
+    }
+  </script>
+</body>
+</html>

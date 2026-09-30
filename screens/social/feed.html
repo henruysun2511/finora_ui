@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Bảng tin Chi tiêu Bạn bè</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 84px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--dash-bg);
+    }
+
+    /* Light Theme Status Bar */
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .sbar-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Header Nav */
+    .lf-header {
+      background: #fff;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hdr-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .lf-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 21px;
+      font-weight: 900;
+      color: var(--foreground);
+      letter-spacing: -0.4px;
+    }
+    .lf-logo span { color: var(--primary); }
+
+    .lf-hdr-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .lf-icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .lf-icon-btn:hover { background: #e2e8f0; }
+    .lf-icon-btn .ic { width: 18px; height: 18px; }
+
+    .btn-share-bill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 99px;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: 0 4px 14px oklch(0.55 0.18 250 / 0.35);
+      transition: transform 0.15s;
+    }
+    .btn-share-bill:hover { transform: scale(1.03); }
+
+    /* Stories Bar (Light Theme) */
+    .lf-stories {
+      display: flex;
+      gap: 14px;
+      padding: 14px 18px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+    .lf-stories::-webkit-scrollbar { display: none; }
+    .story-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .story-add {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 2px dashed var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      background: #eff6ff;
+      transition: transform 0.15s;
+    }
+    .story-add:hover { transform: scale(1.05); }
+    .story-add .ic { width: 20px; height: 20px; }
+    .story-ring {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #ec4899);
+      padding: 2.5px;
+      transition: transform 0.15s;
+    }
+    .story-ring:hover { transform: scale(1.05); }
+    .story-ring.seen {
+      background: #cbd5e1;
+    }
+    .story-av {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+      color: #fff;
+      border: 2px solid #fff;
+    }
+    .story-name {
+      font-size: 11px;
+      color: var(--foreground);
+      font-weight: 700;
+    }
+    .story-name.add { color: var(--primary); font-weight: 800; }
+
+    /* Filter Chips */
+    .filter-scroll {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px 14px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filter-scroll::-webkit-scrollbar { display: none; }
+    .chip-btn {
+      padding: 7px 14px;
+      border-radius: 99px;
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip-btn.active, .chip-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px oklch(0.55 0.18 250 / 0.25);
+    }
+
+    /* ─────────────── POST CARD LAYOUT (AS ORIGINAL LOCKET STYLE) ─────────────── */
+    .lf-post {
+      background: #fff;
+      border-radius: 26px;
+      margin: 0 16px 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+      transition: transform 0.15s;
+    }
+    .lf-post:hover {
+      transform: translateY(-2px);
+    }
+
+    .lf-photo {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f172a;
+    }
+    .lf-photo-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .lf-post:hover .lf-photo-img {
+      transform: scale(1.02);
+    }
+
+    /* Abstract Graphic Icons inside photo (hidden as requested) */
+    .lf-photo .lf-big,
+    .lf-photo .lf-main {
+      display: none !important;
+    }
+    .lf-photo .ic {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Dark Overlay for text legibility */
+    .lf-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 40%, rgba(0,0,0,0.8) 100%);
+      pointer-events: none;
+    }
+
+    /* Top User Chip */
+    .lf-top-bar {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+    }
+    .lf-user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 99px;
+      padding: 5px 14px 5px 5px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .lf-chip-av {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .lf-chip-name {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .lf-chip-time {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 600;
+      margin-top: 1px;
+    }
+    .lf-more-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: background 0.15s;
+    }
+    .lf-more-btn:hover { background: rgba(0, 0, 0, 0.65); }
+
+    /* Bottom Information Bar */
+    .lf-bottom-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .lf-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .lf-meta-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 99px;
+      padding: 4px 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-sizing: border-box;
+      line-height: 1.2;
+    }
+    .lf-meta-box.pos, .lf-meta-box.lf-amount-pos, .lf-amount-pos { color: #4ade80; }
+    .lf-meta-box.neg, .lf-meta-box.lf-amount-neg, .lf-amount-neg { color: #f87171; }
+    .lf-meta-box .ic { width: 12px; height: 12px; }
+
+    .lf-caption {
+      font-size: 13.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+      margin: 0;
+    }
+
+    /* Reaction Row (Light Theme) */
+    .lf-reaction-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 12px 16px 8px;
+    }
+    .react-chip {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .react-chip:hover { transform: scale(1.15); }
+    .react-chip .ic { width: 16px; height: 16px; }
+    .react-count {
+      margin-left: auto;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      font-weight: 700;
+    }
+
+    /* Actions Bar (Light Theme) */
+    .lf-actions {
+      display: flex;
+      gap: 8px;
+      padding: 10px 16px 14px;
+      border-top: 1px solid var(--border);
+    }
+    .lf-act-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 15px;
+      border-radius: 99px;
+      background: var(--dash-bg);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .lf-act-btn:hover { background: #e2e8f0; }
+    .lf-act-btn .ic { width: 15px; height: 15px; }
+    .lf-act-btn.react {
+      background: #fff7ed;
+      color: #ea580c;
+      border-color: #ffedd5;
+    }
+    .lf-act-btn.react:hover { background: #ffedd5; }
+    .lf-act-btn.right { margin-left: auto; }
+
+    /* Bottom Navigation Standard Finora White */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 14px;
+      z-index: 40;
+    }
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: color 0.15s;
+    }
+    .bni .ic { width: 20px; height: 20px; }
+    .bni.on { color: var(--primary); font-weight: 900; }
+    .bnav-fab {
+      position: relative;
+      top: -14px;
+    }
+    .bnav-fab .fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), oklch(0.48 0.16 250));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px oklch(0.55 0.18 250 / 0.45);
+      border: 3.5px solid #fff;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .bnav-fab .fab:hover { transform: scale(1.06); }
+    .bnav-fab .fab .ic { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Light Status Bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <div class="sbar-icons">
+        <svg class="ic" style="width:13px;height:13px;"><use href="#icon-wifi"/></svg>
+        <svg class="ic" style="width:13px;height:13px;"><use href="#icon-battery"/></svg>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="lf-header">
+      <div class="hdr-left">
+        <a href="../home/dashboard.html" class="tx-back" title="Quay lại Tổng quan">
+          <svg class="ic"><use href="#icon-chevron-left"/></svg>
+        </a>
+        <div class="lf-logo">Finora<span>Social</span></div>
+      </div>
+      <div class="lf-hdr-actions">
+        <a href="friends.html" class="lf-icon-btn" title="Danh sách bạn bè">
+          <svg class="ic"><use href="#icon-users"/></svg>
+        </a>
+        <a href="../transactions/add-manual.html" class="btn-share-bill">
+          <svg class="ic" style="width:14px;height:14px;"><use href="#icon-plus"/></svg> Chia bill
+        </a>
+      </div>
+    </div>
+
+    <!-- Stories / Friends Streak Rings -->
+    <div class="lf-stories">
+      <div class="story-item" onclick="location.href='../transactions/add-manual.html'">
+        <div class="story-add"><svg class="ic"><use href="#icon-plus"/></svg></div>
+        <div class="story-name add">Chia bill</div>
+      </div>
+      <div class="story-item" onclick="filterByFriend('Trần Ngọc')">
+        <div class="story-ring"><div class="story-av" style="background:linear-gradient(135deg, #f59e0b, #ea580c);">TN</div></div>
+        <div class="story-name">Trần Ngọc</div>
+      </div>
+      <div class="story-item" onclick="filterByFriend('Hùng Minh')">
+        <div class="story-ring"><div class="story-av" style="background:linear-gradient(135deg, #0072d5, #0284c7);">HM</div></div>
+        <div class="story-name">Hùng Minh</div>
+      </div>
+      <div class="story-item" onclick="filterByFriend('Phạm Lan')">
+        <div class="story-ring seen"><div class="story-av" style="background:linear-gradient(135deg, #10b981, #059669);">PL</div></div>
+        <div class="story-name">Phạm Lan</div>
+      </div>
+      <div class="story-item" onclick="filterByFriend('Anh Thư')">
+        <div class="story-ring seen"><div class="story-av" style="background:linear-gradient(135deg, #ec4899, #db2777);">AT</div></div>
+        <div class="story-name">Anh Thư</div>
+      </div>
+      <div class="story-item" onclick="filterByFriend('Minh Tuấn')">
+        <div class="story-ring seen"><div class="story-av" style="background:linear-gradient(135deg, #8b5cf6, #6366f1);">MT</div></div>
+        <div class="story-name">Minh Tuấn</div>
+      </div>
+      <div class="story-item" onclick="filterByFriend('Hải Đăng')">
+        <div class="story-ring seen"><div class="story-av" style="background:linear-gradient(135deg, #06b6d4, #0284c7);">HĐ</div></div>
+        <div class="story-name">Hải Đăng</div>
+      </div>
+    </div>
+
+    <!-- Category Filter Chips -->
+    <div class="filter-scroll">
+      <button class="chip-btn active" onclick="filterCat('all', this)">Tất cả (6)</button>
+      <button class="chip-btn" onclick="filterCat('food', this)">🍜 Ăn uống</button>
+      <button class="chip-btn" onclick="filterCat('income', this)">💰 Thu nhập</button>
+      <button class="chip-btn" onclick="filterCat('travel', this)">✈️ Du lịch</button>
+      <button class="chip-btn" onclick="filterCat('coffee', this)">☕ Cà phê</button>
+      <button class="chip-btn" onclick="filterCat('fitness', this)">🏋️ Thể thao</button>
+      <button class="chip-btn" onclick="filterCat('shopping', this)">🛍️ Mua sắm</button>
+    </div>
+
+    <!-- Feed Posts Container -->
+    <div id="postsList">
+
+      <!-- Post 1 — Food (Trần Ngọc) -->
+      <div class="lf-post" data-cat="food">
+        <div class="lf-photo">
+          <img class="lf-photo-img" src="https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80" alt="Bún bò Huế" onerror="this.style.display='none'"/>
+          <div class="lf-overlay"></div>
+          <div class="lf-top-bar">
+            <div class="lf-user-chip">
+              <div class="lf-chip-av" style="background:linear-gradient(135deg, #f59e0b, #ea580c);">TN</div>
+              <div>
+                <div class="lf-chip-name">Trần Ngọc</div>
+                <div class="lf-chip-time">5 phút trước · Bếp Xanh Quán</div>
+              </div>
+            </div>
+            <div class="lf-more-btn" onclick="openMore(1)"><svg class="ic" style="width:15px;height:15px;"><use href="#icon-more-horizontal"/></svg></div>
+          </div>
+          <div class="lf-bottom-bar">
+            <div class="lf-meta-badges">
+              <div class="lf-meta-box lf-amount-neg">-₫85,000</div>
+              <div class="lf-meta-box"><svg class="ic"><use href="#icon-utensils"/></svg> Ăn uống</div>
+            </div>
+            <div class="lf-caption">Bún bò Huế quán quen, chia bill cùng team trưa nay 🍜</div>
+          </div>
+        </div>
+        <div class="lf-reaction-row">
+          <div class="react-chip" onclick="quickReact(this, '🔥')">🔥</div>
+          <div class="react-chip" onclick="quickReact(this, '😋')">😋</div>
+          <div class="react-chip" onclick="quickReact(this, '❤️')">❤️</div>
+          <span class="react-count" id="rc-1">16 tương tác</span>
+        </div>
+        <div class="lf-actions">
+          <div class="lf-act-btn react" onclick="toggleReact(this, 1)"><svg class="ic"><use href="#icon-flame"/></svg> <span>Thả tim</span></div>
+          <div class="lf-act-btn" onclick="openComment('Trần Ngọc')"><svg class="ic"><use href="#icon-message-circle"/></svg> Nhắn tin</div>
+          <div class="lf-act-btn right" onclick="sharePost('Bún bò Huế Trần Ngọc')"><svg class="ic"><use href="#icon-share-2"/></svg> Chia sẻ</div>
+        </div>
+      </div>
+
+      <!-- Post 2 — Income (Hùng Minh) -->
+      <div class="lf-post" data-cat="income">
+        <div class="lf-photo">
+          <img class="lf-photo-img" src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=800&auto=format&fit=crop&q=80" alt="Nhận lương" onerror="this.style.display='none'"/>
+          <div class="lf-overlay"></div>
+          <div class="lf-top-bar">
+            <div class="lf-user-chip">
+              <div class="lf-chip-av" style="background:linear-gradient(135deg, var(--primary), #0284c7);">HM</div>
+              <div>
+                <div class="lf-chip-name">Hùng Minh</div>
+                <div class="lf-chip-time">2 giờ trước · Tech Corp</div>
+              </div>
+            </div>
+            <div class="lf-more-btn" onclick="openMore(2)"><svg class="ic" style="width:15px;height:15px;"><use href="#icon-more-horizontal"/></svg></div>
+          </div>
+          <div class="lf-bottom-bar">
+            <div class="lf-meta-badges">
+              <div class="lf-meta-box lf-amount-pos">+₫15,000,000</div>
+              <div class="lf-meta-box"><svg class="ic"><use href="#icon-banknote"/></svg> Thu nhập</div>
+            </div>
+            <div class="lf-caption">Nhận lương tháng 8 rồi! Trích tiết kiệm ngay 30% vào hũ Finora 💰🎉</div>
+          </div>
+        </div>
+        <div class="lf-reaction-row">
+          <div class="react-chip" onclick="quickReact(this, '🎉')">🎉</div>
+          <div class="react-chip" onclick="quickReact(this, '👏')">👏</div>
+          <div class="react-chip" onclick="quickReact(this, '💪')">💪</div>
+          <span class="react-count" id="rc-2">32 tương tác</span>
+        </div>
+        <div class="lf-actions">
+          <div class="lf-act-btn react" onclick="toggleReact(this, 2)"><svg class="ic"><use href="#icon-party-popper"/></svg> <span>Chúc mừng</span></div>
+          <div class="lf-act-btn" onclick="openComment('Hùng Minh')"><svg class="ic"><use href="#icon-message-circle"/></svg> Nhắn tin</div>
+          <div class="lf-act-btn right" onclick="sharePost('Thành tích tiết kiệm Hùng Minh')"><svg class="ic"><use href="#icon-share-2"/></svg> Chia sẻ</div>
+        </div>
+      </div>
+
+      <!-- Post 3 — Travel (Phạm Lan) -->
+      <div class="lf-post" data-cat="travel">
+        <div class="lf-photo">
+          <img class="lf-photo-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80" alt="Du lịch" onerror="this.style.display='none'"/>
+          <div class="lf-overlay"></div>
+          <div class="lf-top-bar">
+            <div class="lf-user-chip">
+              <div class="lf-chip-av" style="background:linear-gradient(135deg, #10b981, #059669);">PL</div>
+              <div>
+                <div class="lf-chip-name">Phạm Lan</div>
+                <div class="lf-chip-time">Hôm qua · Đà Lạt Trip</div>
+              </div>
+            </div>
+            <div class="lf-more-btn" onclick="openMore(3)"><svg class="ic" style="width:15px;height:15px;"><use href="#icon-more-horizontal"/></svg></div>
+          </div>
+          <div class="lf-bottom-bar">
+            <div class="lf-meta-badges">
+              <div class="lf-meta-box lf-amount-neg">-₫2,400,000</div>
+              <div class="lf-meta-box"><svg class="ic"><use href="#icon-plane"/></svg> Du lịch</div>
+            </div>
+            <div class="lf-caption">Book vé Đà Lạt cuối tuần xong rồi! Ai đi cùng không nào? ✈️🌲</div>
+          </div>
+        </div>
+        <div class="lf-reaction-row">
+          <div class="react-chip" onclick="quickReact(this, '❤️')">❤️</div>
+          <div class="react-chip" onclick="quickReact(this, '✈️')">✈️</div>
+          <div class="react-chip" onclick="quickReact(this, '😍')">😍</div>
+          <span class="react-count" id="rc-3">19 tương tác</span>
+        </div>
+        <div class="lf-actions">
+          <div class="lf-act-btn react" onclick="toggleReact(this, 3)"><svg class="ic"><use href="#icon-heart"/></svg> <span>Thả tim</span></div>
+          <div class="lf-act-btn" onclick="openComment('Phạm Lan')"><svg class="ic"><use href="#icon-message-circle"/></svg> Nhắn tin</div>
+          <div class="lf-act-btn right" onclick="sharePost('Chuyến đi Đà Lạt Phạm Lan')"><svg class="ic"><use href="#icon-share-2"/></svg> Chia sẻ</div>
+        </div>
+      </div>
+
+      <!-- Post 4 — Coffee (Anh Thư) -->
+      <div class="lf-post" data-cat="coffee">
+        <div class="lf-photo">
+          <img class="lf-photo-img" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80" alt="Cà phê" onerror="this.style.display='none'"/>
+          <div class="lf-overlay"></div>
+          <div class="lf-top-bar">
+            <div class="lf-user-chip">
+              <div class="lf-chip-av" style="background:linear-gradient(135deg, #ec4899, #db2777);">AT</div>
+              <div>
+                <div class="lf-chip-name">Anh Thư</div>
+                <div class="lf-chip-time">3 giờ trước · Starbucks Reserve</div>
+              </div>
+            </div>
+            <div class="lf-more-btn" onclick="openMore(4)"><svg class="ic" style="width:15px;height:15px;"><use href="#icon-more-horizontal"/></svg></div>
+          </div>
+          <div class="lf-bottom-bar">
+            <div class="lf-meta-badges">
+              <div class="lf-meta-box lf-amount-neg">-₫115,000</div>
+              <div class="lf-meta-box"><svg class="ic"><use href="#icon-coffee"/></svg> Cà phê</div>
+            </div>
+            <div class="lf-caption">Cold Brew cam sả chiều thứ 7 chill chill cùng hội bạn thân ☕✨</div>
+          </div>
+        </div>
+        <div class="lf-reaction-row">
+          <div class="react-chip" onclick="quickReact(this, '☕')">☕</div>
+          <div class="react-chip" onclick="quickReact(this, '✨')">✨</div>
+          <div class="react-chip" onclick="quickReact(this, '❤️')">❤️</div>
+          <span class="react-count" id="rc-4">24 tương tác</span>
+        </div>
+        <div class="lf-actions">
+          <div class="lf-act-btn react" onclick="toggleReact(this, 4)"><svg class="ic"><use href="#icon-heart"/></svg> <span>Thả tim</span></div>
+          <div class="lf-act-btn" onclick="openComment('Anh Thư')"><svg class="ic"><use href="#icon-message-circle"/></svg> Nhắn tin</div>
+          <div class="lf-act-btn right" onclick="sharePost('Cà phê Anh Thư')"><svg class="ic"><use href="#icon-share-2"/></svg> Chia sẻ</div>
+        </div>
+      </div>
+
+      <!-- Post 5 — Fitness (Minh Tuấn) -->
+      <div class="lf-post" data-cat="fitness">
+        <div class="lf-photo">
+          <img class="lf-photo-img" src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=80" alt="Gym" onerror="this.style.display='none'"/>
+          <div class="lf-overlay"></div>
+          <div class="lf-top-bar">
+            <div class="lf-user-chip">
+              <div class="lf-chip-av" style="background:linear-gradient(135deg, #8b5cf6, #6366f1);">MT</div>
+              <div>
+                <div class="lf-chip-name">Minh Tuấn</div>
+                <div class="lf-chip-time">5 giờ trước · Fitness &amp; Yoga</div>
+              </div>
+            </div>
+            <div class="lf-more-btn" onclick="openMore(5)"><svg class="ic" style="width:15px;height:15px;"><use href="#icon-more-horizontal"/></svg></div>
+          </div>
+          <div class="lf-bottom-bar">
+            <div class="lf-meta-badges">
+              <div class="lf-meta-box lf-amount-neg">-₫650,000</div>
+              <div class="lf-meta-box"><svg class="ic"><use href="#icon-dumbbell"/></svg> Thể thao</div>
+            </div>
+            <div class="lf-caption">Gia hạn gói tập gym 3 tháng, kỷ luật chi tiêu cho sức khỏe! 💪🏋️</div>
+          </div>
+        </div>
+        <div class="lf-reaction-row">
+          <div class="react-chip" onclick="quickReact(this, '💪')">💪</div>
+          <div class="react-chip" onclick="quickReact(this, '🔥')">🔥</div>
+          <div class="react-chip" onclick="quickReact(this, '👏')">👏</div>
+          <span class="react-count" id="rc-5">18 tương tác</span>
+        </div>
+        <div class="lf-actions">
+          <div class="lf-act-btn react" onclick="toggleReact(this, 5)"><svg class="ic"><use href="#icon-flame"/></svg> <span>Cổ vũ</span></div>
+          <div class="lf-act-btn" onclick="openComment('Minh Tuấn')"><svg class="ic"><use href="#icon-message-circle"/></svg> Nhắn tin</div>
+          <div class="lf-act-btn right" onclick="sharePost('Tập luyện Minh Tuấn')"><svg class="ic"><use href="#icon-share-2"/></svg> Chia sẻ</div>
+        </div>
+      </div>
+
+      <!-- Post 6 — Shopping (Hải Đăng) -->
+      <div class="lf-post" data-cat="shopping">
+        <div class="lf-photo">
+          <img class="lf-photo-img" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80" alt="Tai nghe" onerror="this.style.display='none'"/>
+          <div class="lf-overlay"></div>
+          <div class="lf-top-bar">
+            <div class="lf-user-chip">
+              <div class="lf-chip-av" style="background:linear-gradient(135deg, #06b6d4, #0284c7);">HĐ</div>
+              <div>
+                <div class="lf-chip-name">Hải Đăng</div>
+                <div class="lf-chip-time">1 ngày trước · Thế Giới Di Động</div>
+              </div>
+            </div>
+            <div class="lf-more-btn" onclick="openMore(6)"><svg class="ic" style="width:15px;height:15px;"><use href="#icon-more-horizontal"/></svg></div>
+          </div>
+          <div class="lf-bottom-bar">
+            <div class="lf-meta-badges">
+              <div class="lf-meta-box lf-amount-neg">-₫1,890,000</div>
+              <div class="lf-meta-box"><svg class="ic"><use href="#icon-shopping-bag"/></svg> Mua sắm</div>
+            </div>
+            <div class="lf-caption">Sắm tai nghe chống ồn mới để tập trung làm việc, săn sale giảm 25% 🎧</div>
+          </div>
+        </div>
+        <div class="lf-reaction-row">
+          <div class="react-chip" onclick="quickReact(this, '🎧')">🎧</div>
+          <div class="react-chip" onclick="quickReact(this, '👍')">👍</div>
+          <div class="react-chip" onclick="quickReact(this, '🎉')">🎉</div>
+          <span class="react-count" id="rc-6">21 tương tác</span>
+        </div>
+        <div class="lf-actions">
+          <div class="lf-act-btn react" onclick="toggleReact(this, 6)"><svg class="ic"><use href="#icon-thumbs-up"/></svg> <span>Thích</span></div>
+          <div class="lf-act-btn" onclick="openComment('Hải Đăng')"><svg class="ic"><use href="#icon-message-circle"/></svg> Nhắn tin</div>
+          <div class="lf-act-btn right" onclick="sharePost('Mua sắm Hải Đăng')"><svg class="ic"><use href="#icon-share-2"/></svg> Chia sẻ</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar (Standard Finora White) -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard"/></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart"/></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch">
+        <svg class="ic"><use href="#icon-plus"/></svg>
+      </a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic"><use href="#icon-bot"/></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user"/></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+
+  <script>
+    function filterCat(cat, btn) {
+      document.querySelectorAll('.chip-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+
+      var posts = document.querySelectorAll('.lf-post');
+      posts.forEach(function(p) {
+        if (cat === 'all' || p.getAttribute('data-cat') === cat) {
+          p.style.display = 'block';
+        } else {
+          p.style.display = 'none';
+        }
+      });
+    }
+
+    function filterByFriend(name) {
+      var posts = document.querySelectorAll('.lf-post');
+      var matched = false;
+      posts.forEach(function(p) {
+        var author = p.querySelector('.lf-chip-name');
+        if (author && author.innerText.trim().toLowerCase().includes(name.toLowerCase())) {
+          p.style.display = 'block';
+          matched = true;
+          p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          p.style.display = 'none';
+        }
+      });
+      if (matched) {
+        document.querySelectorAll('.chip-btn').forEach(function(b) { b.classList.remove('active'); });
+      }
+    }
+
+    function toggleReact(btn, id) {
+      btn.classList.toggle('react');
+      var countEl = document.getElementById('rc-' + id);
+      if (countEl) {
+        var num = parseInt(countEl.innerText, 10);
+        if (btn.classList.contains('react')) {
+          countEl.innerText = (num + 1) + ' tương tác';
+          btn.querySelector('span').innerText = 'Đã thích';
+        } else {
+          countEl.innerText = Math.max(0, num - 1) + ' tương tác';
+          btn.querySelector('span').innerText = 'Thả tim';
+        }
+      }
+    }
+
+    function quickReact(chip, emoji) {
+      alert('Đã gửi phản ứng nhanh ' + emoji + ' tới bài viết!');
+    }
+
+    function openComment(name, postTitle) {
+      var url = 'chat.html?user=' + encodeURIComponent(name);
+      if (postTitle) {
+        url += '&post=' + encodeURIComponent(postTitle);
+      }
+      window.location.href = url;
+    }
+
+    function sharePost(title) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+        alert('Đã sao chép liên kết bài viết "' + title + '" vào clipboard!');
+      } else {
+        alert('Đã sao chép liên kết chia sẻ!');
+      }
+    }
+
+    function openMore(id) {
+      alert('Tùy chọn: Ẩn bài viết này · Báo cáo · Sao chép link');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · AI Chat Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+  <script src="../../_shared/mascots-data.js"></script>
+
+  <style>
+    /* Nora Avatar Polish - Clear, unclipped, genuine mascot face */
+    .nora-av {
+      width: 44px !important;
+      height: 44px !important;
+      border-radius: 50% !important;
+      background: #EAF3FF !important;
+      border: 2px solid rgba(0, 114, 213, 0.25) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      position: relative !important;
+      flex-shrink: 0 !important;
+      box-shadow: 0 4px 14px rgba(0, 114, 213, 0.18) !important;
+      overflow: visible !important;
+    }
+    .nora-av .nora-face {
+      width: 100% !important;
+      height: 100% !important;
+      position: static !important;
+      transform: none !important;
+      display: block !important;
+      border-radius: 50% !important;
+    }
+    .nora-dot {
+      position: absolute !important;
+      bottom: -1px !important;
+      right: -1px !important;
+      width: 12px !important;
+      height: 12px !important;
+      border-radius: 50% !important;
+      background: var(--success, #10B981) !important;
+      border: 2.5px solid #fff !important;
+      z-index: 5 !important;
+    }
+    .msg-av {
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
+      background: #EAF3FF !important;
+      border: 1.5px solid rgba(0, 114, 213, 0.2) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      position: relative !important;
+      flex-shrink: 0 !important;
+      margin-top: 2px !important;
+      box-shadow: 0 2px 8px rgba(0, 114, 213, 0.12) !important;
+      overflow: hidden !important;
+    }
+    .msg-av .nora-face {
+      width: 100% !important;
+      height: 100% !important;
+      position: static !important;
+      transform: none !important;
+      display: block !important;
+      border-radius: 50% !important;
+    }
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 74px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .chat-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .chat-body {
+      flex: 1;
+      padding: 16px 18px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+    }
+    .quick-chips-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 18px 10px;
+      scrollbar-width: none;
+    }
+    .quick-chips-row::-webkit-scrollbar { display: none; }
+    .qc-btn {
+      padding: 7px 13px;
+      border-radius: 99px;
+      background: #fff;
+      border: 1px solid var(--border);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--foreground);
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(15,23,42,.03);
+      transition: all 0.15s;
+    }
+    .qc-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Fixed bottom input bar */
+    .chat-bar-wrap {
+      position: sticky;
+      bottom: 64px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 8px 16px;
+      z-index: 25;
+    }
+
+    /* Bottom Navigation */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 14px;
+      z-index: 40;
+    }
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: color 0.15s;
+    }
+    .bni .ic { width: 20px; height: 20px; }
+    .bni.on { color: var(--primary); font-weight: 900; }
+    .bnav-fab {
+      position: relative;
+      top: -14px;
+    }
+    .bnav-fab .fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), oklch(0.48 0.16 250));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px oklch(0.55 0.18 250 / 0.45);
+      border: 3.5px solid #fff;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .bnav-fab .fab:hover { transform: scale(1.06); }
+    .bnav-fab .fab .ic { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Chat Header with Nora Mascot -->
+    <div class="chat-hdr">
+      <a href="../home/dashboard.html" class="tx-back" title="Quay lại">
+        <svg class="ic"><use href="#icon-chevron-left"/></svg>
+      </a>
+      <div class="nora-av" style="position:relative;">
+        <div class="nora-dot"></div>
+        <svg class="nora-face" viewBox="28 20 144 144" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="92" r="70" fill="#EAF3FF"/>
+          <g transform="translate(0, 20)">
+            <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#0072D5"/>
+            <rect x="50" y="50" width="100" height="70" rx="35" fill="#FFFFFF" stroke="#D1E5FA" stroke-width="3"/>
+            <g transform="translate(75, 80)">
+              <circle cx="0" cy="0" r="10" fill="#0055A9"/>
+              <circle cx="2.5" cy="-2.5" r="3.2" fill="#FFFFFF"/>
+            </g>
+            <g transform="translate(125, 80)">
+              <circle cx="0" cy="0" r="10" fill="#0055A9"/>
+              <circle cx="2.5" cy="-2.5" r="3.2" fill="#FFFFFF"/>
+            </g>
+            <path d="M 92 98 Q 100 104 108 98" fill="none" stroke="#0055A9" stroke-width="3.5" stroke-linecap="round"/>
+            <g transform="translate(145, 26)">
+              <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#F6E05E"/>
+            </g>
+            <path d="M 70 120 L 130 120 L 120 138 L 80 138 Z" fill="#FFFFFF" opacity="0.35"/>
+          </g>
+        </svg>
+      </div>
+      <div style="flex:1;">
+        <div class="chat-hdr-name" style="font-size:15px;font-weight:900;">Nora · AI Mascot</div>
+        <div class="chat-hdr-status" style="font-size:11px;font-weight:700;color:var(--success);">● Trợ lý tài chính đang trực tuyến</div>
+      </div>
+      <a href="../settings/ai-persona.html" class="tx-back" title="Đổi sang Mascot khác">
+        <svg class="ic"><use href="#icon-sparkles"/></svg>
+      </a>
+    </div>
+
+    <!-- Chat Messages Flow -->
+    <div class="chat-body" id="chatContainer">
+      <div class="chat-date">HÔM NAY · 12:30</div>
+
+      <!-- Welcome from Nora -->
+      <div class="msg-row">
+        <div class="msg-av">
+          <svg class="nora-face" viewBox="28 20 144 144" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="92" r="70" fill="#EAF3FF"/>
+            <g transform="translate(0, 20)">
+              <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#0072D5"/>
+              <rect x="50" y="50" width="100" height="70" rx="35" fill="#FFFFFF" stroke="#D1E5FA" stroke-width="3"/>
+              <g transform="translate(75, 80)">
+                <circle cx="0" cy="0" r="10" fill="#0055A9"/>
+                <circle cx="2.5" cy="-2.5" r="3.2" fill="#FFFFFF"/>
+              </g>
+              <g transform="translate(125, 80)">
+                <circle cx="0" cy="0" r="10" fill="#0055A9"/>
+                <circle cx="2.5" cy="-2.5" r="3.2" fill="#FFFFFF"/>
+              </g>
+              <path d="M 92 98 Q 100 104 108 98" fill="none" stroke="#0055A9" stroke-width="3.5" stroke-linecap="round"/>
+              <g transform="translate(145, 26)">
+                <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#F6E05E"/>
+              </g>
+              <path d="M 70 120 L 130 120 L 120 138 L 80 138 Z" fill="#FFFFFF" opacity="0.35"/>
+            </g>
+          </svg>
+        </div>
+        <div class="bubble ai">
+          Yo! Mình là <strong>Nora</strong> đây! Hôm nay bạn vừa chi tiêu gì thế? Cứ nhắn tự nhiên như chat bạn bè nhé (vd: <i>cà phê 45k</i>, <i>tiền trọ 3.5tr</i>...)
+        </div>
+      </div>
+
+      <!-- User previous message -->
+      <div class="msg-row me">
+        <div class="bubble me">ăn trưa 55k, grab đi làm 35k</div>
+      </div>
+
+      <!-- Nora AI Parsed Card -->
+      <div class="msg-row">
+        <div class="msg-av">
+          <svg class="nora-face" viewBox="28 20 144 144" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="92" r="70" fill="#EAF3FF"/>
+            <g transform="translate(0, 20)">
+              <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#0072D5"/>
+              <rect x="50" y="50" width="100" height="70" rx="35" fill="#FFFFFF" stroke="#D1E5FA" stroke-width="3"/>
+              <g transform="translate(75, 80)">
+                <circle cx="0" cy="0" r="10" fill="#0055A9"/>
+                <circle cx="2.5" cy="-2.5" r="3.2" fill="#FFFFFF"/>
+              </g>
+              <g transform="translate(125, 80)">
+                <circle cx="0" cy="0" r="10" fill="#0055A9"/>
+                <circle cx="2.5" cy="-2.5" r="3.2" fill="#FFFFFF"/>
+              </g>
+              <path d="M 92 98 Q 100 104 108 98" fill="none" stroke="#0055A9" stroke-width="3.5" stroke-linecap="round"/>
+              <g transform="translate(145, 26)">
+                <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#F6E05E"/>
+              </g>
+              <path d="M 70 120 L 130 120 L 120 138 L 80 138 Z" fill="#FFFFFF" opacity="0.35"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <div class="bubble ai">OK bro, mình nhận diện được 2 khoản này nè 👇</div>
+          <div class="confirm-card">
+            <div class="cc-title">Xác nhận giao dịch tự động</div>
+            <div class="cc-row"><span>Ăn trưa</span><span class="v neg">-₫55,000</span></div>
+            <div class="cc-row"><span>Danh mục</span><span class="v">Ăn uống</span></div>
+            <div class="cc-row"><span>Tài khoản</span><span class="v">Tiền mặt</span></div>
+            <div class="cc-sep"></div>
+            <div class="cc-row"><span>Grab đi làm</span><span class="v neg">-₫35,000</span></div>
+            <div class="cc-row"><span>Danh mục</span><span class="v">Di chuyển</span></div>
+            <div class="cc-btns">
+              <button class="cc-ok" onclick="confirmCard(this)">
+                <svg class="ic"><use href="#icon-check"/></svg> Xác nhận ghi sổ
+              </button>
+              <button class="cc-edit" onclick="location.href='../transactions/add-manual.html'">
+                <svg class="ic"><use href="#icon-pencil"/></svg> Sửa
+              </button>
+            </div>
+          </div>
+          <span class="budget-hint"><svg class="ic"><use href="#icon-target"/></svg> Ăn uống tháng này: còn ₫645,000</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Suggestion Prompt Chips -->
+    <div class="quick-chips-row">
+      <button class="qc-btn" onclick="sendQuickPrompt('Ăn tối buffet 250k')">🍜 Ăn tối 250k</button>
+      <button class="qc-btn" onclick="sendQuickPrompt('Tháng này tao tiêu nhiều nhất vào đâu?')">📊 Tiêu nhiều nhất ở đâu?</button>
+      <button class="qc-btn" onclick="sendQuickPrompt('Mẹo tiết kiệm tuần này cho tao')">💡 Mẹo tiết kiệm tuần này</button>
+    </div>
+
+    <!-- Chat Interactive Input Bar -->
+    <div class="chat-bar-wrap">
+      <div class="chat-bar" style="margin:0;">
+        <div class="chat-act" title="Ghi âm giọng nói"><svg class="ic"><use href="#icon-mic"/></svg></div>
+        <a href="../transactions/scan-receipt.html" class="chat-act" title="Quét hóa đơn OCR"><svg class="ic"><use href="#icon-camera"/></svg></a>
+        <input class="chat-inp" id="chatInput" placeholder="Nhắn cho Nora: vd ăn trưa 45k..." onkeydown="if(event.key==='Enter')sendMessage()"/>
+        <div class="chat-send" onclick="sendMessage()"><svg class="ic"><use href="#icon-send"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard"/></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart"/></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch">
+        <svg class="ic"><use href="#icon-plus"/></svg>
+      </a>
+    </div>
+    <a href="chat.html" class="bni on">
+      <svg class="ic"><use href="#icon-bot"/></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user"/></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+
+  <script>
+    function sendQuickPrompt(text) {
+      document.getElementById('chatInput').value = text;
+      sendMessage();
+    }
+
+    function sendMessage() {
+      var inp = document.getElementById('chatInput');
+      var val = inp.value.trim();
+      if (!val) return;
+
+      var container = document.getElementById('chatContainer');
+
+      // Append user bubble
+      var userRow = document.createElement('div');
+      userRow.className = 'msg-row me';
+      userRow.innerHTML = '<div class="bubble me">' + escapeHtml(val) + '</div>';
+      container.appendChild(userRow);
+
+      inp.value = '';
+      container.scrollTop = container.scrollHeight;
+
+      // Nora response after short delay
+      setTimeout(function() {
+        var aiRow = document.createElement('div');
+        aiRow.className = 'msg-row';
+        aiRow.innerHTML = `
+          <div class="msg-av">
+            <svg class="nora-face" viewBox="28 20 144 144" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="92" r="70" fill="#EAF3FF"/>
+              <g transform="translate(0, 20)">
+                <path d="M 40 80 Q 40 30 100 30 Q 160 30 160 80 Q 165 160 100 160 Q 35 160 40 80 Z" fill="#0072D5"/>
+                <rect x="50" y="50" width="100" height="70" rx="35" fill="#FFFFFF" stroke="#D1E5FA" stroke-width="3"/>
+                <g transform="translate(75, 80)">
+                  <circle cx="0" cy="0" r="10" fill="#0055A9"/>
+                  <circle cx="2.5" cy="-2.5" r="3.2" fill="#FFFFFF"/>
+                </g>
+                <g transform="translate(125, 80)">
+                  <circle cx="0" cy="0" r="10" fill="#0055A9"/>
+                  <circle cx="2.5" cy="-2.5" r="3.2" fill="#FFFFFF"/>
+                </g>
+                <path d="M 92 98 Q 100 104 108 98" fill="none" stroke="#0055A9" stroke-width="3.5" stroke-linecap="round"/>
+                <g transform="translate(145, 26)">
+                  <path d="M 0 10 Q -10 10 -10 20 Q -10 10 -20 10 Q -10 10 -10 0 Q -10 10 0 10 Z" fill="#F6E05E"/>
+                </g>
+                <path d="M 70 120 L 130 120 L 120 138 L 80 138 Z" fill="#FFFFFF" opacity="0.35"/>
+              </g>
+            </svg>
+          </div>
+          <div class="bubble ai">
+            Đã ghi nhận! <strong>${escapeHtml(val)}</strong>. Nora đã tự động cập nhật vào sổ chi tiêu hôm nay của bạn rồi nhé! 🎉
+          </div>
+        `;
+        container.appendChild(aiRow);
+        container.scrollTop = container.scrollHeight;
+      }, 600);
+    }
+
+    function confirmCard(btn) {
+      btn.innerHTML = '<svg class="ic"><use href="#icon-check-circle-2"/></svg> Đã ghi vào sổ';
+      btn.style.background = 'var(--success)';
+      btn.disabled = true;
+    }
+
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Dynamic mascot title sync
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        var store = window.FinoraMascots ? window.FinoraMascots.store.get() : null;
+        var chosenId = (store && store.selectedMascot) ? store.selectedMascot.toLowerCase() : 'nora';
+        if (chosenId && chosenId !== 'nora' && window.FinoraMascots && window.FinoraMascots.MASCOTS[chosenId]) {
+          var m = window.FinoraMascots.MASCOTS[chosenId];
+          var hdrName = document.querySelector('.chat-hdr-name');
+          if (hdrName) hdrName.textContent = m.name + ' · AI Mascot';
+        }
+      } catch(e) {}
+    });
+  </script>
+</body>
+</html>

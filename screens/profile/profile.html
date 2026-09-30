@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Hồ sơ & Cá nhân</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 84px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .profile-hero {
+      background: #fff;
+      padding: 20px 20px 24px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .user-av-large {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      margin: 0 auto 12px;
+      box-shadow: 0 10px 24px oklch(0.55 0.18 250 / 0.3);
+      border: 3px solid #fff;
+    }
+    .tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 99px;
+      background: oklch(0.78 0.16 65 / 0.18);
+      color: oklch(0.62 0.14 65);
+      font-size: 11.5px;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+    .score-banner {
+      margin: 16px 16px 0;
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(15,23,42,.03);
+    }
+    .score-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: oklch(0.68 0.18 155 / 0.12);
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .menu-group {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      margin: 14px 16px 0;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(15,23,42,.03);
+    }
+    .menu-item-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--foreground);
+      font-size: 13.5px;
+      font-weight: 800;
+      transition: background 0.15s;
+    }
+    .menu-item-link:first-child { border-top: none; }
+    .menu-item-link:hover { background: var(--dash-bg); }
+    .menu-ic {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Bottom Navigation */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 14px;
+      z-index: 40;
+    }
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: color 0.15s;
+    }
+    .bni .ic { width: 20px; height: 20px; }
+    .bni.on { color: var(--primary); font-weight: 900; }
+    .bnav-fab {
+      position: relative;
+      top: -14px;
+    }
+    .bnav-fab .fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), oklch(0.48 0.16 250));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px oklch(0.55 0.18 250 / 0.45);
+      border: 3.5px solid #fff;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .bnav-fab .fab:hover { transform: scale(1.06); }
+    .bnav-fab .fab .ic { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Profile Hero Card -->
+    <div class="profile-hero">
+      <div class="user-av-large" id="profileAvatar">F</div>
+      <div style="font-size:20px;font-weight:900;letter-spacing:-0.5px;" id="profileName">Finora Member</div>
+      <div style="font-size:12px;color:var(--ink-soft);font-weight:600;margin-top:2px;">user@finora.vn</div>
+      <div class="tier-badge">
+        <svg class="ic" style="width:14px;height:14px;"><use href="#icon-award"/></svg>
+        Bậc Thầy Tiết Kiệm · Tier Gold
+      </div>
+    </div>
+
+    <!-- Health Score Banner -->
+    <div class="score-banner">
+      <div class="score-circle">88</div>
+      <div style="flex:1;">
+        <div style="font-size:13.5px;font-weight:900;">Điểm sức khỏe tài chính</div>
+        <div style="font-size:11.5px;color:var(--success);font-weight:800;margin-top:2px;">Rất tốt · Chi tiêu kỷ luật hơn 92% người dùng</div>
+      </div>
+      <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-chevron-right"/></svg>
+    </div>
+
+    <!-- Menu Section 1: Features -->
+    <div class="menu-group">
+      <a href="../settings/ai-persona.html" class="menu-item-link">
+        <div class="menu-ic" style="background:oklch(0.55 0.18 250 / 0.12);color:var(--primary);">
+          <svg class="ic"><use href="#icon-bot"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div>Đổi AI Mascot Persona</div>
+          <div style="font-size:11px;color:var(--ink-soft);font-weight:600;">7 tính cách trợ lý tài chính</div>
+        </div>
+        <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-chevron-right"/></svg>
+      </a>
+
+      <a href="../wallets/list.html" class="menu-item-link">
+        <div class="menu-ic" style="background:oklch(0.68 0.18 155 / 0.12);color:var(--success);">
+          <svg class="ic"><use href="#icon-wallet"/></svg>
+        </div>
+        <div style="flex:1;">Ví & Nguồn tiền liên kết</div>
+        <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-chevron-right"/></svg>
+      </a>
+
+      <a href="../loans/list.html" class="menu-item-link">
+        <div class="menu-ic" style="background:oklch(0.68 0.18 45 / 0.12);color:var(--orange);">
+          <svg class="ic"><use href="#icon-receipt"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div>Sổ theo dõi Vay &amp; Nợ</div>
+          <div style="font-size:11px;color:var(--ink-soft);font-weight:600;">Cho vay, đi vay, trả góp 0%</div>
+        </div>
+        <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-chevron-right"/></svg>
+      </a>
+
+      <a href="../social/feed.html" class="menu-item-link">
+        <div class="menu-ic" style="background:oklch(0.64 0.20 350 / 0.12);color:var(--pink);">
+          <svg class="ic"><use href="#icon-users"/></svg>
+        </div>
+        <div style="flex:1;">Locket &amp; Bạn bè tài chính</div>
+        <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-chevron-right"/></svg>
+      </a>
+    </div>
+
+    <!-- Menu Section 2: Settings -->
+    <div class="menu-group">
+      <a href="../settings/notifications.html" class="menu-item-link">
+        <div class="menu-ic" style="background:oklch(0.78 0.16 65 / 0.14);color:var(--secondary);">
+          <svg class="ic"><use href="#icon-bell"/></svg>
+        </div>
+        <div style="flex:1;">Cài đặt thông báo & cảnh báo</div>
+        <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-chevron-right"/></svg>
+      </a>
+
+      <a href="../settings/security.html" class="menu-item-link">
+        <div class="menu-ic" style="background:oklch(0.55 0.20 285 / 0.12);color:var(--violet);">
+          <svg class="ic"><use href="#icon-lock"/></svg>
+        </div>
+        <div style="flex:1;">Bảo mật & Mã PIN App</div>
+        <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-chevron-right"/></svg>
+      </a>
+
+      <a href="../settings/categories.html" class="menu-item-link">
+        <div class="menu-ic" style="background:oklch(0.63 0.13 190 / 0.12);color:var(--teal);">
+          <svg class="ic"><use href="#icon-tag"/></svg>
+        </div>
+        <div style="flex:1;">Quản lý danh mục thu chi</div>
+        <svg class="ic" style="color:var(--ink-soft);"><use href="#icon-chevron-right"/></svg>
+      </a>
+    </div>
+
+    <!-- Logout Button -->
+    <div style="padding:16px;">
+      <a href="../auth/welcome.html" class="btn btn-sm-soft danger" style="padding:14px;border-radius:16px;text-decoration:none;">
+        <svg class="ic"><use href="#icon-log-out"/></svg> Đăng xuất tài khoản
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard"/></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart"/></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch">
+        <svg class="ic"><use href="#icon-plus"/></svg>
+      </a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic"><use href="#icon-bot"/></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="profile.html" class="bni on">
+      <svg class="ic"><use href="#icon-user"/></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+
+  <script>
+    try {
+      var savedName = sessionStorage.getItem('finora_user_name');
+      if (savedName) {
+        document.getElementById('profileName').textContent = savedName;
+        document.getElementById('profileAvatar').textContent = savedName.trim()[0].toUpperCase();
+      }
+    } catch(e) {}
+  </script>
+</body>
+</html>

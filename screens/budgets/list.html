@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finora · Quản lý Ngân sách</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../_shared/base.css"/>
+  <link rel="stylesheet" href="../../../ui-sample-3/styles.css"/>
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    body {
+      background: var(--dash-bg);
+      color: var(--foreground);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 84px;
+    }
+    .page-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--dash-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .sbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--foreground);
+      background: #fff;
+    }
+    .tx-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .tx-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--dash-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--foreground);
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .tx-back:hover { background: var(--border); }
+    .tx-hdr-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+    .bud-card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(15,23,42,.03);
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .bud-card-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    /* Bottom Navigation */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px 14px;
+      z-index: 40;
+    }
+    .bni {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: color 0.15s;
+    }
+    .bni .ic { width: 20px; height: 20px; }
+    .bni.on { color: var(--primary); font-weight: 900; }
+    .bnav-fab {
+      position: relative;
+      top: -14px;
+    }
+    .bnav-fab .fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), oklch(0.48 0.16 250));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px oklch(0.55 0.18 250 / 0.45);
+      border: 3.5px solid #fff;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .bnav-fab .fab:hover { transform: scale(1.06); }
+    .bnav-fab .fab .ic { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- Status bar -->
+    <div class="sbar">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <!-- Header -->
+    <div class="tx-hdr">
+      <a href="../home/dashboard.html" class="tx-back" title="Quay lại">
+        <svg class="ic"><use href="#icon-chevron-left"/></svg>
+      </a>
+      <div class="tx-hdr-title">Ngân sách chi tiêu</div>
+      <a href="detail.html" class="btn-sm" style="margin-left:auto;padding:6px 14px;border-radius:99px;background:var(--primary);color:#fff;text-decoration:none;font-size:12px;font-weight:800;display:flex;align-items:center;gap:4px;">
+        <svg class="ic" style="width:14px;height:14px;"><use href="#icon-plus"/></svg> Thêm
+      </a>
+    </div>
+
+    <div style="padding:16px;">
+      <!-- Total Budget Overview -->
+      <div class="bud-ov" style="margin-bottom:16px;">
+        <div class="bud-ov-lbl">NGÂN SÁCH TỔNG · THÁNG 8/2026</div>
+        <div class="bud-ov-amt">₫ 12,000,000</div>
+        <div class="bud-prog-track"><div class="bud-prog-fill" style="width:69%;"></div></div>
+        <div class="bud-ov-foot">
+          <span>Đã dùng: ₫8,320,000 (69%)</span>
+          <span style="font-weight:900;color:var(--success);">Còn lại: ₫3,680,000</span>
+        </div>
+      </div>
+
+      <!-- Nora AI Mascot Budget Tip -->
+      <div class="ai-insight" style="margin:0 0 16px;">
+        <div class="ai-insight-ttl"><svg class="ic"><use href="#icon-sparkles"/></svg> Nora cảnh báo</div>
+        <div class="ai-insight-body">
+          Hạng mục <strong>Mua sắm</strong> đã vượt 105% ngân sách đề ra! Hãy cân nhắc giảm bớt chi tiêu giải trí để bù lại trong 12 ngày còn lại nhé.
+        </div>
+      </div>
+
+      <!-- Category Budget Cards -->
+      <a href="detail.html?cat=dining" class="bud-card-link">
+        <div class="bud-row">
+          <div class="bud-ic"><svg class="ic"><use href="#icon-utensils"/></svg></div>
+          <span class="bud-nm">Ăn uống</span>
+          <span class="bud-pct" style="color:oklch(0.78 0.16 85);">80%</span>
+        </div>
+        <div class="bud-bar-t"><div class="bud-bar-f" style="width:80%;background:oklch(0.78 0.16 85);"></div></div>
+        <div class="bud-foot">
+          <span>₫960,000 / ₫1,200,000</span>
+          <span class="pill warn"><svg class="ic" style="width:11px;height:11px;"><use href="#icon-alert-triangle"/></svg> Gần vượt</span>
+        </div>
+      </a>
+
+      <a href="detail.html?cat=shopping" class="bud-card-link">
+        <div class="bud-row">
+          <div class="bud-ic"><svg class="ic"><use href="#icon-shopping-bag"/></svg></div>
+          <span class="bud-nm">Mua sắm</span>
+          <span class="bud-pct" style="color:var(--danger);">105%</span>
+        </div>
+        <div class="bud-bar-t"><div class="bud-bar-f" style="width:100%;background:var(--danger);"></div></div>
+        <div class="bud-foot">
+          <span>₫2,100,000 / ₫2,000,000</span>
+          <span class="pill red"><svg class="ic" style="width:11px;height:11px;"><use href="#icon-alert-circle"/></svg> Đã vượt</span>
+        </div>
+      </a>
+
+      <a href="detail.html?cat=transport" class="bud-card-link">
+        <div class="bud-row">
+          <div class="bud-ic"><svg class="ic"><use href="#icon-car"/></svg></div>
+          <span class="bud-nm">Di chuyển</span>
+          <span class="bud-pct" style="color:var(--success);">45%</span>
+        </div>
+        <div class="bud-bar-t"><div class="bud-bar-f" style="width:45%;background:var(--success);"></div></div>
+        <div class="bud-foot">
+          <span>₫450,000 / ₫1,000,000</span>
+          <span class="pill green"><svg class="ic" style="width:11px;height:11px;"><use href="#icon-check-circle-2"/></svg> An toàn</span>
+        </div>
+      </a>
+
+      <a href="detail.html?cat=bills" class="bud-card-link">
+        <div class="bud-row">
+          <div class="bud-ic"><svg class="ic"><use href="#icon-building-2"/></svg></div>
+          <span class="bud-nm">Hóa đơn điện nước</span>
+          <span class="bud-pct" style="color:var(--primary);">60%</span>
+        </div>
+        <div class="bud-bar-t"><div class="bud-bar-f" style="width:60%;background:var(--primary);"></div></div>
+        <div class="bud-foot">
+          <span>₫1,800,000 / ₫3,000,000</span>
+          <span>Còn ₫1,200,000</span>
+        </div>
+      </a>
+
+      <button class="dashed-add" onclick="alert('Mở form tạo hạn mức ngân sách mới')" style="width:100%;margin-top:6px;">
+        <svg class="ic"><use href="#icon-plus"/></svg> Thêm hạng mục ngân sách mới
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bnav">
+    <a href="../home/dashboard.html" class="bni">
+      <svg class="ic"><use href="#icon-layout-dashboard"/></svg>
+      <span>Tổng quan</span>
+    </a>
+    <a href="../reports/overview.html" class="bni">
+      <svg class="ic"><use href="#icon-pie-chart"/></svg>
+      <span>Báo cáo</span>
+    </a>
+    <div class="bnav-fab">
+      <a href="../transactions/add-manual.html" class="fab" title="Thêm giao dịch">
+        <svg class="ic"><use href="#icon-plus"/></svg>
+      </a>
+    </div>
+    <a href="../chat-ai/chat.html" class="bni">
+      <svg class="ic"><use href="#icon-bot"/></svg>
+      <span>Nora AI</span>
+    </a>
+    <a href="../profile/profile.html" class="bni">
+      <svg class="ic"><use href="#icon-user"/></svg>
+      <span>Cá nhân</span>
+    </a>
+  </div>
+</body>
+</html>

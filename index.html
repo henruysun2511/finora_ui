@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Device Preview - Finora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #21262d;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #3b82f6;
+      --glow: rgba(59, 130, 246, 0.25);
+      --dev-bg: #1c1c1e;
+      --dev-border: #3a3a3c;
+      --dev-btn: #2c2c2e;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 24px 60px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    header p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .toolbar label {
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .sel-wrap {
+      position: relative;
+    }
+
+    .sel-wrap::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--muted);
+      pointer-events: none;
+    }
+
+    select {
+      appearance: none;
+      background: var(--card);
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 40px 10px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    select:hover,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+
+    select option {
+      background: var(--card);
+    }
+
+    #ds {
+      min-width: 300px;
+    }
+
+    #ss {
+      min-width: 280px;
+    }
+
+    .divider {
+      width: 1px;
+      height: 28px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .info-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .chip .val {
+      color: var(--text);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .device-shell {
+      position: relative;
+      background: var(--dev-bg);
+      border-radius: 44px;
+      border: 3px solid var(--dev-border);
+      padding: 12px;
+      box-shadow:
+        0 0 0 6px #1a1a1c,
+        0 0 0 8px var(--dev-border),
+        0 40px 90px rgba(0, 0, 0, .8),
+        inset 0 1px 0 rgba(255, 255, 255, .05);
+      transition: width .5s cubic-bezier(.34, 1.56, .64, 1), height .5s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .device-shell::before {
+      content: '';
+      position: absolute;
+      right: -11px;
+      top: 24%;
+      width: 4px;
+      height: 60px;
+      background: var(--dev-btn);
+      border-radius: 0 3px 3px 0;
+    }
+
+    .device-shell::after {
+      content: '';
+      position: absolute;
+      left: -11px;
+      top: 16%;
+      width: 4px;
+      height: 38px;
+      background: var(--dev-btn);
+      border-radius: 3px 0 0 3px;
+      box-shadow: 0 52px 0 var(--dev-btn), 0 78px 0 var(--dev-btn);
+    }
+
+    .island {
+      position: absolute;
+      background: #000;
+      z-index: 5;
+    }
+
+    .screen {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      border-radius: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .screen iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+      border-radius: inherit;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .screen iframe::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    .placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      opacity: .15;
+      pointer-events: none;
+    }
+
+    .placeholder svg {
+      width: 52px;
+      height: 52px;
+    }
+
+    .placeholder p {
+      font-size: 14px;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .placeholder.hidden {
+      display: none;
+    }
+
+    .note {
+      margin-top: 28px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .note code {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-family: monospace;
+      color: var(--accent);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">Finora</div>
+    <h1>Device Preview</h1>
+  </header>
+
+  <div class="toolbar">
+    <label for="ds">Thiết bị</label>
+    <div class="sel-wrap">
+      <select id="ds">
+        <optgroup label="iPhone">
+          <option data-w="393" data-h="852" data-island="1" data-iw="126" data-ih="37" data-label="iPhone 16 Pro"
+            data-os="iOS 18" selected>iPhone 16 Pro (393 &times; 852)</option>
+          <option data-w="430" data-h="932" data-island="1" data-iw="126" data-ih="37" data-label="iPhone 16 Pro Max"
+            data-os="iOS 18">iPhone 16 Pro Max (430 &times; 932)</option>
+          <option data-w="393" data-h="852" data-island="1" data-iw="126" data-ih="37" data-label="iPhone 16"
+            data-os="iOS 18">iPhone 16 (393 &times; 852)</option>
+          <option data-w="390" data-h="844" data-island="1" data-iw="126" data-ih="37" data-label="iPhone 15"
+            data-os="iOS 17">iPhone 15 (390 &times; 844)</option>
+          <option data-w="393" data-h="852" data-island="1" data-iw="126" data-ih="37" data-label="iPhone 15 Pro"
+            data-os="iOS 17">iPhone 15 Pro (393 &times; 852)</option>
+          <option data-w="430" data-h="932" data-island="1" data-iw="126" data-ih="37" data-label="iPhone 15 Pro Max"
+            data-os="iOS 17">iPhone 15 Pro Max (430 &times; 932)</option>
+          <option data-w="390" data-h="844" data-island="1" data-iw="126" data-ih="37" data-label="iPhone 14"
+            data-os="iOS 16">iPhone 14 (390 &times; 844)</option>
+          <option data-w="375" data-h="812" data-island="0" data-notch="1" data-label="iPhone 13 mini" data-os="iOS 15">
+            iPhone 13 mini (375 &times; 812)</option>
+          <option data-w="390" data-h="844" data-island="0" data-notch="1" data-label="iPhone 13" data-os="iOS 15">
+            iPhone 13 (390 &times; 844)</option>
+          <option data-w="428" data-h="926" data-island="0" data-notch="1" data-label="iPhone 13 Pro Max"
+            data-os="iOS 15">iPhone 13 Pro Max (428 &times; 926)</option>
+          <option data-w="375" data-h="667" data-label="iPhone SE 3rd Gen" data-os="iOS 17">iPhone SE 3rd Gen (375
+            &times; 667)</option>
+        </optgroup>
+        <optgroup label="Samsung Galaxy">
+          <option data-w="412" data-h="915" data-punch="1" data-label="Galaxy S24 Ultra" data-os="Android 14">Galaxy S24
+            Ultra (412 &times; 915)</option>
+          <option data-w="393" data-h="851" data-punch="1" data-label="Galaxy S24" data-os="Android 14">Galaxy S24 (393
+            &times; 851)</option>
+          <option data-w="412" data-h="915" data-punch="1" data-label="Galaxy S24+" data-os="Android 14">Galaxy S24+
+            (412 &times; 915)</option>
+          <option data-w="360" data-h="800" data-punch="1" data-label="Galaxy A55" data-os="Android 14">Galaxy A55 (360
+            &times; 800)</option>
+          <option data-w="360" data-h="780" data-punch="1" data-label="Galaxy A35" data-os="Android 14">Galaxy A35 (360
+            &times; 780)</option>
+          <option data-w="384" data-h="854" data-punch="1" data-label="Galaxy S23" data-os="Android 13">Galaxy S23 (384
+            &times; 854)</option>
+        </optgroup>
+        <optgroup label="Google Pixel">
+          <option data-w="412" data-h="915" data-punch="1" data-label="Pixel 9 Pro" data-os="Android 15">Pixel 9 Pro
+            (412 &times; 915)</option>
+          <option data-w="412" data-h="892" data-punch="1" data-label="Pixel 8" data-os="Android 14">Pixel 8 (412
+            &times; 892)</option>
+          <option data-w="393" data-h="851" data-punch="1" data-label="Pixel 8a" data-os="Android 14">Pixel 8a (393
+            &times; 851)</option>
+          <option data-w="411" data-h="891" data-punch="1" data-label="Pixel 7" data-os="Android 13">Pixel 7 (411
+            &times; 891)</option>
+        </optgroup>
+        <optgroup label="Xiaomi / OPPO / OnePlus">
+          <option data-w="393" data-h="873" data-punch="1" data-label="Xiaomi 14" data-os="Android 14">Xiaomi 14 (393
+            &times; 873)</option>
+          <option data-w="412" data-h="920" data-punch="1" data-label="OPPO Find X7" data-os="Android 14">OPPO Find X7
+            (412 &times; 920)</option>
+          <option data-w="412" data-h="919" data-punch="1" data-label="OnePlus 12" data-os="Android 14">OnePlus 12 (412
+            &times; 919)</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+
+    <label for="ss">Màn hình</label>
+    <div class="sel-wrap">
+      <select id="ss">
+        <option value="">-- Chọn màn hình --</option>
+        <optgroup label="Auth">
+          <option value="screens/auth/welcome.html" selected>Mở đầu</option>
+          <option value="screens/auth/login.html">Đăng nhập</option>
+          <option value="screens/auth/register.html">Đăng ký</option>
+          <option value="screens/auth/forgot-password.html">Quên mật khẩu</option>
+        </optgroup>
+        <optgroup label="Onboarding Flow (5 màn hình)">
+          <option value="screens/onboarding/welcome.html">Chào mừng & Trợ lý Nora</option>
+          <option value="screens/onboarding/setup-profile.html">Thiết lập hồ sơ</option>
+          <option value="screens/onboarding/setup-wallet.html">Tạo ví & Nguồn tiền</option>
+          <option value="screens/onboarding/choose-mascot.html">Chọn 7 AI Mascot & Đề xuất</option>
+          <option value="screens/onboarding/all-set.html">Hoàn tất & Tổng kết</option>
+        </optgroup>
+        <optgroup label="Home">
+          <option value="screens/home/dashboard.html">Dashboard</option>
+        </optgroup>
+        <optgroup label="Giao dịch">
+          <option value="screens/transactions/list.html">Danh sách GD</option>
+          <option value="screens/transactions/detail.html">Chi tiết GD</option>
+          <option value="screens/transactions/add-manual.html">Thêm GD</option>
+          <option value="screens/transactions/scan-receipt.html">Quét hóa đơn</option>
+        </optgroup>
+        <optgroup label="AI Chat">
+          <option value="screens/chat-ai/chat.html">Chat AI</option>
+        </optgroup>
+        <optgroup label="Ví & Tài khoản">
+          <option value="screens/wallets/list.html">Danh sách ví</option>
+          <option value="screens/wallets/shared.html">Ví chung (Quỹ nhóm)</option>
+          <option value="screens/wallets/detail.html">Chi tiết ví</option>
+          <option value="screens/wallets/add.html">Tạo ví</option>
+          <option value="screens/accounts/detail.html">Chi tiết TK</option>
+          <option value="screens/accounts/add.html">Thêm TK</option>
+        </optgroup>
+        <optgroup label="Ngân sách">
+          <option value="screens/budgets/list.html">Ngân sách</option>
+          <option value="screens/budgets/detail.html">Chi tiết NS</option>
+        </optgroup>
+        <optgroup label="Tiết kiệm">
+          <option value="screens/savings/list.html">Mục tiêu TK</option>
+          <option value="screens/savings/detail.html">Chi tiết TK</option>
+          <option value="screens/savings/add.html">Tạo mục tiêu</option>
+        </optgroup>
+        <optgroup label="Số nợ">
+          <option value="screens/loans/list.html">Số nợ</option>
+          <option value="screens/loans/detail.html">Chi tiết nợ</option>
+          <option value="screens/loans/add.html">Thêm nợ</option>
+        </optgroup>
+        <optgroup label="Báo cáo">
+          <option value="screens/reports/overview.html">Báo cáo</option>
+        </optgroup>
+        <optgroup label="Xã hội">
+          <option value="screens/social/feed.html">Bảng tin</option>
+          <option value="screens/social/chat.html">Nhắn tin (Locket Chat)</option>
+          <option value="screens/social/friends.html">Bạn bè</option>
+        </optgroup>
+        <optgroup label="Cá nhân">
+          <option value="screens/profile/profile.html">Hồ sơ</option>
+        </optgroup>
+        <optgroup label="Cài đặt">
+          <option value="screens/settings/ai-persona.html">AI Persona</option>
+          <option value="screens/settings/notifications.html">Thông báo</option>
+          <option value="screens/settings/security.html">Bảo mật</option>
+          <option value="screens/settings/categories.html">Danh mục</option>
+        </optgroup>
+        <optgroup label="Thông báo">
+          <option value="screens/notifications/list.html">DS Thông báo</option>
+        </optgroup>
+        <optgroup label="Reusable Components">
+          <option value="components/mascot/demo.html">🤖 AI Mascots Showcase (10 Mascots)</option>
+        </optgroup>
+      </select>
+    </div>
+  </div>
+
+  <div class="info-bar">
+    <div class="chip">
+      <div class="dot"></div><span id="iName">iPhone 16 Pro</span>
+    </div>
+    <div class="chip">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="5" y="2" width="14" height="20" rx="2" />
+      </svg>
+      <span id="iDims">393 &times; 852 dp</span>
+    </div>
+    <div class="chip">OS: <span class="val" id="iOs">iOS 18</span></div>
+    <div class="chip">Screen: <span class="val" id="iScr">--</span></div>
+  </div>
+
+  <div class="device-shell" id="shell">
+    <div class="island" id="isl"></div>
+    <div class="screen">
+      <div class="placeholder" id="ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.2">
+          <rect x="3" y="3" width="18" height="13" rx="2" />
+          <polyline points="9 17 9 21" />
+          <polyline points="15 17 15 21" />
+          <line x1="6" y1="21" x2="18" y2="21" />
+        </svg>
+        <p>Ch&#7885;n m&agrave;n h&igrave;nh &#7903; dropdown ph&iacute;a tr&ecirc;n</p>
+      </div>
+      <iframe id="frame" style="display:none"></iframe>
+    </div>
+  </div>
+
+  <p class="note">
+    K&iacute;ch th&#432;&#7899;c: <code id="sNote">393 &times; 852 px</code>
+    &nbsp;&mdash;&nbsp; 1:1 logical pixels
+  </p>
+
+  <script>
+    function getOpt() {
+      var o = document.getElementById('ds').selectedOptions[0];
+      return {
+        w: parseInt(o.dataset.w),
+        h: parseInt(o.dataset.h),
+        island: o.dataset.island === '1',
+        iw: parseInt(o.dataset.iw || '0'),
+        ih: parseInt(o.dataset.ih || '0'),
+        punch: o.dataset.punch === '1',
+        notch: o.dataset.notch === '1',
+        label: o.dataset.label,
+        os: o.dataset.os
+      };
+    }
+
+    function applyDevice() {
+      var data = getOpt();
+      var w = data.w, h = data.h;
+
+      var shell = document.getElementById('shell');
+      shell.style.width = (w + 24) + 'px';
+      shell.style.height = (h + 24) + 'px';
+
+      var isl = document.getElementById('isl');
+      if (data.island && data.iw > 0) {
+        isl.style.display = 'block';
+        isl.style.width = data.iw + 'px';
+        isl.style.height = data.ih + 'px';
+        isl.style.borderRadius = '20px';
+        isl.style.top = '20px';
+        isl.style.left = '50%';
+        isl.style.transform = 'translateX(-50%)';
+      } else if (data.notch) {
+        isl.style.display = 'block';
+        isl.style.width = '150px';
+        isl.style.height = '30px';
+        isl.style.borderRadius = '0 0 18px 18px';
+        isl.style.top = '12px';
+        isl.style.left = '50%';
+        isl.style.transform = 'translateX(-50%)';
+      } else if (data.punch) {
+        isl.style.display = 'block';
+        isl.style.width = '12px';
+        isl.style.height = '12px';
+        isl.style.borderRadius = '50%';
+        isl.style.top = '24px';
+        isl.style.left = '50%';
+        isl.style.transform = 'translateX(-50%)';
+      } else {
+        isl.style.display = 'none';
+      }
+
+      var dims = w + ' x ' + h;
+      document.getElementById('iName').textContent = data.label;
+      document.getElementById('iDims').textContent = dims + ' dp';
+      document.getElementById('iOs').textContent = data.os;
+      document.getElementById('sNote').textContent = dims + ' px (1:1)';
+    }
+
+    function applyScreen() {
+      var val = document.getElementById('ss').value;
+      var frame = document.getElementById('frame');
+      var ph = document.getElementById('ph');
+
+      if (val) {
+        frame.src = val;
+        frame.style.display = 'block';
+        ph.classList.add('hidden');
+        var label = document.getElementById('ss').selectedOptions[0].textContent.trim();
+        document.getElementById('iScr').textContent = label;
+      } else {
+        frame.style.display = 'none';
+        frame.src = '';
+        ph.classList.remove('hidden');
+        document.getElementById('iScr').textContent = '--';
+      }
+    }
+
+    document.getElementById('ds').addEventListener('change', applyDevice);
+    document.getElementById('ss').addEventListener('change', applyScreen);
+    applyDevice();
+    applyScreen();
+  </script>
+</body>
+
+</html>

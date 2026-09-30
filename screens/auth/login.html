@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finora · Đăng nhập</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../_shared/base.css" />
+  <link rel="stylesheet" href="../../_shared/components.css" />
+  <script src="../../_shared/icons.js"></script>
+
+  <style>
+    /* ui-sample-3 authentic styles */
+    :root {
+      --primary: oklch(0.55 0.18 250);
+      --primary-fore: oklch(0.99 0.01 250);
+      --secondary: oklch(0.78 0.16 65);
+      --background: oklch(0.99 0.01 230);
+      --foreground: oklch(0.25 0.06 240);
+      --muted-fore: oklch(0.55 0.02 240);
+      --accent: oklch(0.55 0.18 250 / 0.12);
+      --primary-glow: oklch(0.55 0.18 250 / 0.32);
+      --border: oklch(0.92 0.01 240);
+      --dash-bg: oklch(0.97 0.01 240);
+      --ink: oklch(0.28 0.05 240);
+      --ink-soft: oklch(0.60 0.02 240);
+      --ink-faint: oklch(0.75 0.02 240);
+      --r-md: 16px;
+      --r-sm: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: var(--dash-bg);
+      color: var(--foreground);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .auth-wrap {
+      min-height: 100vh;
+      background: linear-gradient(170deg, oklch(0.42 0.14 250), oklch(0.55 0.18 250) 60%, oklch(0.68 0.13 250));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-wrap::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      top: -90px;
+      right: -70px;
+      pointer-events: none;
+    }
+
+    .auth-wrap::after {
+      content: '';
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 1px solid oklch(0.78 0.16 65 / .3);
+      bottom: 45%;
+      left: -80px;
+      pointer-events: none;
+    }
+
+    /* Status bar & Nav bar */
+    .top-nav {
+      position: relative;
+      z-index: 10;
+      padding: 12px 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+    .back-btn-light {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .back-btn-light:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    .auth-mark {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 16px 20px 24px;
+    }
+    .auth-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+      position: relative;
+    }
+    .auth-logo svg.logo-icon {
+      width: 44px;
+      height: 44px;
+      color: #ffffff;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+    }
+    .auth-logo .spark-tag {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #f59e0b;
+      color: #fff;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .auth-logo-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.8px;
+    }
+    .auth-logo-sub {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 3px;
+      font-weight: 600;
+    }
+
+    /* Auth Bottom Sheet */
+    .auth-sheet {
+      background: #ffffff;
+      border-radius: 32px 32px 0 0;
+      padding: 28px 24px 34px;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.12);
+    }
+    .auth-sheet h2 {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--foreground);
+      letter-spacing: -0.6px;
+    }
+    .auth-sheet .sub {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-top: 4px;
+      margin-bottom: 22px;
+    }
+
+    .form-g {
+      margin-bottom: 16px;
+    }
+    .form-lbl {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--ink-soft);
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: var(--r-sm);
+      background: var(--dash-bg);
+      border: 1.5px solid var(--border);
+      transition: all 0.2s;
+    }
+    .field:focus-within {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px var(--accent);
+    }
+    .field .ic {
+      width: 18px;
+      height: 18px;
+      color: var(--ink-soft);
+      flex-shrink: 0;
+    }
+    .field input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--foreground);
+    }
+    .toggle-pwd {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: center;
+      padding: 2px;
+    }
+    .toggle-pwd:hover {
+      color: var(--primary);
+    }
+
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: -4px 0 20px;
+      font-size: 12.5px;
+    }
+    .rem-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--ink-soft);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .rem-label input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 15px;
+      height: 15px;
+    }
+    .link-r {
+      color: var(--primary);
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .link-r:hover {
+      text-decoration: underline;
+    }
+
+    /* Primary Login Button */
+    .btn-p {
+      width: 100%;
+      padding: 15px 22px;
+      border-radius: var(--r-md);
+      background: var(--primary);
+      color: #fff;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px var(--primary-glow);
+      transition: all 0.2s;
+    }
+    .btn-p:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+    .btn-p:active {
+      transform: scale(0.98);
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .divider span {
+      font-size: 11px;
+      color: var(--ink-faint);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Google Button */
+    .btn-google {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: var(--r-md);
+      background: #ffffff;
+      color: var(--foreground);
+      font-size: 14px;
+      font-weight: 700;
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      transition: all 0.15s;
+    }
+    .btn-google:hover {
+      background: var(--dash-bg);
+      border-color: #cbd5e1;
+    }
+    .btn-google svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Auth Foot */
+    .auth-foot {
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+    .auth-foot a {
+      color: var(--primary);
+      font-weight: 800;
+      text-decoration: none;
+      margin-left: 4px;
+    }
+    .auth-foot a:hover {
+      text-decoration: underline;
+    }
+
+    /* Toast Notification */
+    .toast-box {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: #0f172a;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      z-index: 100;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast-box.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast -->
+  <div class="toast-box" id="toast">
+    <div class="toast-dot"></div>
+    <span id="toastMsg">Đăng nhập thành công! Đang chuyển hướng...</span>
+  </div>
+
+  <div class="auth-wrap">
+
+    <!-- Top status & back button -->
+    <div>
+      <div class="sbar light">
+        <span>9:41</span>
+        <div class="icons">
+          <svg class="ic" style="width:14px;height:14px;"><use href="#icon-wifi"/></svg>
+          <svg class="ic" style="width:14px;height:14px;"><use href="#icon-zap"/></svg>
+        </div>
+      </div>
+
+      <div class="top-nav">
+        <a href="welcome.html" class="back-btn-light" title="Quay lại">
+          <svg class="ic" style="width:18px;height:18px;"><use href="#icon-chevron-left"/></svg>
+        </a>
+        <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:0.8;">Xác thực</div>
+        <div style="width:36px;"></div>
+      </div>
+
+      <!-- Auth Hero / Brand Mark -->
+      <div class="auth-mark">
+        <div class="auth-logo">
+          <svg class="logo-icon"><use href="#icon-wallet"/></svg>
+          <div class="spark-tag">✦</div>
+        </div>
+        <div class="auth-logo-title">Finora</div>
+        <div class="auth-logo-sub">Tài chính thông minh cùng Nora & AI</div>
+      </div>
+    </div>
+
+    <!-- Login Bottom Sheet (exact ui-sample-3 theme) -->
+    <div class="auth-sheet">
+      <h2>Chào trở lại</h2>
+      <p class="sub">Đăng nhập để tiếp tục quản lý tài chính</p>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <!-- Email Field -->
+        <div class="form-g">
+          <label class="form-lbl" for="email">Email</label>
+          <div class="field">
+            <svg class="ic"><use href="#icon-mail"/></svg>
+            <input type="email" id="email" value="nguyenvana@gmail.com" placeholder="name@example.com" required />
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-g">
+          <label class="form-lbl" for="password">Mật khẩu</label>
+          <div class="field">
+            <svg class="ic"><use href="#icon-lock"/></svg>
+            <input type="password" id="password" value="finora2026" placeholder="Nhập mật khẩu" required />
+            <button type="button" class="toggle-pwd" onclick="togglePassword()" title="Hiện/Ẩn mật khẩu">
+              <svg class="ic" id="eyeIcon"><use href="#icon-eye"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember & Forgot Password -->
+        <div class="form-options">
+          <label class="rem-label">
+            <input type="checkbox" checked /> Ghi nhớ tài khoản
+          </label>
+          <a href="forgot-password.html" class="link-r">Quên mật khẩu?</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-p" id="loginBtn">
+          <span>Đăng nhập</span>
+          <svg class="ic"><use href="#icon-arrow-up-right"/></svg>
+        </button>
+      </form>
+
+      <div class="divider"><span>hoặc</span></div>
+
+      <!-- Google Login Button -->
+      <button type="button" class="btn-google" onclick="handleGoogleLogin()">
+        <svg viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        <span>Tiếp tục với Google</span>
+      </button>
+
+      <!-- Foot register link -->
+      <div class="auth-foot">
+        Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    var isPwdVisible = false;
+
+    function togglePassword() {
+      var pwdInput = document.getElementById('password');
+      var eyeIcon = document.getElementById('eyeIcon');
+      isPwdVisible = !isPwdVisible;
+      pwdInput.type = isPwdVisible ? 'text' : 'password';
+      eyeIcon.innerHTML = isPwdVisible ? '<use href="#icon-eye-off"/>' : '<use href="#icon-eye"/>';
+    }
+
+    function showToast(msg, callback) {
+      var toast = document.getElementById('toast');
+      var toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(function() {
+        if (callback) callback();
+      }, 900);
+    }
+
+    function handleLogin(e) {
+      if (e) e.preventDefault();
+      var btn = document.getElementById('loginBtn');
+      btn.innerHTML = '<span>Đang xác thực...</span>';
+      btn.style.opacity = '0.85';
+      btn.style.pointerEvents = 'none';
+
+      showToast("Đăng nhập thành công! Đang chuyển sang trang chủ...", function() {
+        window.location.href = "../home/dashboard.html";
+      });
+    }
+
+    function handleGoogleLogin() {
+      showToast("Xác thực Google thành công! Chào mừng...", function() {
+        window.location.href = "../home/dashboard.html";
+      });
+    }
+  </script>
+</body>
+</html>
