@@ -152,3 +152,9 @@ button, input, select { font-family: inherit; }
   stroke: #fff;
 }
 
+/* Mascot SVG Character Eyes, Pupils, Highlights, and Blushes */
+.eye { fill: #ffffff !important; }
+.pupil { fill: #2d3748 !important; }
+.highlight { fill: #ffffff !important; }
+.blush { fill: #ff8a80 !important; opacity: 0.4; }
+

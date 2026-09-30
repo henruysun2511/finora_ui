@@ -218,16 +218,22 @@
       background: #ffffff !important;
       border: 1.5px solid var(--border);
       border-radius: 20px;
-      padding: 14px;
+      padding: 14px 16px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
       display: flex !important;
       flex-direction: row !important;
-      gap: 14px;
-      align-items: flex-start;
+      gap: 16px;
+      align-items: center !important; /* Căn giữa theo chiều dọc */
       text-align: left !important;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
       transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .showcase-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
     }
 
     .showcase-card.selected {
@@ -249,7 +255,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* Left Column: Avatar & Range Tier Badge */
+    /* Left Column: Avatar & Range Tier Badge (Căn giữa theo chiều dọc) */
     .sc-left {
       width: 96px;
       min-width: 96px;
@@ -257,6 +263,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      align-self: center;
       gap: 8px;
       flex-shrink: 0;
     }
@@ -290,6 +298,24 @@
       50% {
         transform: translateY(-4px);
       }
+    }
+
+    /* Mascot SVG Character Features (Eyes, Pupil, Highlight, Blush) */
+    .eye {
+      fill: #ffffff !important;
+    }
+
+    .pupil {
+      fill: #2d3748 !important;
+    }
+
+    .highlight {
+      fill: #ffffff !important;
+    }
+
+    .blush {
+      fill: #ff8a80 !important;
+      opacity: 0.4;
     }
 
     .sc-tier-badge {
@@ -394,62 +420,7 @@
       color: var(--card-color, #0072d5);
     }
 
-    /* Action Buttons */
-    .sc-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 4px;
-    }
 
-    .btn-choose {
-      flex: 1;
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-      border: none;
-      cursor: pointer;
-      background: var(--card-color, var(--primary));
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      font-family: inherit;
-      transition: opacity 0.15s, transform 0.15s, background-color 0.2s;
-      box-shadow: 0 3px 10px color-mix(in srgb, var(--card-color, var(--primary)) 28%, transparent);
-    }
-
-    .btn-choose:active {
-      transform: scale(0.97);
-    }
-
-    .btn-choose.active {
-      background: #10b981;
-      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.28);
-    }
-
-    .btn-chat {
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      background: var(--dash-bg);
-      border: 1px solid var(--border);
-      color: var(--foreground);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      transition: background 0.15s;
-      white-space: nowrap;
-    }
-
-    .btn-chat:hover {
-      background: var(--border);
-    }
 
     /* Toast Notification */
     .toast-msg {
@@ -738,9 +709,10 @@
         var svgCode = getMascotSVG(m.id);
 
         html += '<div class="showcase-card' + (isSelected ? ' selected' : '') + '" id="card-' + m.id + '" ' +
+          'onclick="selectCompanion(\'' + m.id + '\', \'' + m.name + '\')" ' +
           'style="--card-color:' + m.color + '; --card-blob:' + m.blobColor + '; --card-accent:' + m.accent + ';">' +
 
-          '<!-- Bên trái: Hình Mascot -->' +
+          '<!-- Bên trái: Hình Mascot (Căn giữa theo chiều dọc) -->' +
           '<div class="sc-left">' +
             '<div class="sc-avatar-frame">' +
               svgCode +
@@ -757,15 +729,15 @@
 
             '<div class="sc-fields">' +
               '<div class="sc-field-item">' +
-                '<span class="sc-field-lbl">🧠 Tính cách:</span>' +
+                '<span class="sc-field-lbl">Tính cách:</span>' +
                 '<span class="sc-field-val">' + m.personality + '</span>' +
               '</div>' +
               '<div class="sc-field-item">' +
-                '<span class="sc-field-lbl">💰 Quan điểm:</span>' +
+                '<span class="sc-field-lbl">Quan điểm:</span>' +
                 '<span class="sc-field-val">' + m.finance + '</span>' +
               '</div>' +
               '<div class="sc-field-item">' +
-                '<span class="sc-field-lbl">🧭 Tư vấn:</span>' +
+                '<span class="sc-field-lbl">Tư vấn:</span>' +
                 '<span class="sc-field-val">' + m.advice + '</span>' +
               '</div>' +
             '</div>' +
@@ -773,17 +745,6 @@
             '<div class="sc-quote-box">' +
               '<span class="q-ic">❝</span>' +
               '<span>' + m.quote + '</span>' +
-            '</div>' +
-
-            '<div class="sc-actions">' +
-              '<button type="button" class="btn-choose' + (isSelected ? ' active' : '') + '" onclick="selectCompanion(\'' + m.id + '\', \'' + m.name + '\')">' +
-                '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-check"/></svg>' +
-                '<span>' + (isSelected ? 'Đang đồng hành' : 'Chọn làm Mascot') + '</span>' +
-              '</button>' +
-              '<a href="../../screens/chat-ai/chat.html" class="btn-chat" title="Trò chuyện">' +
-                '<svg class="ic" style="width:13px;height:13px;"><use href="#icon-bot"/></svg>' +
-                '<span>Trò chuyện</span>' +
-              '</a>' +
             '</div>' +
           '</div>' +
 
@@ -811,21 +772,11 @@
       // Update UI cards
       document.querySelectorAll('.showcase-card').forEach(function(card) {
         card.classList.remove('selected');
-        var btn = card.querySelector('.btn-choose');
-        if (btn) {
-          btn.classList.remove('active');
-          btn.querySelector('span').textContent = 'Chọn làm Mascot';
-        }
       });
 
       var targetCard = document.getElementById('card-' + id);
       if (targetCard) {
         targetCard.classList.add('selected');
-        var btn = targetCard.querySelector('.btn-choose');
-        if (btn) {
-          btn.classList.add('active');
-          btn.querySelector('span').textContent = 'Đang đồng hành';
-        }
       }
 
       updateActiveBanner();
